@@ -1,5 +1,6 @@
 package User;
 
+import Message.Message;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,5 +37,5 @@ public class User {
 
     @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id")
-    List<Message> vaccinationList = new ArrayList<>();
+    List<Message> messageList = new ArrayList<>();
 }
