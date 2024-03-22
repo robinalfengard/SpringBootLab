@@ -1,4 +1,4 @@
-package Message;
+package com.example.springbootlabmessages.Message;
 
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package User;
+package com.example.springbootlabmessages.User;
 
 import org.springframework.data.repository.ListCrudRepository;
 

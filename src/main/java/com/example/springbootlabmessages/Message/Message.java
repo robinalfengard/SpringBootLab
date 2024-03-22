@@ -1,6 +1,6 @@
-package Message;
+package com.example.springbootlabmessages.Message;
 
-import User.User;
+import com.example.springbootlabmessages.User.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

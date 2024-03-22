@@ -1,6 +1,6 @@
-package User;
+package com.example.springbootlabmessages.User;
 
-import Message.Message;
+import com.example.springbootlabmessages.Message.Message;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,7 +16,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
-
     private String username;
     private String firstName;
     private String lastName;
@@ -26,8 +25,7 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String username, String firstName, String lastName, String email, String profilePicture) {
-        this.id = id;
+    public User(String username, String firstName, String lastName, String email, String profilePicture) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
