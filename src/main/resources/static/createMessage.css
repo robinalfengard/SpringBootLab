@@ -30,6 +30,12 @@ body {
     margin: 0 auto;
     margin-bottom: 10px;
 }
+#post-title {
+    width: 20%;
+    height: 50px;
+    margin: 0 auto;
+    display: block;
+}
 
 #post-text {
     width: 80%;
