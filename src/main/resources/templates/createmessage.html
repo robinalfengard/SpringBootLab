@@ -8,17 +8,16 @@
 </head>
 <body>
 <div class="language-options">
-  <a href="http://localhost:8080/web/createMessage?lang=en" id="english-btn">English</a>
-  <a href="http://localhost:8080/web/createMessage?lang=sv" id="swedish-btn">Swedish</a>
-  <button th:text="#{Log}" id="login-btn">Log in</button>
+  <a href="http://localhost:8080/createmessage?lang=en" id="english-btn">English</a>
+  <a href="http://localhost:8080/createmessage?lang=sv" id="swedish-btn">Swedish</a>
 </div>
 <div class="menu">
-  <p>Home</p>
+  <a href="http://localhost:8080/messages">Home</a>
 </div>
 <div class="content">
   <h1 class="site-title">Beautiful World</h1>
   <div class="post-section">
-    <input type="file" id="file-upload" accept="image/*">
+    <textarea id="post-title" th:placeholder="#{Title}"></textarea>
     <textarea id="post-text" th:placeholder="#{Sharethought}"></textarea>
     <button id="submit-btn" th:text="#{Share}">Share</button>
   </div>
