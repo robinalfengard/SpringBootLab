@@ -25,7 +25,7 @@ public class Message {
     private User user;
     private boolean isPublic;
 
-    @CreatedDate
+
     private LocalDateTime timestamp;
 
     private String text;
@@ -38,5 +38,6 @@ public class Message {
         this.title = title;
         this.user = user;
         this.isPublic = isPublic;
+        this.timestamp = LocalDateTime.now();
     }
 }
