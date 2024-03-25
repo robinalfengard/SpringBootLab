@@ -22,8 +22,7 @@ public class User {
     private String email;
     private String profilePicture;
 
-    public User() {
-    }
+    public User() {}
 
     public User(String username, String firstName, String lastName, String email, String profilePicture) {
         this.username = username;
