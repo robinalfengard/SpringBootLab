@@ -1,0 +1,44 @@
+body {
+    background: linear-gradient(to right, yellow, lightskyblue,yellow);
+    font-family: "Calibri", sans-serif;
+    font-size: 40px;
+}
+
+.language-options {
+    text-align: right;
+    padding: 10px;
+}
+
+.menu {
+    position: absolute;
+    left: 10px;
+    top: 20px;
+}
+
+.site-title {
+    color: darkblue;
+    text-align: center;
+}
+
+.post-section {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#file-upload {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 10px;
+}
+
+#post-text {
+    width: 80%;
+    height: 100px;
+    margin: 0 auto;
+    display: block;
+}
+
+#submit-btn {
+    display: block;
+    margin: 0 auto;
+}

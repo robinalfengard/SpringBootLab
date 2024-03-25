@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beautiful World</title>
+  <link rel="stylesheet" th:href="@{/createMessage.css}">
+</head>
+<body>
+<div class="language-options">
+  <a href="http://localhost:8080/web/createMessage?lang=en" id="english-btn">English</a>
+  <a href="http://localhost:8080/web/createMessage?lang=sv" id="swedish-btn">Swedish</a>
+  <button th:text="#{Log}" id="login-btn">Log in</button>
+</div>
+<div class="menu">
+  <p>Home</p>
+</div>
+<div class="content">
+  <h1 class="site-title">Beautiful World</h1>
+  <div class="post-section">
+    <input type="file" id="file-upload" accept="image/*">
+    <textarea id="post-text" th:placeholder="#{Sharethought}"></textarea>
+    <button id="submit-btn" th:text="#{Share}">Share</button>
+  </div>
+</div>
+</body>
+</html>
