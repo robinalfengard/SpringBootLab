@@ -4,18 +4,19 @@
     <meta charset="UTF-8">
     <title>Home</title>
     <link rel="stylesheet" th:href="@{/home.css}">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css">
 </head>
 <body>
 
 <div th:each="message : ${listOfMessages}" class="card mb-3">
     <div class="card-body">
-        <h5 th:text="${'Title: ' + message?.title }"></h5>
-        <p class="card-text" th:text="${' Message: ' + message?.text}"></p>
-        <p class="card-text" th:text="${' Message: ' + message?.user.username}"><small class="text-muted">Posted by <a href="#" class="link-primary" th:text="${' Message: ' + message?.timestamp}"></a> </small></p>
+        <h5 class="center title" th:text="${ message?.title }"></h5>
+        <p id="center message" th:text="${ message?.text}"></p>
+        <div class="user-info">
+            <p class="message" th:text="${'Writer: ' + message?.user.username}"></p>
+            <p class="message" th:text="${'Published Time: ' + message?.timestamp}"></p>
+        </div>
     </div>
 </div>
-<a th:href="@{'/login'}">Login</a>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

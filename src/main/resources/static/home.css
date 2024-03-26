@@ -1,14 +1,32 @@
 
 body {
-    background: linear-gradient(to right, yellow, lightskyblue,yellow);
+    background: linear-gradient(to right, yellow, lightskyblue, yellow);
     font-family: "Calibri", sans-serif;
     font-size: 40px;
 }
 
 
-#boxOfMesssage {
-    width: 80%;
-    height: 100px;
+.center {
+    text-align: center;
+}
+
+.title {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+#center\ message {
+    width: 60%;
+    font-size: 20px;
     margin: 0 auto;
     display: block;
+}
+
+.message {
+    font-size: 18px;
+}
+
+.user-info {
+    display: flex;
+    justify-content: space-evenly;
 }
