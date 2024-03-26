@@ -27,7 +27,7 @@ public class Message {
 
 
     private LocalDateTime timestamp;
-
+    @Column(length = 10000)
     private String text;
     private String title;
 

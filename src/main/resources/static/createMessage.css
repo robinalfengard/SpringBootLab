@@ -14,6 +14,42 @@ body {
     left: 10px;
     top: 20px;
 }
+#english-btn{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: white;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+#swedish-btn{
+    position: absolute;
+    right: 85px;
+    top: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: white;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+#home-btn{
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: yellowgreen;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
 
 .site-title {
     color: darkblue;
@@ -39,12 +75,17 @@ body {
 
 #post-text {
     width: 80%;
-    height: 100px;
+    height: 120px;
     margin: 0 auto;
     display: block;
 }
 
 #submit-btn {
-    display: block;
-    margin: 0 auto;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: white;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
 }
