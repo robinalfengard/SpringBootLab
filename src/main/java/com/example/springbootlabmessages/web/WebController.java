@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
-@RestController
+@Controller
 public class WebController {
     private final MessageService messageService;
     private final UserService userService;
