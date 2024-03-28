@@ -1,14 +1,82 @@
 
 body {
-    background: linear-gradient(to right, yellow, lightskyblue,yellow);
+    background: linear-gradient(to right, yellow, lightskyblue, yellow);
     font-family: "Calibri", sans-serif;
     font-size: 40px;
 }
+.site-title {
+    color: darkblue;
+    text-align: center;
+}
+.not-logged-in {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
 
 
-#boxOfMesssage {
-    width: 80%;
-    height: 100px;
+.center {
+    text-align: center;
+}
+
+.title {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+#center\ message {
+    width: 60%;
+    font-size: 20px;
     margin: 0 auto;
     display: block;
+}
+#english-btn{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: white;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+#swedish-btn{
+    position: absolute;
+    right: 85px;
+    top: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: white;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+#login-btn{
+    position: absolute;
+    left: 200px;
+    top: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: white;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.message {
+    font-size: 18px;
+}
+
+.user-info {
+    display: flex;
+    justify-content: space-evenly;
 }

@@ -13,18 +13,20 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
     private String username;
     private String firstName;
     private String lastName;
     private String email;
+    private String url;
+    private String login;
     private String profilePicture;
 
     public User() {}
 
-    public User(String username, String firstName, String lastName, String email, String profilePicture) {
+    public User(Long id , String username, String firstName, String lastName, String email, String profilePicture) {
+        this.id = id;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -35,4 +37,6 @@ public class User {
     @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id")
     List<Message> messageList = new ArrayList<>();
+
+
 }
