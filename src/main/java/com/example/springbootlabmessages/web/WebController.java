@@ -19,7 +19,7 @@ public class WebController {
         return "createmessage";
     }
     
-    @GetMapping("/messages")
+    @GetMapping("/")
     String getMessages(Model model){
         var listOfMessages =messageService.getAllMessages();
         model.addAttribute("listOfMessages", listOfMessages);
