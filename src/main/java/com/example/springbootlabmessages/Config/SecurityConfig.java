@@ -18,7 +18,7 @@ public class SecurityConfig {
         return security
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/login", "/", "/resources/**", "/type/css/**", "createMessage.css", "home.css").permitAll();
-                    auth.requestMatchers("/createmessage", "/loggedInMessages").authenticated();
+                    auth.requestMatchers("/createmessage", "/allMessages").authenticated();
                     auth.anyRequest().denyAll();
                 })
                 .oauth2Login(oauth2Login ->

@@ -37,7 +37,7 @@ public class WebController {
         model.addAttribute("listOfMessages", listOfMessages);
         return "messages";
     }
-    @GetMapping("/loggedInMessages")
+    @GetMapping("/allMessages")
     String getLoggedInMessages(Model model) {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.isAuthenticated()) {
