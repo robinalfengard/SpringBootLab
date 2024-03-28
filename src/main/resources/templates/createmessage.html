@@ -1,32 +1,39 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Beautiful World</title>
-  <link rel="stylesheet" th:href="@{/createMessage.css}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beautiful World</title>
+    <link rel="stylesheet" th:href="@{/createMessage.css}">
 </head>
 <body>
 <div class="language-options">
-  <a href="http://localhost:8080/createmessage?lang=en" id="english-btn">English</a>
-  <a href="http://localhost:8080/createmessage?lang=sv" id="swedish-btn">Swedish</a>
-  <a href="http://localhost:8080/" id="home-btn">Home</a>
+    <a href="http://localhost:8080/createmessage?lang=en" id="english-btn">English</a>
+    <a href="http://localhost:8080/createmessage?lang=sv" id="swedish-btn">Swedish</a>
+    <a href="http://localhost:8080/" id="home-btn">Home</a>
 </div>
 <div class="content">
-  <h1 class="site-title">Beautiful World</h1>
-  <div class="post-section">
-    <textarea id="post-title" th:placeholder="#{Title}" ></textarea>
-    <textarea id="post-text" th:placeholder="#{Sharethought}"></textarea>
-</div>
-<div>
-  <h2>Test Form</h2>
-  <form action="#" th:action="@{/createmessage}" th:object="${formdata}" method="post">
-    <p >Enter Title: <input type="text" th:field="*{title}" /></p>
-    <p>Enter Text: <input type="text" th:field="*{text}" /></p>
+    <h1 class="site-title">Beautiful World</h1>
+    <div class="post-section">
+        <form action="#" th:action="@{/createmessage}" th:object="${formdata}" method="post">
+            <textarea id="post-title" th:placeholder="#{Title}" th:field="*{title}"></textarea>
+            <textarea id="post-text" th:placeholder="#{Sharethought}" th:field="*{text}"></textarea>
+            <label id="public-label">Public</label>
+            <input type="checkbox" id="publicCheckbox" name="public" value="public">
+          <button id="submit-btn" type="submit" th:value="#{Share}">Share</button>
+        </form>
+        <!--    <textarea id="post-title" th:placeholder="#{Title}" ></textarea>-->
+        <!--    <textarea id="post-text" th:placeholder="#{Sharethought}"></textarea>-->
+    </div>
+    <!--<div>-->
+    <!--  <h2>Test Form</h2>-->
+    <!--  <form action="#" th:action="@{/createmessage}" th:object="${formdata}" method="post">-->
+    <!--    <p >Enter Title: <input type="text" th:field="*{title}" /></p>-->
+    <!--    <p>Enter Text: <input type="text" th:field="*{text}" /></p>-->
 
-    <p><input type="submit" value="Submit"/> <input type="reset" value="Reset"/></p>
-  </form>
+    <!--    <p><input type="submit" value="Submit"/> <input type="reset" value="Reset"/></p>-->
+    <!--  </form>-->
+    <!--</div>-->
 </div>
-  </div>
 </body>
 </html>
