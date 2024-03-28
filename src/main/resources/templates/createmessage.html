@@ -15,10 +15,18 @@
 <div class="content">
   <h1 class="site-title">Beautiful World</h1>
   <div class="post-section">
-    <textarea id="post-title" th:placeholder="#{Title}"></textarea>
+    <textarea id="post-title" th:placeholder="#{Title}" ></textarea>
     <textarea id="post-text" th:placeholder="#{Sharethought}"></textarea>
-    <button id="submit-btn" th:text="#{Share}">Share</button>
-  </div>
 </div>
+<div>
+  <h2>Test Form</h2>
+  <form action="#" th:action="@{/createmessage}" th:object="${formdata}" method="post">
+    <p >Enter Title: <input type="text" th:field="*{title}" /></p>
+    <p>Enter Text: <input type="text" th:field="*{text}" /></p>
+
+    <p><input type="submit" value="Submit"/> <input type="reset" value="Reset"/></p>
+  </form>
+</div>
+  </div>
 </body>
 </html>
