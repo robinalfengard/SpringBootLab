@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" th:href="@{/home.css}">
+</head>
+<body>
+<div class="language-options">
+    <a href="http://localhost:8080/?lang=en" id="english-btn">English</a>
+    <a href="http://localhost:8080/?lang=sv" id="swedish-btn">Swedish</a>
+</div>
+<a href="http://localhost:8080/login" id="login-btn">Log in</a>
+<label  class="not-logged-in">You are not logged in</label>
+<div>
+    <h1 class="site-title">Beautiful World</h1>
+</div>
+
+<div th:each="message : ${listOfMessages}" class="card mb-3">
+    <div class="card-body">
+        <h5 class="center title" th:text="${ message?.title }"></h5>
+        <p id="center message" th:text="${ message?.text}"></p>
+        <div class="user-info">
+            <p class="message" th:text="${'Writer: ' + message?.user.username}"></p>
+            <p class="message" th:text="${'Published Time: ' + message?.timestamp}"></p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
