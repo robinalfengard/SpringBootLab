@@ -79,6 +79,10 @@ body {
     margin: 0 auto;
     display: block;
 }
+#public-label{
+    font-size: 20px;
+    font-weight: bold;
+}
 
 #submit-btn {
     border: 1px solid black;
