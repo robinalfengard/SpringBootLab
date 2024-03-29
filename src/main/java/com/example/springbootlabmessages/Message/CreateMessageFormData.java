@@ -13,6 +13,7 @@ public class CreateMessageFormData {
     private String title;
     private String text;
     private User user;
+    private boolean isPublic;
     private LocalDateTime localDateTime;
 
     public CreateMessageFormData(String title, String text, User user) {
@@ -30,6 +31,7 @@ public class CreateMessageFormData {
         message.setTitle(title);
         message.setText(text);
         message.setUser(user);
+        message.setIsPublic(isPublic);
         message.setTimestamp(LocalDateTime.now());
         return message;
     }

@@ -31,7 +31,8 @@ public class Message {
     private String text;
     private String title;
 
-    public Message() {}
+    public Message() {
+    }
 
     public Message(String text, String title, User user, boolean isPublic) {
         this.text = text;
@@ -40,4 +41,10 @@ public class Message {
         this.isPublic = isPublic;
         this.timestamp = LocalDateTime.now();
     }
+
+    // I CreateMessageFormData could not change ispublic, because it has been created manually.
+    public void setIsPublic(boolean isPublic) {
+        this.isPublic = isPublic;
+    }
+
 }
