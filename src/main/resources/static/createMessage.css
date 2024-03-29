@@ -38,6 +38,18 @@ body {
     font-weight: bold;
     cursor: pointer;
 }
+#my-page-btn{
+    position: absolute;
+    right: 170px;
+    top: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: white;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
 #home-btn{
     position: absolute;
     left: 10px;
