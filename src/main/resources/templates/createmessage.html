@@ -25,11 +25,10 @@
         </form>
     </div>
     <div class="my-page">
-        <img th:src="${user?.profilePicture}" alt="Profile Picture">
-        <p id="first-name" th:text="${user?.firstName}"></p>
-        <p id="last-name" th:text="${user?.lastName}"></p>
-        <p id="user-name" th:text="${user?.username}"></p>
-        <p id="email" th:text="${user?.email}"></p>
+        <img id="profile-picture" th:src="${user?.profilePicture}" alt="Profile Picture">
+        <label id="name" th:text="${user?.name}"></label>
+        <textarea id="user-name" th:text="${user?.username}"></textarea>
+        <textarea id="email" th:text="${user?.email}"></textarea>
 
     </div>
 </div>
