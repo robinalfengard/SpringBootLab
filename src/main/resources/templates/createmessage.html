@@ -24,6 +24,14 @@
             <button id="submit-btn" type="submit" th:value="#{Share}">Share</button>
         </form>
     </div>
+    <div class="my-page">
+        <img th:src="${user?.profilePicture}" alt="Profile Picture">
+        <p id="first-name" th:text="${user?.firstName}"></p>
+        <p id="last-name" th:text="${user?.lastName}"></p>
+        <p id="user-name" th:text="${user?.username}"></p>
+        <p id="email" th:text="${user?.email}"></p>
+
+    </div>
 </div>
 </body>
 </html>

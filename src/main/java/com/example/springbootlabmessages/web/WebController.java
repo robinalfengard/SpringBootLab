@@ -26,6 +26,8 @@ public class WebController {
 
     @GetMapping("/createmessage")
     String home(@AuthenticationPrincipal OAuth2User principal, Model model) {
+        var user = userService.findById(principal.getAttribute("id"));
+        model.addAttribute("user", user);
         model.addAttribute("formdata", new CreateMessageFormData());
         model.addAttribute("principal", principal);
         return "createmessage";
