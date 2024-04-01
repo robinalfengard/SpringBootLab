@@ -69,5 +69,13 @@ public class WebController {
 /*        return ResponseEntity.status(HttpStatus.SEE_OTHER)
                 .location(URI.create("/"))
                 .build();*/
+    @GetMapping("/createmessage/mypage")
+    String mypage(@AuthenticationPrincipal OAuth2User principal, Model model) {
+        var user = userService.findById(principal.getAttribute("id"));
+        model.addAttribute("user", user);
+        model.addAttribute("principal", principal);
+
+        return "mypage";
+    }
 }
 

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <style>
+        body {
+            background: linear-gradient(to right, yellow, lightskyblue,yellow);
+            font-family: "Calibri", sans-serif;
+            font-size: 40px;
+        }
+        #english-btn{
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            border: 1px solid black;
+            border-radius: 5px;
+            padding: 5px;
+            background-color: white;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        #swedish-btn{
+            position: absolute;
+            right: 85px;
+            top: 10px;
+            border: 1px solid black;
+            border-radius: 5px;
+            padding: 5px;
+            background-color: white;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        #file-input{
+            width: 50%;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 0 auto;
+            display: block;
+        }
+        #name-label{
+            font-size: 22px;
+            font-weight: bold;
+        }
+        #username-label{
+            font-size: 22px;
+            font-weight: bold;
+        }
+        #email-label{
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .editable-rectangle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50%;
+            height: 100%;
+            border: 2px solid #ccc;
+            overflow: auto;
+        }
+        #create-message-btn{
+            position: absolute;
+            left: 80px;
+            top: 10px;
+            border: 1px solid black;
+            border-radius: 5px;
+            padding: 5px;
+            background-color: yellowgreen;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        #home-btn{
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            border: 1px solid black;
+            border-radius: 5px;
+            padding: 5px;
+            background-color: yellowgreen;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        #my-page-title{
+            text-align: center;
+            font-style: italic;
+            font-family: "Californian FB", sans-serif;
+        }
+        #profile-picture{
+            width: 30%;
+            height: 30%;
+            border-radius: 50%;
+            margin: 0 auto;
+            display: block;
+        }
+        #name{
+            font-size: 16px;
+            font-weight: bold;
+            text-align: left;
+            box-sizing: border-box;
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        #username{
+            font-size: 16px;
+            font-weight: bold;
+            text-align: left;
+            box-sizing: border-box;
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        #email{
+            font-size: 16px;
+            font-weight: bold;
+            text-align: left;
+            box-sizing: border-box;
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        #edit-btn{
+            border: 1px solid yellow;
+            background-color: orchid;
+            border-radius: 5px;
+            padding: 9px;
+            width: 50%;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 0 auto;
+            display: block;
+        }
+
+    </style>
+</head>
+<body>
+<div class="language-options">
+    <a href="http://localhost:8080/createmessage/mypage?lang=en" id="english-btn">English</a>
+    <a href="http://localhost:8080/createmessage/mypage?lang=sv" id="swedish-btn">Swedish</a>
+    <a href="http://localhost:8080/" id="home-btn">Home</a>
+    <a href="http://localhost:8080/" id="create-message-btn">Create Message</a>
+</div>
+<div class="editable-rectangle" contenteditable="false">
+
+    <h4 id="my-page-title">My Page</h4>
+    <img id="profile-picture" th:src="${user?.profilePicture}" alt="Profile Picture">
+    <input type="file" id="file-input" accept="image/*">
+    </img>
+    <label for="name" id="name-label" th:text="#{Name}+': '"></label>
+    <input type="text" id="name" th:placeholder="${user?.name}">
+    <br>
+    <label for="username" id="username-label" th:text="#{UserName}+': '"></label>
+    <input type="text" id="username" th:placeholder="${user?.username}">
+    <br>
+    <label for="email" id="email-label" th:text="#{Email}+': '"></label>
+    <input type="email" id="email" th:placeholder="${user?.email}">
+    <br> <br>
+    <input type="submit" id="edit-btn" th:value="#{SaveChanges}">
+</div>
+</body>
+</html>
