@@ -25,4 +25,8 @@ public class MessageService {
     public List<Message> getAllMessages() {
         return messageRepository.findAll();
     }
+
+    public List<Message> getAllMessagesByUser(Long id) {
+        return messageRepository.findAllByUserId(id);
+    }
 }

@@ -46,6 +46,7 @@ body {
     font-size: 20px;
     font-weight: bold;
     cursor: pointer;
+    text-decoration: none;
 }
 #swedish-btn{
     position: absolute;
@@ -58,6 +59,20 @@ body {
     font-size: 20px;
     font-weight: bold;
     cursor: pointer;
+    text-decoration: none;
+}
+#my-page-btn{
+    position: absolute;
+    left: 240px;
+    top: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: yellowgreen;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
 }
 #login-btn{
     position: absolute;
@@ -70,6 +85,33 @@ body {
     font-size: 20px;
     font-weight: bold;
     cursor: pointer;
+    text-decoration: none;
+}
+#logout-btn{
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: white;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+}
+#create-message-btn {
+    position: absolute;
+    left: 90px;
+    top: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: yellowgreen;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
 }
 
 .message {

@@ -25,6 +25,7 @@ body {
     font-size: 20px;
     font-weight: bold;
     cursor: pointer;
+    text-decoration: none;
 }
 #swedish-btn{
     position: absolute;
@@ -37,18 +38,20 @@ body {
     font-size: 20px;
     font-weight: bold;
     cursor: pointer;
+    text-decoration: none;
 }
 #my-page-btn{
     position: absolute;
-    right: 170px;
+    left: 75px;
     top: 10px;
     border: 1px solid black;
     border-radius: 5px;
     padding: 5px;
-    background-color: white;
+    background-color: yellowgreen;
     font-size: 20px;
     font-weight: bold;
     cursor: pointer;
+    text-decoration: none;
 }
 
 #home-btn{
@@ -62,6 +65,7 @@ body {
     font-size: 20px;
     font-weight: bold;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .site-title {
@@ -95,7 +99,7 @@ body {
     font-size: 16px;
 }
 #public-label{
-    font-size: 20px;
+    font-size: 22px;
     font-weight: bold;
 }
 

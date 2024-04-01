@@ -23,4 +23,8 @@ public class UserService {
         else System.out.println("could not find user");
         return null;
     }
+
+    public void save(User user) {
+        userRepository.save(user);
+    }
 }

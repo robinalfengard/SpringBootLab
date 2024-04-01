@@ -9,9 +9,11 @@
 <div class="language-options">
     <a href="http://localhost:8080/?lang=en" id="english-btn">English</a>
     <a href="http://localhost:8080/?lang=sv" id="swedish-btn">Swedish</a>
+    <a href="http://localhost:8080/mypage" id="my-page-btn">My Page</a>
+    <a href="http://localhost:8080/createmessage" id="create-message-btn">Create Message</a>
+    <a href="http://localhost:8080/logout" id="logout-btn">Log out</a>
 </div>
-<a href="http://localhost:8080/login" id="login-btn">Log in</a>
-<label  class="not-logged-in">You are not logged in</label>
+
 <div>
     <h1 class="site-title">Beautiful World</h1>
 </div>
@@ -21,8 +23,8 @@
         <h5 class="center title" th:text="${ message?.title }"></h5>
         <p id="center message" th:text="${ message?.text}"></p>
         <div class="user-info">
-            <p class="message" th:text="${'Writer: ' + message?.user.username}"></p>
-            <p class="message" th:text="${'Published Time: ' + message?.timestamp}"></p>
+            <p class="message" th:text="#{Author} + ': ' + ${message?.user.username}"></p>
+            <p class="message" th:text="#{PublishedTime}+ ': ' + ${message?.timestamp}"></p>
         </div>
     </div>
 </div>
