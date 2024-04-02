@@ -18,6 +18,9 @@ import java.util.List;
 
 @Controller
 public class WebController {
+
+    private  int messagesPerLoad = 1;
+
     private final MessageService messageService;
     private final UserService userService;
 
@@ -35,10 +38,11 @@ public class WebController {
         model.addAttribute("principal", principal);
         return "createmessage";
     }
-    
+
     @GetMapping("/")
     String getMessages(Model model){
-        var listOfMessages =messageService.getAllPublicMessages();
+        int messagesPerLoad = 1;
+        var listOfMessages = messageService.get10PublicMessages(messagesPerLoad);
         model.addAttribute("listOfMessages", listOfMessages);
         return "messages";
     }
@@ -46,7 +50,8 @@ public class WebController {
     String getLoggedInMessages(Model model) {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.isAuthenticated()) {
-            var listOfMessages = messageService.getAllMessages();
+            int messagesPerLoad = 1;
+            var listOfMessages = messageService.get10Messages(messagesPerLoad);
             model.addAttribute("listOfMessages", listOfMessages);
             return "allMessages";
         } else {
@@ -54,6 +59,22 @@ public class WebController {
             // Handle tsout he case when the user is not authenticated
             return "redirect:/login";
         }
+    }
+
+    @GetMapping("/loadMorePublicMessages")
+    public String loadMorePublicMessages(Model model){
+        messagesPerLoad +=1;
+        var listOfMessages =messageService.get10PublicMessages(messagesPerLoad);
+        model.addAttribute("listOfMessages", listOfMessages);
+        return "messages";
+    }
+
+    @GetMapping("/loadMoreMessages")
+    public String loadMoreMessages(Model model){
+        messagesPerLoad +=1;
+        var listOfMessages =messageService.get10Messages(messagesPerLoad);
+        model.addAttribute("listOfMessages", listOfMessages);
+        return "allMessages";
     }
 
     @PostMapping("/createmessage")

@@ -31,6 +31,15 @@ public class MessageService {
         return messageRepository.findAllByUserId(id);
     }
 
+
+    public List<Message> get10PublicMessages(int messageLimitPerLoad) {
+        return messageRepository.find10NextPublicMessages(messageLimitPerLoad);
+    }
+
+    public List<Message> get10Messages(int messagesPerLoad) {
+        return messageRepository.find10NextMessages(messagesPerLoad);
+    }
+
     public List<Message> getAllMessagesByUserName(String username) {
         return messageRepository.findAllByUserName(username);
     }
