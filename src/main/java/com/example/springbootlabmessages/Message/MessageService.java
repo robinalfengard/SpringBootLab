@@ -3,6 +3,7 @@ package com.example.springbootlabmessages.Message;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -37,5 +38,9 @@ public class MessageService {
 
     public List<Message> get10Messages(int messagesPerLoad) {
         return messageRepository.find10NextMessages(messagesPerLoad);
+    }
+
+    public List<Message> getAllMessagesByUserName(String username) {
+        return messageRepository.findAllByUserName(username);
     }
 }
