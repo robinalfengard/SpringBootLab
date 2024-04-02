@@ -80,7 +80,8 @@ public class WebController {
         model.addAttribute("principal", principal);
         return "mypage";
     }
-    @PutMapping("/updateuser")
+
+    @PutMapping("/mypage")
     String updateUser(@AuthenticationPrincipal OAuth2User principal,@ModelAttribute User userdata) {
         var user = userService.findById(principal.getAttribute("id"));
         user.setName(userdata.getName());
@@ -90,10 +91,19 @@ public class WebController {
         userService.save(user);
         return "redirect:/mypage";
     }
+
     @GetMapping("/mymessages")
     String myMessages(@AuthenticationPrincipal OAuth2User principal, Model model) {
-        var id = principal.getAttribute("id");
-        List<Message> messageList=messageService.getAllMessagesByUser((Long) id);
+        Object idObject = principal.getAttribute("id");
+        Long id;
+        if (idObject instanceof Integer) {
+            id = ((Integer) idObject).longValue();
+        } else if (idObject instanceof Long) {
+            id = (Long) idObject;
+        } else {
+            throw new IllegalArgumentException("ID is not of type Integer or Long");
+        }
+        List<Message> messageList = messageService.getAllMessagesByUser(id);
         model.addAttribute("messageList", messageList);
         return "mymessages";
     }

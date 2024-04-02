@@ -1,10 +1,141 @@
 <!DOCTYPE html>
-<html lang="en">
+<html  lang="en" xmlns:th="http://www.thymeleaf.org" >
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>My messages</title>
+
+  <style>
+    body {
+      background: linear-gradient(to right, yellow, lightskyblue, yellow);
+      font-family: "Calibri", sans-serif;
+      font-size: 40px;
+    }
+
+    .site-title {
+      color: darkblue;
+      text-align: center;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .title {
+      font-size: 22px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    #center\ message {
+      width: 60%;
+      font-size: 20px;
+      margin: 0 auto;
+      display: block;
+    }
+
+    .message {
+      font-size: 18px;
+      text-align: center;
+    }
+
+    .user-info {
+      display: flex;
+      justify-content: space-evenly;
+    }
+
+    #english-btn {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      border: 1px solid black;
+      border-radius: 5px;
+      padding: 5px;
+      background-color: white;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    #swedish-btn {
+      position: absolute;
+      right: 85px;
+      top: 10px;
+      border: 1px solid black;
+      border-radius: 5px;
+      padding: 5px;
+      background-color: white;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    #my-page-btn{
+      position: absolute;
+      left: 240px;
+      top: 10px;
+      border: 1px solid black;
+      border-radius: 5px;
+      padding: 5px;
+      background-color: yellowgreen;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    #create-message-btn {
+      position: absolute;
+      left: 80px;
+      top: 10px;
+      border: 1px solid black;
+      border-radius: 5px;
+      padding: 5px;
+      background-color: yellowgreen;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    #home-btn {
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      border: 1px solid black;
+      border-radius: 5px;
+      padding: 5px;
+      background-color: yellowgreen;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+  </style>
 </head>
 <body>
-<h1>8546666666565</h1>
+  <div class="language-options">
+    <a href="http://localhost:8080/?lang=en" id="english-btn">English</a>
+    <a href="http://localhost:8080/?lang=sv" id="swedish-btn">Swedish</a>
+    <a href="http://localhost:8080/allMessages" id="home-btn">Home</a>
+    <a href="http://localhost:8080/mypage" id="my-page-btn">My Page</a>
+    <a href="http://localhost:8080/createmessage" id="create-message-btn">Create Message</a>
+  </div>
+  <div>
+    <h1 class="site-title">My messages</h1>
+  </div>
+
+  <div th:each="message : ${messageList}" class="card mb-3">
+    <div class="card-body">
+      <h5 class="center title" th:text="${ message?.title }"></h5>
+      <p id="center message" th:text="${ message?.text}"></p>
+      <div class="user-info">
+        <p class="message" th:text="#{Author} + ': ' + ${message?.user.username}"></p>
+        <p class="message" th:text="#{PublishedTime}+ ': ' + ${message?.timestamp}"></p>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
