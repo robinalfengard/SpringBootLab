@@ -29,4 +29,13 @@ public class MessageService {
     public List<Message> getAllMessagesByUser(Long id) {
         return messageRepository.findAllByUserId(id);
     }
+
+
+    public List<Message> get10PublicMessages(int messageLimitPerLoad) {
+        return messageRepository.find10NextPublicMessages(messageLimitPerLoad);
+    }
+
+    public List<Message> get10Messages(int messagesPerLoad) {
+        return messageRepository.find10NextMessages(messagesPerLoad);
+    }
 }
