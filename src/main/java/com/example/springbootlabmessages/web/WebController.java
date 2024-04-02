@@ -41,7 +41,7 @@ public class WebController {
 
     @GetMapping("/")
     String getMessages(Model model){
-        int messagesPerLoad = 1;
+        messagesPerLoad = 1;
         var listOfMessages = messageService.get10PublicMessages(messagesPerLoad);
         model.addAttribute("listOfMessages", listOfMessages);
         return "messages";
