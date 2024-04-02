@@ -113,6 +113,16 @@
       text-decoration: none;
     }
 
+    #edit-btn {
+      border: 1px solid black;
+      border-radius: 5px;
+      padding: 5px;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      position: absolute;
+    }
+
   </style>
 </head>
 <body>
@@ -135,6 +145,7 @@
         <p class="message" th:text="#{Author} + ': ' + ${message?.user.username}"></p>
         <p class="message" th:text="#{PublishedTime}+ ': ' + ${message?.timestamp}"></p>
       </div>
+      <a th:href="@{'/editmessage/' + ${message.id}}" class="edit-btn" id="edit-btn">Edit</a>
     </div>
   </div>
 </body>
