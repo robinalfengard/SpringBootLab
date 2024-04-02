@@ -13,12 +13,20 @@ public class MessageService {
         this.messageRepository = messageRepository;
     }
 
-    public List<Message> getAllMessages() {
-        return messageRepository.findAll();
+    public List<Message> getAllPublicMessages() {
+        return messageRepository.findAllWhereIsPublicIsTrue();
     }
 
     @CacheEvict(value = "message", allEntries = true)
     public void save(Message message) {
         messageRepository.save(message);
+    }
+
+    public List<Message> getAllMessages() {
+        return messageRepository.findAll();
+    }
+
+    public List<Message> getAllMessagesByUser(Long id) {
+        return messageRepository.findAllByUserId(id);
     }
 }

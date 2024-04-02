@@ -25,6 +25,7 @@ body {
     font-size: 20px;
     font-weight: bold;
     cursor: pointer;
+    text-decoration: none;
 }
 #swedish-btn{
     position: absolute;
@@ -37,7 +38,22 @@ body {
     font-size: 20px;
     font-weight: bold;
     cursor: pointer;
+    text-decoration: none;
 }
+#my-page-btn{
+    position: absolute;
+    left: 75px;
+    top: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: yellowgreen;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+}
+
 #home-btn{
     position: absolute;
     left: 10px;
@@ -49,6 +65,7 @@ body {
     font-size: 20px;
     font-weight: bold;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .site-title {
@@ -71,16 +88,18 @@ body {
     height: 50px;
     margin: 0 auto;
     display: block;
+    font-size: 16px;
 }
 
 #post-text {
-    width: 80%;
-    height: 120px;
+    width: 70%;
+    height: 150px;
     margin: 0 auto;
     display: block;
+    font-size: 16px;
 }
 #public-label{
-    font-size: 20px;
+    font-size: 22px;
     font-weight: bold;
 }
 
@@ -88,8 +107,8 @@ body {
     border: 1px solid black;
     border-radius: 5px;
     padding: 5px;
-    background-color: white;
     font-size: 20px;
     font-weight: bold;
     cursor: pointer;
 }
+

@@ -4,20 +4,17 @@ import com.example.springbootlabmessages.Message.CreateMessageFormData;
 import com.example.springbootlabmessages.Message.Message;
 import com.example.springbootlabmessages.Message.MessageService;
 import com.example.springbootlabmessages.User.User;
+import com.example.springbootlabmessages.User.UserFormData;
 import com.example.springbootlabmessages.User.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
-import java.util.Optional;
+import java.util.List;
 
 @Controller
 public class WebController {
@@ -41,9 +38,22 @@ public class WebController {
     
     @GetMapping("/")
     String getMessages(Model model){
-        var listOfMessages =messageService.getAllMessages();
+        var listOfMessages =messageService.getAllPublicMessages();
         model.addAttribute("listOfMessages", listOfMessages);
         return "messages";
+    }
+    @GetMapping("/allMessages")
+    String getLoggedInMessages(Model model) {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.isAuthenticated()) {
+            var listOfMessages = messageService.getAllMessages();
+            model.addAttribute("listOfMessages", listOfMessages);
+            return "allMessages";
+        } else {
+            System.out.println("User not authenticated");
+            // Handle tsout he case when the user is not authenticated
+            return "redirect:/login";
+        }
     }
 
     @PostMapping("/createmessage")
@@ -57,10 +67,35 @@ public class WebController {
         } else {
             System.out.println("User not found");
         }
-        return "redirect:/";
+        return "redirect:/allMessages";
     }
 /*        return ResponseEntity.status(HttpStatus.SEE_OTHER)
                 .location(URI.create("/"))
                 .build();*/
+    @GetMapping("/mypage")
+    String mypage(@AuthenticationPrincipal OAuth2User principal, Model model) {
+        var user = userService.findById(principal.getAttribute("id"));
+        model.addAttribute("user", user);
+        model.addAttribute("userdata", new UserFormData());
+        model.addAttribute("principal", principal);
+        return "mypage";
+    }
+    @PutMapping("/updateuser")
+    String updateUser(@AuthenticationPrincipal OAuth2User principal,@ModelAttribute User userdata) {
+        var user = userService.findById(principal.getAttribute("id"));
+        user.setName(userdata.getName());
+        user.setEmail(userdata.getEmail());
+        user.setProfilePicture(userdata.getProfilePicture());
+        user.setUsername(userdata.getUsername());
+        userService.save(user);
+        return "redirect:/mypage";
+    }
+    @GetMapping("/mymessages")
+    String myMessages(@AuthenticationPrincipal OAuth2User principal, Model model) {
+        var id = principal.getAttribute("id");
+        List<Message> messageList=messageService.getAllMessagesByUser((Long) id);
+        model.addAttribute("messageList", messageList);
+        return "mymessages";
+    }
 }
 
