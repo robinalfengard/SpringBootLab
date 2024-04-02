@@ -116,10 +116,18 @@ public class WebController {
     }
 
     @PostMapping("/editmessage/{id}")
-    public String updateMessage (@PathVariable("id") Long id, @ModelAttribute Message message){
+    public String updateMessage (@PathVariable("id") Long id, Model model){
+        Message message = messageService.findById(id);
+        model.addAttribute("title", message.getTitle());
+        model.addAttribute("message", message);
+        return "redirect:/mymessages";
+    }
+
+    @PatchMapping("/editmessage/{id}")
+    public String updateMessage(@PathVariable("id") Long id, @ModelAttribute Message updatedMessage, Model model){
         Message existingMessage = messageService.findById(id);
-        existingMessage.setTitle(message.getTitle());
-        existingMessage.setText(message.getText());
+        existingMessage.setTitle(updatedMessage.getTitle());
+        existingMessage.setContent(updatedMessage.getContent());
         messageService.save(existingMessage);
         return "redirect:/mymessages";
     }
