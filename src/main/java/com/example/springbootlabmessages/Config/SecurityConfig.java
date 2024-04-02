@@ -10,6 +10,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.web.client.RestClient;
 
 
+
+// config bug with css
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -17,13 +19,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
         return security
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/login", "/", "/resources/**", "/type/css/**", "createMessage.css","mymessages.css", "home.css").permitAll();
-                    auth.requestMatchers("/updateuser","/createmessage", "/allMessages","/mymessages", "/mypage").authenticated();
+                    auth.requestMatchers("/login", "/", "/resources/**", "/type/css/**", "createMessage.css", "home.css", "/api/**").permitAll();
+                    auth.requestMatchers("/createmessage").authenticated();
                     auth.anyRequest().denyAll();
                 })
                 .oauth2Login(oauth2Login ->
                         oauth2Login
                                 .successHandler(successHandler()))
+
                 .build();
     }
 

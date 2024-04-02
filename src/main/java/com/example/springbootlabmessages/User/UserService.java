@@ -2,6 +2,8 @@ package com.example.springbootlabmessages.User;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -26,5 +28,9 @@ public class UserService {
 
     public void save(User user) {
         userRepository.save(user);
+    }
+
+    public List<String> getAllUsers() {
+        return userRepository.findAll().stream().map(User::getUsername).toList();
     }
 }

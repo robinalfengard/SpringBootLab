@@ -9,6 +9,9 @@ public interface MessageRepository extends ListCrudRepository<Message, Long> {
 
     List<Message> findAllByUserId(Long userId);
 
+    @Query("SELECT m FROM Message m WHERE m.user.username = ?1")
+    List<Message> findAllByUserName(String userName);
+
     @Query("SELECT m FROM Message m WHERE m.isPublic = true")
     List<Message> findAllWhereIsPublicIsTrue();
 
