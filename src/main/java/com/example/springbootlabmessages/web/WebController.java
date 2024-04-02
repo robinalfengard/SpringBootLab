@@ -50,7 +50,7 @@ public class WebController {
     String getLoggedInMessages(Model model) {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.isAuthenticated()) {
-            int messagesPerLoad = 1;
+            messagesPerLoad = 1;
             var listOfMessages = messageService.get10Messages(messagesPerLoad);
             model.addAttribute("listOfMessages", listOfMessages);
             return "allMessages";
