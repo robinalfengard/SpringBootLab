@@ -43,7 +43,6 @@ public class ApiRestController {
         return messageService.getAllMessagesByUserName(username).stream()
                 .map(Message::getText)
                 .toList();
-
     }
 
     @GetMapping("/users")
