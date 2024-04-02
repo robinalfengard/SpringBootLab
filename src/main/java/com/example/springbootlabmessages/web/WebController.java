@@ -61,7 +61,7 @@ public class WebController {
         }
     }
 
-    @GetMapping("loadMorePublicMessages")
+    @GetMapping("/loadMorePublicMessages")
     public String loadMorePublicMessages(Model model){
         messagesPerLoad +=1;
         var listOfMessages =messageService.get10PublicMessages(messagesPerLoad);
@@ -69,7 +69,7 @@ public class WebController {
         return "messages";
     }
 
-    @GetMapping("loadMoreMessages")
+    @GetMapping("/loadMoreMessages")
     public String loadMoreMessages(Model model){
         messagesPerLoad +=1;
         var listOfMessages =messageService.get10Messages(messagesPerLoad);
