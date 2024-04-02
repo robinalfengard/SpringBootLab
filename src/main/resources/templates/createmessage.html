@@ -10,7 +10,8 @@
 <div class="language-options">
     <a href="http://localhost:8080/createmessage?lang=en" id="english-btn">English</a>
     <a href="http://localhost:8080/createmessage?lang=sv" id="swedish-btn">Swedish</a>
-    <a href="http://localhost:8080/" id="home-btn">Home</a>
+    <a href="http://localhost:8080/mypage" id="my-page-btn">My Page</a>
+    <a href="http://localhost:8080/allMessages" id="home-btn">Home</a>
 </div>
 <div class="content">
     <h1 class="site-title">Beautiful World</h1>
@@ -20,9 +21,10 @@
             <textarea id="post-text" th:placeholder="#{Sharethought}" th:field="*{text}"></textarea>
             <label id="public-label">Public</label>
             <input type="checkbox" id="publicCheckbox" name="public" value="public" th:field="*{public}">
-            <button id="submit-btn" type="submit" th:value="#{Share}">Share</button>
+            <button id="submit-btn" type="submit" th:text="#{Share}">Share</button>
         </form>
     </div>
+    <br>
 </div>
 </body>
 </html>

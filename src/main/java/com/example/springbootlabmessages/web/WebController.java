@@ -1,7 +1,10 @@
 package com.example.springbootlabmessages.web;
 
 import com.example.springbootlabmessages.Message.CreateMessageFormData;
+import com.example.springbootlabmessages.Message.Message;
 import com.example.springbootlabmessages.Message.MessageService;
+import com.example.springbootlabmessages.User.User;
+import com.example.springbootlabmessages.User.UserFormData;
 import com.example.springbootlabmessages.User.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,6 +13,8 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 public class WebController {
@@ -67,5 +72,30 @@ public class WebController {
 /*        return ResponseEntity.status(HttpStatus.SEE_OTHER)
                 .location(URI.create("/"))
                 .build();*/
+    @GetMapping("/mypage")
+    String mypage(@AuthenticationPrincipal OAuth2User principal, Model model) {
+        var user = userService.findById(principal.getAttribute("id"));
+        model.addAttribute("user", user);
+        model.addAttribute("userdata", new UserFormData());
+        model.addAttribute("principal", principal);
+        return "mypage";
+    }
+    @PutMapping("/updateuser")
+    String updateUser(@AuthenticationPrincipal OAuth2User principal,@ModelAttribute User userdata) {
+        var user = userService.findById(principal.getAttribute("id"));
+        user.setName(userdata.getName());
+        user.setEmail(userdata.getEmail());
+        user.setProfilePicture(userdata.getProfilePicture());
+        user.setUsername(userdata.getUsername());
+        userService.save(user);
+        return "redirect:/mypage";
+    }
+    @GetMapping("/mymessages")
+    String myMessages(@AuthenticationPrincipal OAuth2User principal, Model model) {
+        var id = principal.getAttribute("id");
+        List<Message> messageList=messageService.getAllMessagesByUser((Long) id);
+        model.addAttribute("messageList", messageList);
+        return "mymessages";
+    }
 }
 

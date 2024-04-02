@@ -57,6 +57,7 @@ public class GitHubOatuhService {
         }
         user.setId(userId);
         user.setUrl(gitUser.getUrl());
+        user.setName(gitUser.getName());
         user.setLogin(gitUser.getLogin());
         user.setProfilePicture(gitUser.getAvatarUrl());
         user.setUsername(gitUser.getLogin());
