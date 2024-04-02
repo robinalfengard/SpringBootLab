@@ -1,5 +1,6 @@
 package com.example.springbootlabmessages.Message;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
@@ -8,6 +9,8 @@ import java.util.Optional;
 
 @Service
 public class MessageService {
+
+    @Autowired
     MessageRepository messageRepository;
 
     public MessageService(MessageRepository messageRepository) {
@@ -37,6 +40,19 @@ public class MessageService {
             return optionalMessage.get();
         } else {
             return null;
+        }
+    }
+
+    public Message update(Message message) {
+        Optional<Message> existingMessageOpt = messageRepository.findById(message.getId());
+        if (existingMessageOpt.isPresent()) {
+            Message existingMessage = existingMessageOpt.get();
+            existingMessage.setTitle(message.getTitle());
+            existingMessage.setContent(message.getContent());
+            // update other fields as necessary
+            return messageRepository.save(existingMessage);
+        } else {
+            throw new IllegalArgumentException("Message with id " + message.getId() + " does not exist");
         }
     }
 }
