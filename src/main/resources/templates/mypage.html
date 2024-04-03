@@ -183,18 +183,17 @@
 </head>
 <body>
 <div class="language-options">
-    <a href="http://localhost:8080/mypage?lang=en" id="english-btn">English</a>
-    <a href="http://localhost:8080/mypage?lang=sv" id="swedish-btn">Swedish</a>
+    <a href="http://localhost:8080/user/mypage?lang=en" id="english-btn">English</a>
+    <a href="http://localhost:8080/user/mypage?lang=sv" id="swedish-btn">Swedish</a>
     <a href="http://localhost:8080/allMessages" id="home-btn">Home</a>
     <a href="http://localhost:8080/createmessage" id="create-message-btn">Create Message</a>
     <a href="http://localhost:8080/mymessages" id="my-messages-btn">My Messages</a>
 </div>
-<div class="editable-rectangle" contenteditable="false">
-    <form action="#" th:action="@{/updateuser}" th:object="${userdata}" method="put">
+<div class="editable-rectangle" contenteditable="true">
+    <form action="#" th:action="@{/user/mypage}" th:object="${userdata}" method="post">
         <h4 id="my-page-title">My Page</h4>
         <img id="profile-picture" th:src="${user?.profilePicture}" alt="Profile Picture">
-        <input type="file" th:field="*{profilePicture}" id="file-input" accept=" image/*">
-        </img>
+        <input type="file" th:field="*{profilePicture}" id="file-input" accept="image/*">
         <label for="name" id="name-label" th:text="#{Name}+': '"></label>
         <input type="text" id="name" th:field="*{name}" th:placeholder="${user?.name}">
         <br>
@@ -206,6 +205,9 @@
         <br> <br>
         <button type="submit" id="edit-btn" th:text="#{SaveChanges}"></button>
     </form>
+
+
+
 </div>
 </body>
 </html>
