@@ -1,5 +1,6 @@
 package com.example.springbootlabmessages.Message;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
@@ -21,9 +22,21 @@ public class MessageService {
         return messageRepository.findAllWhereIsPublicIsTrue();
     }
 
+    @Transactional
     @CacheEvict(value = "message", allEntries = true)
     public void save(Message message) {
         messageRepository.save(message);
+    }
+
+    @Transactional
+    public Message updateMessage(Long id, String title, String text) {
+        Message message = findById(id);
+        if (message != null) {
+            message.setTitle(title);
+            message.setText(text);
+            save(message);
+        }
+        return message;
     }
 
     public List<Message> getAllMessages() {

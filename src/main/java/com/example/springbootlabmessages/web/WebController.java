@@ -138,16 +138,13 @@ public class WebController {
         return "redirect:/mymessages";
     }*/
 
-    @PostMapping("/editmessage/{id}")
-    public String updateMessage(OAuth2AuthenticationToken authentication, @PathVariable Long id, Model model, Message updatedMessage) {
+    @PatchMapping("/editmessage/{id}")
+    public String updateMessage(OAuth2AuthenticationToken authentication, @PathVariable Long id, @RequestParam String title, @RequestParam String text, Model model) {
         OAuth2User principal = authentication.getPrincipal();
-        Message existingMessage = messageService.findById(id);
-        model.addAttribute("message", updatedMessage);
         if (userService.findById(principal.getAttribute("id")) != null) {
-            existingMessage.setTitle(updatedMessage.getTitle());
-            existingMessage.setText(updatedMessage.getText());
-            messageService.save(existingMessage);
+            messageService.updateMessage(id, title, text);
         }
+        model.addAttribute("message", messageService.findById(id));
         return "redirect:/mymessages";
     }
 }
