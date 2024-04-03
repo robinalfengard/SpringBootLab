@@ -122,9 +122,9 @@
 <div class="content">
     <h1 class="site-title">Edit Message</h1>
     <div class="post-section">
-        <form th:action="@{/editmessage}" th:object="${message}" method="post">
-            <input type="hidden" name="_method" value="patch" />
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <form th:action="@{/editmessage/{messageId}(messageId=${message.id})}" th:object="${message}" method="post">
+<!--            <input type="hidden" name="_method" value="patch" />
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
             <textarea id="post-title" th:placeholder="#{Title}" th:field="*{title}"></textarea>
             <textarea id="post-text" th:placeholder="#{Sharethought}" th:field="*{text}"></textarea>
             <label id="public-label">Public</label>

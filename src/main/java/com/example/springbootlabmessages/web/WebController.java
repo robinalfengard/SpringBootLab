@@ -94,57 +94,24 @@ public class WebController {
     @GetMapping("/mymessages")
     String myMessages(OAuth2AuthenticationToken authentication, Model model) {
         OAuth2User principal = authentication.getPrincipal();
-        // Object idObject = principal.getAttribute("id");
         Long userId = userService.findById(principal.getAttribute("id")).getId();
-/*        Long id;
-        if (idObject instanceof Integer) {
-            id = ((Integer) idObject).longValue();
-        } else if (idObject instanceof Long) {
-            id = (Long) idObject;
-        } else {
-            throw new IllegalArgumentException("ID is not of type Integer or Long");
-        }*/
         List<Message> messageList = messageService.getAllMessagesByUser(userId);
         model.addAttribute("messageList", messageList);
         return "mymessages";
     }
 
     @GetMapping("/editmessage/{id}")
-    public String editMessage(OAuth2AuthenticationToken authentication, Model model, @PathVariable Long id) {
-        Message existingMessage = messageService.findById(id);
-        Message message = messageService.findById(existingMessage.getId());
-        model.addAttribute("message", message);
+    public String editMessage(Model model, @PathVariable Long id) {
+        model.addAttribute("message", messageService.findById(id));
         return "editmessage";
     }
 
-/*    @PostMapping("/editmessage")
-    public String updateMessage (OAuth2AuthenticationToken authentication, @ModelAttribute Message updatedMessage, Model model){
-        OAuth2User principal = authentication.getPrincipal();
-        Long userId = userService.findById(principal.getAttribute("id")).getId();
-        updatedMessage.setId(userId);
-        messageService.save(updatedMessage);
-        return "redirect:/mymessages";
-    }*/
-
-    /*@PatchMapping("/editmessage/{id}")
-    public String updateMessagePatch(@PathVariable("id") Long id, @ModelAttribute Message updatedMessage, Model model) {
-        Message existingMessage = messageService.findById(id);
-        System.out.println(existingMessage.getUser().getName());
-        updatedMessage.setUser(existingMessage.getUser());
-        existingMessage.setTimestamp(LocalDateTime.now());
-        existingMessage.setTitle(updatedMessage.getTitle());
-        existingMessage.setText(updatedMessage.getText());
-        messageService.save(existingMessage);
-        return "redirect:/mymessages";
-    }*/
-
-    @PatchMapping("/editmessage/{id}")
-    public String updateMessage(OAuth2AuthenticationToken authentication, @PathVariable Long id, @RequestParam String title, @RequestParam String text, Model model) {
-        OAuth2User principal = authentication.getPrincipal();
-        if (userService.findById(principal.getAttribute("id")) != null) {
-            messageService.updateMessage(id, title, text);
-        }
-        model.addAttribute("message", messageService.findById(id));
+    @PostMapping("/editmessage/{id}")
+    public String updateMessage(@PathVariable Long id, @ModelAttribute Message message) {
+        var oldMessage = messageService.findById(id);
+            oldMessage.setTitle(message.getTitle());
+            oldMessage.setText(message.getText());
+            messageService.save(oldMessage);
         return "redirect:/mymessages";
     }
 }
