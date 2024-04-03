@@ -4,9 +4,11 @@ import com.example.springbootlabmessages.Message.CreateMessageFormData;
 import com.example.springbootlabmessages.Message.Message;
 import com.example.springbootlabmessages.Message.MessageService;
 import com.example.springbootlabmessages.Translation.Languages;
+import com.example.springbootlabmessages.Translation.TranslationService;
 import com.example.springbootlabmessages.User.User;
 import com.example.springbootlabmessages.User.UserFormData;
 import com.example.springbootlabmessages.User.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -25,10 +27,13 @@ public class WebController {
     private final MessageService messageService;
     private final UserService userService;
 
+    private final TranslationService translationService;
 
-    public WebController(MessageService messageService, UserService userService) {
+
+    public WebController(MessageService messageService, UserService userService, TranslationService translationService) {
         this.messageService = messageService;
         this.userService = userService;
+        this.translationService = translationService;
     }
 
 
@@ -40,8 +45,22 @@ public class WebController {
         return "createmessage";
     }
 
+    @PostMapping("/createmessage")
+    public String createMessage(CreateMessageFormData message, OAuth2AuthenticationToken authentication) {
+        OAuth2User principal = authentication.getPrincipal();
+        if(userService.findById(principal.getAttribute("id")) != null){
+            message.setUser(userService.findById(principal.getAttribute("id")));
+            var messageToSave = message.toEntity();
+            System.out.println(messageToSave.toString());
+            messageService.save(messageToSave);
+        } else {
+            System.out.println("User not found");
+        }
+        return "redirect:/allMessages";
+    }
+
     @GetMapping("/")
-    String getMessages(Model model, Languages languages, Languages selectedLang){
+    String getMessages(Model model, Languages languages, String selectedLang){
         messagesPerLoad = 1;
         model.addAttribute("lang", languages);
         model.addAttribute("selectedLang", selectedLang);
@@ -49,6 +68,16 @@ public class WebController {
         model.addAttribute("listOfMessages", listOfMessages);
         return "messages";
     }
+
+    @PostMapping("/translate/{messageId}")
+    public String translateMessage(@PathVariable Long messageId) throws JsonProcessingException {
+        String messageToTranslate = messageService.getMessageById(messageId).getText();
+        String translationFrom = translationService.getLanguage(messageToTranslate);
+        System.out.println(translationFrom);
+        return  "redirect:/";
+    }
+
+
     @GetMapping("/allMessages")
     String getLoggedInMessages(Model model, Languages languages, Languages selectedLang) {
         var auth = SecurityContextHolder.getContext().getAuthentication();
@@ -82,19 +111,7 @@ public class WebController {
         return "allMessages";
     }
 
-    @PostMapping("/createmessage")
-    public String createMessage(CreateMessageFormData message, OAuth2AuthenticationToken authentication) {
-        OAuth2User principal = authentication.getPrincipal();
-        if(userService.findById(principal.getAttribute("id")) != null){
-            message.setUser(userService.findById(principal.getAttribute("id")));
-            var messageToSave = message.toEntity();
-            System.out.println(messageToSave.toString());
-            messageService.save(messageToSave);
-        } else {
-            System.out.println("User not found");
-        }
-        return "redirect:/allMessages";
-    }
+
 /*        return ResponseEntity.status(HttpStatus.SEE_OTHER)
                 .location(URI.create("/"))
                 .build();*/
@@ -118,12 +135,7 @@ public class WebController {
         return "redirect:/mypage";
     }
 
-    @PostMapping("/translate/{messageId}/{languageTo}")
-    public String translateMessage(@PathVariable Long messageId, @PathVariable String languageTo) {
-        var message = messageService.findById(messageId);
-        // Process the translation using the messageId and languageTo
-        return "redirect:/translatedMessage"; // Redirect to a new page after translation
-    }
+
 
     @GetMapping("/mymessages")
     String myMessages(@AuthenticationPrincipal OAuth2User principal, Model model) {

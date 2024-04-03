@@ -48,4 +48,8 @@ public class MessageService {
     public Message findById(Long messageId) {
         return messageRepository.findById(messageId).get();
     }
+
+    public Message getMessageById(Long messageId) {
+        return messageRepository.findById(messageId).get();
+    }
 }
