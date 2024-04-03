@@ -2,6 +2,8 @@ package com.example.springbootlabmessages.User;
 
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
 
@@ -15,16 +17,35 @@ public class UserService {
         return userRepository.findByEmail(email.toString());
     }
 
+//    public User findById(int id) {
+//        System.out.println(id + " sent to service");
+//        if(userRepository.findById(Long.valueOf(id)).get() != null){
+//            return userRepository.findById((long) id).get();
+//        }
+//        else System.out.println("could not find user");
+//        return null;
+//    }
     public User findById(int id) {
         System.out.println(id + " sent to service");
-        if(userRepository.findById(Long.valueOf(id)).get() != null){
-            return userRepository.findById((long) id).get();
+        Optional<User> userOptional = userRepository.findById(Long.valueOf(id));
+        if(userOptional.isPresent()){
+            return userOptional.get();
+        } else {
+            System.out.println("could not find user");
+            return null;
         }
-        else System.out.println("could not find user");
-        return null;
     }
 
     public void save(User user) {
         userRepository.save(user);
     }
+
+    public void update(UserFormData userData, User user) {
+            user.setName(userData.getName());
+            user.setUsername(userData.getUsername());
+            user.setEmail(userData.getEmail());
+            user.setProfilePicture(userData.getProfilePicture());
+        userRepository.save(user);
+    }
+
 }
