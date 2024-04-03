@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -69,9 +70,7 @@ public class WebController {
         }
         return "redirect:/allMessages";
     }
-/*        return ResponseEntity.status(HttpStatus.SEE_OTHER)
-                .location(URI.create("/"))
-                .build();*/
+
     @GetMapping("/mypage")
     String mypage(@AuthenticationPrincipal OAuth2User principal, Model model) {
         var user = userService.findById(principal.getAttribute("id"));
@@ -116,16 +115,17 @@ public class WebController {
     }
 
     @PostMapping("/editmessage/{id}")
-    public String updateMessage (@PathVariable("id") Long id, Model model){
-        Message message = messageService.findById(id);
-        model.addAttribute("title", message.getTitle());
-        model.addAttribute("message", message);
+    public String updateMessage (@PathVariable("id") Long id, @ModelAttribute Message updatedMessage, Model model){
+        updatedMessage.setId(id);
+        messageService.save(updatedMessage);
         return "redirect:/mymessages";
     }
 
     @PatchMapping("/editmessage/{id}")
-    public String updateMessage(@PathVariable("id") Long id, @ModelAttribute Message updatedMessage, Model model){
+    public String updateMessagePatch(@PathVariable("id") Long id, @ModelAttribute Message updatedMessage, Model model){
         Message existingMessage = messageService.findById(id);
+        updatedMessage.setUser(existingMessage.getUser());
+        existingMessage.setTimestamp(LocalDateTime.now());
         existingMessage.setTitle(updatedMessage.getTitle());
         existingMessage.setContent(updatedMessage.getContent());
         messageService.save(existingMessage);
