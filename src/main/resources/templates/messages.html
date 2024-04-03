@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
     <link rel="stylesheet" th:href="@{/home.css}">
+    <script src="/script.js"></script>
 </head>
 <body>
 <div class="language-options">
@@ -20,10 +21,29 @@
     <div class="card-body">
         <h5 class="center title" th:text="${ message?.title }"></h5>
         <p id="center message" th:text="${ message?.text}"></p>
+
+
         <div class="user-info">
             <p class="message" th:text="#{Author} + ': ' + ${message?.user.username}"></p>
             <p class="message" th:text="#{PublishedTime}+ ': ' + ${message?.timestamp}"></p>
+
         </div>
+
+        <div class="translate-section">
+            <p class="message">Translate to</p>
+            <select name="language" id="languageSelect">
+                <option th:each="lang : ${T(com.example.springbootlabmessages.Translation.Languages).values()}"
+                        th:value="${lang.name()}"
+                        th:text="${lang.name()}"></option>
+            </select>
+            <button id="translateBtn" onclick="translateText('${message?.text}', 'en', '${targetLang}')">Translate</button>
+
+
+        </div>
+
+
+
+
     </div>
 </div>
 <a href="http://localhost:8080/loadMorePublicMessages" >Load More Messages</a>

@@ -1,5 +1,6 @@
 package com.example.springbootlabmessages.Message;
 
+import ch.qos.logback.core.joran.event.BodyEvent;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
@@ -42,5 +43,9 @@ public class MessageService {
 
     public List<Message> getAllMessagesByUserName(String username) {
         return messageRepository.findAllByUserName(username);
+    }
+
+    public Message findById(Long messageId) {
+        return messageRepository.findById(messageId).get();
     }
 }

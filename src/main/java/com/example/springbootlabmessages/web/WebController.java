@@ -3,6 +3,7 @@ package com.example.springbootlabmessages.web;
 import com.example.springbootlabmessages.Message.CreateMessageFormData;
 import com.example.springbootlabmessages.Message.Message;
 import com.example.springbootlabmessages.Message.MessageService;
+import com.example.springbootlabmessages.Translation.Languages;
 import com.example.springbootlabmessages.User.User;
 import com.example.springbootlabmessages.User.UserFormData;
 import com.example.springbootlabmessages.User.UserService;
@@ -40,15 +41,19 @@ public class WebController {
     }
 
     @GetMapping("/")
-    String getMessages(Model model){
+    String getMessages(Model model, Languages languages, Languages selectedLang){
         messagesPerLoad = 1;
+        model.addAttribute("lang", languages);
+        model.addAttribute("selectedLang", selectedLang);
         var listOfMessages = messageService.get10PublicMessages(messagesPerLoad);
         model.addAttribute("listOfMessages", listOfMessages);
         return "messages";
     }
     @GetMapping("/allMessages")
-    String getLoggedInMessages(Model model) {
+    String getLoggedInMessages(Model model, Languages languages, Languages selectedLang) {
         var auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("lang", languages);
+        model.addAttribute("selectedLang", selectedLang);
         if (auth != null && auth.isAuthenticated()) {
             messagesPerLoad = 1;
             var listOfMessages = messageService.get10Messages(messagesPerLoad);
@@ -111,6 +116,13 @@ public class WebController {
         user.setUsername(userdata.getUsername());
         userService.save(user);
         return "redirect:/mypage";
+    }
+
+    @PostMapping("/translate/{messageId}/{languageTo}")
+    public String translateMessage(@PathVariable Long messageId, @PathVariable String languageTo) {
+        var message = messageService.findById(messageId);
+        // Process the translation using the messageId and languageTo
+        return "redirect:/translatedMessage"; // Redirect to a new page after translation
     }
 
     @GetMapping("/mymessages")
