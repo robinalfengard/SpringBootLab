@@ -37,6 +37,7 @@ public class MessageService {
     public Message findById(Long id) {
         Optional<Message> optionalMessage = messageRepository.findById(id);
         if (optionalMessage.isPresent()) {
+            System.out.println("Return message: " + optionalMessage.get().getTitle());
             return optionalMessage.get();
         } else {
             return null;
