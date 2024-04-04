@@ -114,6 +114,19 @@
             cursor: pointer;
             text-decoration: none;
         }
+        #edit-image{
+            position: absolute;
+            left: 40%;
+            top: 10px;
+            border: 1px solid black;
+            border-radius: 5px;
+            padding: 5px;
+            background-color: darkkhaki;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+        }
 
         #my-page-title {
             text-align: center;
@@ -190,11 +203,10 @@
     <a href="http://localhost:8080/mymessages" id="my-messages-btn">My Messages</a>
 </div>
 <div class="editable-rectangle" contenteditable="false">
+    <h4 id="my-page-title">My Page</h4>
+    <a href="http://localhost:8080/uploadimage" id ="edit-image">Change Profile Picture</a></a>
     <form th:action="@{/mypage}" th:object="${user}" method="post">
-        <h4 id="my-page-title">My Page</h4>
-
-        <img id="profile-picture" th:src="${user?.profilePicture}" alt="Profile Picture">
-        <input type="file" th:field="*{profilePictureBytes}" id="file-input" accept=" image/*">
+        <img id="profile-picture" th:src="${user.profilePicture}" alt="Profile Picture">
         <label for="name" id="name-label" th:text="#{Name}+': '"></label>
         <input type="text" id="name" th:field="*{name}">
         <br>
