@@ -21,10 +21,10 @@ public interface MessageRepository extends ListCrudRepository<Message, Long> {
     List<Message> findAllByUser(Long userId);
 
 
-    @Query(value = "SELECT * FROM message WHERE is_public = true ORDER BY timestamp DESC LIMIT :messageLimitPerLoad", nativeQuery = true)
+    @Query(value = "SELECT * FROM message WHERE is_public = true ORDER BY created_at DESC LIMIT :messageLimitPerLoad", nativeQuery = true)
     List<Message> find10NextPublicMessages(int messageLimitPerLoad);
 
-    @Query(value = "SELECT * FROM message ORDER BY timestamp DESC LIMIT :messageLimitPerLoad", nativeQuery = true)
+    @Query(value = "SELECT * FROM message ORDER BY created_at DESC LIMIT :messageLimitPerLoad", nativeQuery = true)
     List<Message> find10NextMessages(int messageLimitPerLoad);
 
 }

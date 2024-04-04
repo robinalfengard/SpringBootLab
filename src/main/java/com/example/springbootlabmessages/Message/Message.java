@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
@@ -25,8 +26,12 @@ public class Message {
     private User user;
     private boolean isPublic;
 
+    @CreatedDate
+    private LocalDateTime createdAt;
 
-    private LocalDateTime timestamp;
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
     @Column(length = 10000)
     private String text;
     private String title;
@@ -40,7 +45,13 @@ public class Message {
         this.title = title;
         this.user = user;
         this.isPublic = isPublic;
-        this.timestamp = LocalDateTime.now();
+    }
+    public Message(String text, String title, User user, boolean isPublic, LocalDateTime createdAt) {
+        this.text = text;
+        this.title = title;
+        this.user = user;
+        this.isPublic = isPublic;
+        this.createdAt = createdAt;
     }
 
     // I CreateMessageFormData could not change ispublic, because it has been created manually.
