@@ -131,3 +131,6 @@ body {
     justify-content: center;
     margin-top: 10px; /* Add margin-top to create space below the element */
 }
+#languageSelected {
+    display: none;
+}

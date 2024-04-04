@@ -1,11 +1,15 @@
 package com.example.springbootlabmessages.Translation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.stereotype.Service;
 
 
-@Getter
 @AllArgsConstructor
-public enum Languages {
+@NoArgsConstructor
+@Getter
+public enum Language {
     RUSSIAN("ru"),
     ENGLISH("en"),
     ARABIC("ar"),
@@ -39,4 +43,6 @@ public enum Languages {
     NONE("none"),
     ;
     String langCode;
+
+
 }

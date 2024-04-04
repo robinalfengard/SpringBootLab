@@ -3,7 +3,8 @@ package com.example.springbootlabmessages.web;
 import com.example.springbootlabmessages.Message.CreateMessageFormData;
 import com.example.springbootlabmessages.Message.Message;
 import com.example.springbootlabmessages.Message.MessageService;
-import com.example.springbootlabmessages.Translation.Languages;
+import com.example.springbootlabmessages.Translation.Language;
+import com.example.springbootlabmessages.Translation.LanguageDTO;
 import com.example.springbootlabmessages.Translation.TranslationService;
 import com.example.springbootlabmessages.User.User;
 import com.example.springbootlabmessages.User.UserFormData;
@@ -60,29 +61,32 @@ public class WebController {
     }
 
     @GetMapping("/")
-    String getMessages(Model model, Languages languages, String selectedLang){
+    String getMessages(Model model) {
         messagesPerLoad = 1;
-        model.addAttribute("lang", languages);
-        model.addAttribute("selectedLang", selectedLang);
+        List<Language> languagesList = List.of(Language.values());
+        model.addAttribute("languagesList", languagesList);
+        model.addAttribute("selectedLang", new LanguageDTO());
         var listOfMessages = messageService.get10PublicMessages(messagesPerLoad);
         model.addAttribute("listOfMessages", listOfMessages);
         return "messages";
     }
 
-    @PostMapping("/translate/{messageId}/{selectedLang}")
-    public String translateMessage(@PathVariable Long messageId, @PathVariable String selectedLang) throws JsonProcessingException {
-        System.out.println("Selected lang: " + selectedLang);
+    @PostMapping("/translate/{messageId}")
+    public String translateMessage(@PathVariable Long messageId, @ModelAttribute LanguageDTO selectedLang) throws JsonProcessingException {
+        System.out.println("Selected lang: " + selectedLang.getLangCode());
         String messageToTranslate = messageService.getMessageById(messageId).getText();
-        String translationFrom = translationService.getLanguage(messageToTranslate);
-        System.out.println(translationFrom);
+        System.out.println(translationService.translate(messageToTranslate, "sv"));
+
         return  "redirect:/";
     }
 
 
+
+
     @GetMapping("/allMessages")
-    String getLoggedInMessages(Model model, Languages languages, Languages selectedLang) {
+    String getLoggedInMessages(Model model, Language language, LanguageDTO selectedLang) {
         var auth = SecurityContextHolder.getContext().getAuthentication();
-        model.addAttribute("lang", languages);
+        model.addAttribute("lang", language);
         model.addAttribute("selectedLang", selectedLang);
         if (auth != null && auth.isAuthenticated()) {
             messagesPerLoad = 1;

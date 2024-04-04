@@ -24,10 +24,7 @@
         <p id="center message" th:text="${ message?.text}"></p>
         <a th:href="@{/translate/{messageText}/{languageFrom}/{languageTo}(messageText=${message?.text}, languageFrom=${lang}, languageTo=${lang})}">Translate</a>
         <label>
-            <select name="language">
-                <option th:each="lang : ${T(com.example.springbootlabmessages.Translation.Languages).values()}"
-                        th:value="${lang.name()}"></option>
-            </select>
+
         </label>
         <div class="user-info">
             <p class="message" th:text="#{Author} + ': ' + ${message?.user.username}"></p>

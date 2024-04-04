@@ -18,48 +18,44 @@
 
 <div th:each="message : ${listOfMessages}" class="card mb-3">
     <div class="card-body">
-        <h5 class="center title" th:text="${ message?.title }"></h5>
-        <p id="center message" th:text="${ message?.text}"></p>
-
+        <h5 class="center title" th:text="${message?.title}"></h5>
+        <p id="center message" th:text="${message?.text}"></p>
 
         <div class="user-info">
             <p class="message" th:text="#{Author} + ': ' + ${message?.user.username}"></p>
             <p class="message" th:text="#{PublishedTime}+ ': ' + ${message?.timestamp}"></p>
-
         </div>
 
         <div class="translate-section">
             <p class="message">Translate to</p>
-            <label for="languageSelect"></label>
-            <select name="language" id="languageSelect">
-                <option th:each="lang : ${T(com.example.springbootlabmessages.Translation.Languages).values()}"
-                        th:value="${selectedLang}"
-                        th:text="${lang.getLangCode()}"></option>
-            </select>
-            <form th:action="@{'/translate/' + ${message?.id} + '/' + ${selectedLang}}" method="post">
-                <!-- Include CSRF token if necessary -->
-                <!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/> -->
+            <form th:action="@{'/translate/' + ${message.id}}" th:object="${selectedLang}" method="post">
 
-                <!-- Include hidden input to hold the selected language -->
-                <input type="hidden" id="selectedLanguage" name="selectedLanguage" th:value="${selectedLang}" />
-
-                <!-- Other form inputs -->
-                <!-- Add other form inputs here -->
+                <select id="languageSelect">
+                    <option th:each="lang : ${languagesList}"
+                            th:value="${lang.getLangCode()}"
+                            th:text="${lang}">
+                    </option>
+                </select>
+                <textarea   id="languageSelected"  th:field="*{langCode}"></textarea>
 
                 <button type="submit">Translate</button>
+
             </form>
-            <script>
-                // Add event listener for dropdown change
-                document.getElementById("languageSelect").addEventListener("change", function() {
-                    // Get the selected value
-                    // Update the value of the hidden input
-                    document.getElementById("selectedLanguage").value = this.value;
-                });
-            </script>
         </div>
     </div>
 </div>
-<a href="http://localhost:8080/loadMorePublicMessages" >Load More Messages</a>
+<a href="http://localhost:8080/loadMorePublicMessages">Load More Messages</a>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Add event listener for dropdown change
+        document.getElementById("languageSelect").addEventListener("change", function(event) {
+            // Get the selected value
+            var selectedValue = event.target.value;
 
+            // Update the hidden input field value
+            document.getElementById("languageSelected").textContent = selectedValue;
+        });
+    });
+</script>
 </body>
 </html>

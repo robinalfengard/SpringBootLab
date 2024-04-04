@@ -52,4 +52,10 @@ public class MessageService {
     public Message getMessageById(Long messageId) {
         return messageRepository.findById(messageId).get();
     }
+
+    public void updateMessageText(Long messageId, String translatedMessage) {
+        Message message = messageRepository.findById(messageId).get();
+        message.setText(translatedMessage);
+        messageRepository.save(message);
+    }
 }

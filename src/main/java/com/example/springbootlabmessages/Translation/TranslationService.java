@@ -33,4 +33,21 @@ public class TranslationService {
         return jsonArray.get(0).get("language").asText();
     }
 
+    public String translate(String text, String langCodeTo) throws JsonProcessingException {
+        String source = getLanguage(text);
+        String jsonBody = "{\"q\":\"" + text + "\",\"source\":\"" + source + "\",\"target\":\"" + langCodeTo+ "\"}";
+        ObjectMapper objectMapper = new ObjectMapper();
+        System.out.println( source);
+
+        String response = restClient.post()
+                .uri("http://localhost:5000/translate")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(jsonBody)
+                .retrieve()
+                .body(String.class);
+        JsonNode jsonArray = objectMapper.readTree(response);
+      return jsonArray.get("translatedText").asText();
+
+
+    }
 }
