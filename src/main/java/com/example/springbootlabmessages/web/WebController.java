@@ -69,8 +69,9 @@ public class WebController {
         return "messages";
     }
 
-    @PostMapping("/translate/{messageId}")
-    public String translateMessage(@PathVariable Long messageId) throws JsonProcessingException {
+    @PostMapping("/translate/{messageId}/{selectedLang}")
+    public String translateMessage(@PathVariable Long messageId, @PathVariable String selectedLang) throws JsonProcessingException {
+        System.out.println("Selected lang: " + selectedLang);
         String messageToTranslate = messageService.getMessageById(messageId).getText();
         String translationFrom = translationService.getLanguage(messageToTranslate);
         System.out.println(translationFrom);
