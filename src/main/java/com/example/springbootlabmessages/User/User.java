@@ -43,29 +43,29 @@ public class User {
     @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id")
     List<Message> messageList = new ArrayList<>();
-    static String convertImageToDataURL(byte[] imageData,String fileName) {
-        try {
-            // Konvertera byte-array till en Base64-kodad sträng
-            String base64Encoded = Base64.getEncoder().encodeToString(imageData);
+//    static String convertImageToDataURL(byte[] imageData,String fileName) {
+//        try {
+//            // Konvertera byte-array till en Base64-kodad sträng
+//            String base64Encoded = Base64.getEncoder().encodeToString(imageData);
+//
+//            Path resourceDirectory = Paths.get("src/main/resources");
+//            String absolutePath = resourceDirectory.toFile().getAbsolutePath();
+//
+//            // Skapa en sökväg till den nya bilden
+//            Path imagePath = Paths.get(absolutePath, fileName);
+//
+//            // Dekodera Base64-strängen och skriv till filen
+//            Files.write(imagePath, Base64.getDecoder().decode(base64Encoded));
+//
+//            // Returnera URL:en till den sparade bilden
+//            return imagePath.toString();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return null; // Returnera null om det uppstår ett fel
+//        }
+//    }
 
-            Path resourceDirectory = Paths.get("src/main/resources");
-            String absolutePath = resourceDirectory.toFile().getAbsolutePath();
-
-            // Skapa en sökväg till den nya bilden
-            Path imagePath = Paths.get(absolutePath, fileName);
-
-            // Dekodera Base64-strängen och skriv till filen
-            Files.write(imagePath, Base64.getDecoder().decode(base64Encoded));
-
-            // Returnera URL:en till den sparade bilden
-            return imagePath.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null; // Returnera null om det uppstår ett fel
-        }
-    }
-
-    public String getProfilePicture() {
-        return profilePicture!= null ? profilePicture : convertImageToDataURL(profilePictureBytes,"profilepicture");
-    }
+//    public String getProfilePicture() {
+//        return profilePicture!= null ? profilePicture : convertImageToDataURL(profilePictureBytes,"profilepicture");
+//    }
 }
