@@ -190,19 +190,19 @@
     <a href="http://localhost:8080/mymessages" id="my-messages-btn">My Messages</a>
 </div>
 <div class="editable-rectangle" contenteditable="false">
-    <form action="#" th:action="@{/updateuser}" th:object="${userdata}" method="put">
+    <form th:action="@{/mypage}" th:object="${user}" method="post">
         <h4 id="my-page-title">My Page</h4>
+
         <img id="profile-picture" th:src="${user?.profilePicture}" alt="Profile Picture">
-        <input type="file" th:field="*{profilePicture}" id="file-input" accept=" image/*">
-        </img>
+        <input type="file" th:field="*{profilePictureBytes}" id="file-input" accept=" image/*">
         <label for="name" id="name-label" th:text="#{Name}+': '"></label>
-        <input type="text" id="name" th:field="*{name}" th:placeholder="${user?.name}">
+        <input type="text" id="name" th:field="*{name}">
         <br>
         <label for="username" id="username-label" th:text="#{UserName}+': '"></label>
-        <input type="text" id="username" th:field="*{username}" th:placeholder="${user?.username}">
+        <input type="text" id="username" th:field="*{username}" >
         <br>
         <label for="email" id="email-label" th:text="#{Email}+': '"></label>
-        <input type="email" id="email" th:field="*{email}" th:placeholder="${user?.email}">
+        <input type="email" id="email" th:field="*{email}">
         <br> <br>
         <button type="submit" id="edit-btn" th:text="#{SaveChanges}"></button>
     </form>

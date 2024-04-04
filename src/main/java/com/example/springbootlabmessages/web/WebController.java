@@ -97,19 +97,19 @@ public class WebController {
     String mypage(@AuthenticationPrincipal OAuth2User principal, Model model) {
         var user = userService.findById(principal.getAttribute("id"));
         model.addAttribute("user", user);
-        model.addAttribute("userdata", new UserFormData());
         model.addAttribute("principal", principal);
         return "mypage";
     }
 
-    @PutMapping("/mypage")
-    String updateUser(@AuthenticationPrincipal OAuth2User principal, @ModelAttribute User userdata) {
-        var user = userService.findById(principal.getAttribute("id"));
-        user.setName(userdata.getName());
-        user.setEmail(userdata.getEmail());
-        user.setProfilePicture(userdata.getProfilePicture());
-        user.setUsername(userdata.getUsername());
-        userService.save(user);
+    @PostMapping("/mypage")
+    String updateUser(@AuthenticationPrincipal OAuth2User principal, @ModelAttribute User user) {
+        var nyUser = userService.findById(principal.getAttribute("id"));
+        nyUser.setName(user.getName());
+        nyUser.setEmail(user.getEmail());
+        nyUser.setProfilePicture(user.getProfilePicture());
+        nyUser.setProfilePictureBytes(user.getProfilePictureBytes());
+        nyUser.setUsername(user.getUsername());
+        userService.save(nyUser);
         return "redirect:/mypage";
     }
 
@@ -136,4 +136,5 @@ public class WebController {
             messageService.save(oldMessage);
         return "redirect:/mymessages";
     }
+
 }
