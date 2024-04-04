@@ -20,11 +20,11 @@
 
 <div th:each="message : ${listOfMessages}" class="card mb-3">
     <div class="card-body">
-        <h5 class="center title" th:text="${ message?.title }"></h5>
-        <p id="center message" th:text="${ message?.text}"></p>
+        <h5 class="center title" th:text="${message?.title}"></h5>
+        <p class="center-message" th:text="${message?.text}"></p>
         <div class="user-info">
-            <p class="message" th:text="#{Author} + ': ' + ${message?.user.username}"></p>
-            <p class="message" th:text="#{PublishedTime}+ ': ' + ${message?.timestamp}"></p>
+            <p class="message" th:text="|#{Author}: ${message?.user.username}|"></p>
+            <p class="message" th:text="|#{PublishedTime}: ${message?.timestamp}|"></p>
         </div>
     </div>
 </div>

@@ -30,6 +30,7 @@ public class Message {
     @Column(length = 10000)
     private String text;
     private String title;
+    private String content;
 
     public Message() {
     }
@@ -45,6 +46,14 @@ public class Message {
     // I CreateMessageFormData could not change ispublic, because it has been created manually.
     public void setIsPublic(boolean isPublic) {
         this.isPublic = isPublic;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
 }
