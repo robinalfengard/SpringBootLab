@@ -129,10 +129,12 @@ public class WebController {
     }
 
     @PostMapping("/editmessage/{id}")
-    public String updateMessage(@PathVariable Long id, @ModelAttribute Message message) {
+    public String updateMessage(@AuthenticationPrincipal OAuth2User principal, @PathVariable Long id, @ModelAttribute Message message) {
+        var user = userService.findById(principal.getAttribute("id"));
         var oldMessage = messageService.findById(id);
             oldMessage.setTitle(message.getTitle());
             oldMessage.setText(message.getText());
+            oldMessage.setLastEditedBy(user);
             messageService.save(oldMessage);
         return "redirect:/mymessages";
     }

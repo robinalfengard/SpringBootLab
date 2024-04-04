@@ -24,6 +24,11 @@ public class Message {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "last_edited_by_id")
+    private User lastEditedBy;
+
     private boolean isPublic;
 
     @CreatedDate
@@ -45,6 +50,7 @@ public class Message {
         this.title = title;
         this.user = user;
         this.isPublic = isPublic;
+        this.lastEditedBy = user;
     }
     public Message(String text, String title, User user, boolean isPublic, LocalDateTime createdAt) {
         this.text = text;
@@ -52,6 +58,7 @@ public class Message {
         this.user = user;
         this.isPublic = isPublic;
         this.createdAt = createdAt;
+        this.lastEditedBy = user;
     }
 
     // I CreateMessageFormData could not change ispublic, because it has been created manually.
