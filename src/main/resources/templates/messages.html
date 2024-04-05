@@ -24,38 +24,52 @@
         <div class="user-info">
             <p class="message" th:text="#{Author} + ': ' + ${message?.user.username}"></p>
             <p class="message" th:text="#{PublishedTime}+ ': ' + ${message?.createdAt}"></p>
+            <div class="translate-section">
+                <p class="message">Translate to</p>
+                <form th:action="@{'/translate/' + ${message.id}}" th:object="${selectedLang}" method="post">
+
+                    <select id="languageSelect">
+                        <option th:each="lang : ${languagesList}"
+                                th:value="${lang.getLangCode()}"
+                                th:text="${lang}">
+                        </option>
+
+                    </select>
+                    <textarea   id="languageSelected"  th:field="*{langCode}"></textarea>
+                    <button type="submit">Translate</button>
+
+                </form>
+            </div>
         </div>
 
-        <div class="translate-section">
-            <p class="message">Translate to</p>
-            <form th:action="@{'/translate/' + ${message.id}}" th:object="${selectedLang}" method="post">
 
-                <select id="languageSelect">
-                    <option th:each="lang : ${languagesList}"
-                            th:value="${lang.getLangCode()}"
-                            th:text="${lang}">
-                    </option>
-                </select>
-                <textarea   id="languageSelected"  th:field="*{langCode}"></textarea>
-
-                <button type="submit">Translate</button>
-
-            </form>
-        </div>
     </div>
 </div>
-<a href="http://localhost:8080/loadMoreMessages">Load More Messages</a>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Add event listener for dropdown change
-        document.getElementById("languageSelect").addEventListener("change", function(event) {
-            // Get the selected value
-            var selectedValue = event.target.value;
-
-            // Update the hidden input field value
-            document.getElementById("languageSelected").textContent = selectedValue;
+    function setupLanguageSelectionListener() {
+        document.body.addEventListener("change", function(event) {
+            if (event.target && event.target.id === "languageSelect") {
+                // Get the selected value
+                var selectedValue = event.target.value;
+                console.log("Selected language:", selectedValue);
+                // Update the sibling hidden input field value
+                event.target.nextElementSibling.value = selectedValue;
+            }
         });
+
+        document.getElementById("loadMoreMessagesBtn").addEventListener("click", function(event) {
+            // Perform logic to load more messages here
+
+            // Call the setupLanguageSelectionListener function after new messages are loaded
+            setupLanguageSelectionListener();
+        });
+    }
+
+    // Call the function when the page is initially loaded
+    document.addEventListener("DOMContentLoaded", function() {
+        setupLanguageSelectionListener();
     });
 </script>
+<a href="#" id="loadMoreMessagesBtn">Load More Messages</a>
 </body>
 </html>

@@ -9,7 +9,6 @@ import com.example.springbootlabmessages.User.User;
 import com.example.springbootlabmessages.User.UserFormData;
 import com.example.springbootlabmessages.User.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -54,7 +53,7 @@ public class WebController {
             var messageToSave = message.toEntity();
             System.out.println(messageToSave.toString());
             messageService.save(messageToSave);
-            
+
         } else {
             System.out.println("User not found");
         }
@@ -64,13 +63,12 @@ public class WebController {
 
 
     @GetMapping("/")
-    String getLoggedInMessages(Model model, Language language, LanguageDTO selectedLang) {
+    String getMessages(Model model, Language language, LanguageDTO selectedLang) {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("lang", language);
         model.addAttribute("principal", auth);
         List<Language> languagesList = List.of(Language.values());
         model.addAttribute("languagesList", languagesList);
-        messagesPerLoad = 1;
         if (auth != null && auth.isAuthenticated()) {
             var listOfMessages = messageService.get10Messages(messagesPerLoad);
             model.addAttribute("listOfMessages", listOfMessages);
@@ -79,38 +77,51 @@ public class WebController {
         } else {
             var listOfMessages = messageService.get10PublicMessages(messagesPerLoad);
             model.addAttribute("listOfMessages", listOfMessages);
-            // Handle the case when the user is not authenticated
             return "messages";
         }
     }
 
     @GetMapping("/loadMoreMessages")
-    public String loadMoreMessages(Model model) {
+    public String loadMoreMessages(Model model, Language language, LanguageDTO selectedLang) {
         var auth = SecurityContextHolder.getContext().getAuthentication();
-        List<Language> languagesList = List.of(Language.values());
-        model.addAttribute("languagesList", languagesList);
-        messagesPerLoad += 1;
+        model.addAttribute("lang", language);
+        model.addAttribute("selectedLang", selectedLang);
+
         if (auth != null && auth.isAuthenticated()) {
+            List<Language> languagesList = List.of(Language.values());
+            model.addAttribute("languagesList", languagesList);
+            messagesPerLoad += 1;
             var listOfMessages = messageService.get10Messages(messagesPerLoad);
             model.addAttribute("listOfMessages", listOfMessages);
-            model.addAttribute("selectedLang", new LanguageDTO());
-            return "allMessages";
         } else {
+            messagesPerLoad += 1;
             var listOfMessages = messageService.get10PublicMessages(messagesPerLoad);
             model.addAttribute("listOfMessages", listOfMessages);
-            return "messages";
         }
+        // fånga translate knapptrycket i html
+        return "redirect:/";
     }
+
+
 
 
 
     @GetMapping("/mypage")
     String mypage(@AuthenticationPrincipal OAuth2User principal, Model model) {
-        var user = userService.findById(principal.getAttribute("id"));
-        model.addAttribute("user", user);
-        model.addAttribute("userdata", new UserFormData());
-        model.addAttribute("principal", principal);
-        return "mypage";
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().toString());
+        if(auth != null || auth.isAuthenticated()){
+            var user = userService.findById(principal.getAttribute("id"));
+            model.addAttribute("user", user);
+            model.addAttribute("userdata", new UserFormData());
+            model.addAttribute("principal", principal);
+            return "mypage";
+        }
+        else {
+            return "redirect:/login";
+        }
+
+
     }
 
     @PutMapping("/mypage")
