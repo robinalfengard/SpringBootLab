@@ -143,7 +143,7 @@
       <p id="center message" th:text="${ message?.text}"></p>
       <div class="user-info">
         <p class="message" th:text="#{Author} + ': ' + ${message?.user.username}"></p>
-        <p class="message" th:text="#{PublishedTime}+ ': ' + ${message?.timestamp}"></p>
+        <p class="message" th:text="#{PublishedTime}+ ': ' + ${message?.createdAt}"></p>
       </div>
       <a th:href="@{'/editmessage/' + ${message.id}}" class="edit-btn" id="edit-btn">Edit</a>
     </div>
