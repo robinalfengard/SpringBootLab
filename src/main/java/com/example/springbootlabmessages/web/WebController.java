@@ -23,6 +23,8 @@ public class WebController {
 
     private int messagesPerLoad = 1;
 
+    private String currentTranslation;
+
     private final MessageService messageService;
     private final UserService userService;
 
@@ -71,6 +73,7 @@ public class WebController {
         List<Language> languagesList = List.of(Language.values());
         model.addAttribute("languagesList", languagesList);
         model.addAttribute("selectedLang", selectedLang);
+        model.addAttribute("translatedMessage", currentTranslation);
         if (auth.getAuthorities().stream().findFirst().get().getAuthority().equals("OAUTH2_USER")) {
             var listOfMessages = messageService.get10Messages(messagesPerLoad);
             model.addAttribute("listOfMessages", listOfMessages);
@@ -162,12 +165,9 @@ public class WebController {
     }
 
     @PostMapping("/translate/{messageId}")
-    public String translateMessage(@PathVariable Long messageId, @ModelAttribute LanguageDTO selectedLang, @ModelAttribute Message message) throws JsonProcessingException {
+    public String translateMessage(@PathVariable Long messageId, @ModelAttribute LanguageDTO selectedLang, @ModelAttribute Message message, Model model) throws JsonProcessingException {
         String messageToTranslate = messageService.getMessageById(messageId).getText();
-        String translation = translationService.translate(messageToTranslate, selectedLang.getLangCode());
-        var oldMessage = messageService.findById(messageId);
-        oldMessage.setText(translationService.translate(messageToTranslate, selectedLang.getLangCode()));
-        messageService.save(oldMessage);
+        currentTranslation = translationService.translate(messageToTranslate, selectedLang.getLangCode());
         return "redirect:/";
     }
 
