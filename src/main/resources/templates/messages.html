@@ -23,7 +23,7 @@
 
         <div class="user-info">
             <p class="message" th:text="#{Author} + ': ' + ${message?.user.username}"></p>
-            <p class="message" th:text="#{PublishedTime}+ ': ' + ${message?.timestamp}"></p>
+            <p class="message" th:text="#{PublishedTime}+ ': ' + ${message?.createdAt}"></p>
         </div>
 
         <div class="translate-section">

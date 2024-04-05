@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -71,6 +72,7 @@ public class WebController {
         return "messages";
     }
 
+
     @PostMapping("/translate/{messageId}")
     public String translateMessage(@PathVariable Long messageId, @ModelAttribute LanguageDTO selectedLang) throws JsonProcessingException {
         System.out.println("Selected lang: " + selectedLang.getLangCode());
@@ -117,10 +119,20 @@ public class WebController {
         return "allMessages";
     }
 
+    @PostMapping("/createmessage")
+    public String createMessage(CreateMessageFormData message, OAuth2AuthenticationToken authentication) {
+        OAuth2User principal = authentication.getPrincipal();
+        if (userService.findById(principal.getAttribute("id")) != null) {
+            message.setUser(userService.findById(principal.getAttribute("id")));
+            var messageToSave = message.toEntity();
+            System.out.println(messageToSave.toString());
+            messageService.save(messageToSave);
+        } else {
+            System.out.println("User not found");
+        }
+        return "redirect:/allMessages";
+    }
 
-/*        return ResponseEntity.status(HttpStatus.SEE_OTHER)
-                .location(URI.create("/"))
-                .build();*/
     @GetMapping("/mypage")
     String mypage(@AuthenticationPrincipal OAuth2User principal, Model model) {
         var user = userService.findById(principal.getAttribute("id"));
@@ -131,7 +143,7 @@ public class WebController {
     }
 
     @PutMapping("/mypage")
-    String updateUser(@AuthenticationPrincipal OAuth2User principal,@ModelAttribute User userdata) {
+    String updateUser(@AuthenticationPrincipal OAuth2User principal, @ModelAttribute User userdata) {
         var user = userService.findById(principal.getAttribute("id"));
         user.setName(userdata.getName());
         user.setEmail(userdata.getEmail());
@@ -144,19 +156,29 @@ public class WebController {
 
 
     @GetMapping("/mymessages")
-    String myMessages(@AuthenticationPrincipal OAuth2User principal, Model model) {
-        Object idObject = principal.getAttribute("id");
-        Long id;
-        if (idObject instanceof Integer) {
-            id = ((Integer) idObject).longValue();
-        } else if (idObject instanceof Long) {
-            id = (Long) idObject;
-        } else {
-            throw new IllegalArgumentException("ID is not of type Integer or Long");
-        }
-        List<Message> messageList = messageService.getAllMessagesByUser(id);
+    String myMessages(OAuth2AuthenticationToken authentication, Model model) {
+        OAuth2User principal = authentication.getPrincipal();
+        Long userId = userService.findById(principal.getAttribute("id")).getId();
+        List<Message> messageList = messageService.getAllMessagesByUser(userId);
         model.addAttribute("messageList", messageList);
         return "mymessages";
     }
 }
 
+    @GetMapping("/editmessage/{id}")
+    public String editMessage(Model model, @PathVariable Long id) {
+        model.addAttribute("message", messageService.findById(id));
+        return "editmessage";
+    }
+
+    @PostMapping("/editmessage/{id}")
+    public String updateMessage(@AuthenticationPrincipal OAuth2User principal, @PathVariable Long id, @ModelAttribute Message message) {
+        var user = userService.findById(principal.getAttribute("id"));
+        var oldMessage = messageService.findById(id);
+            oldMessage.setTitle(message.getTitle());
+            oldMessage.setText(message.getText());
+            oldMessage.setLastEditedBy(user);
+            messageService.save(oldMessage);
+        return "redirect:/mymessages";
+    }
+}
