@@ -31,6 +31,7 @@ public class CreateMessageFormData {
         message.setText(text);
         message.setUser(user);
         message.setIsPublic(isPublic);
+        message.setLastEditedBy(user);
         return message;
     }
 
