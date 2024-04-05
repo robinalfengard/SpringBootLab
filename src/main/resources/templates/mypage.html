@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="stylesheet" th:href="@{/home.css}">
     <meta charset="UTF-8">
     <title>Home</title>
     <style>
@@ -68,7 +69,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             width: 50%;
-            height: 100%;
+            height: 90%;
             border: 2px solid #ccc;
             overflow: auto;
         }
@@ -185,9 +186,11 @@
 <div class="language-options">
     <a href="http://localhost:8080/mypage?lang=en" id="english-btn">English</a>
     <a href="http://localhost:8080/mypage?lang=sv" id="swedish-btn">Swedish</a>
-    <a href="http://localhost:8080/" id="home-btn">Home</a>
-    <a href="http://localhost:8080/createmessage" id="create-message-btn">Create Message</a>
-    <a href="http://localhost:8080/mymessages" id="my-messages-btn">My Messages</a>
+</div>
+<div class="header-buttons">
+    <a th:if="${!principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/login" >Log in</a>
+    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/createmessage" >Create Message</a>
+    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/logout" >Log out</a>
 </div>
 <div class="editable-rectangle" contenteditable="false">
     <form action="#" th:action="@{/updateuser}" th:object="${userdata}" method="put">

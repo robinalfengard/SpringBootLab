@@ -61,58 +61,7 @@ body {
     cursor: pointer;
     text-decoration: none;
 }
-#my-page-btn{
-    position: absolute;
-    left: 240px;
-    top: 10px;
-    border: 1px solid black;
-    border-radius: 5px;
-    padding: 5px;
-    background-color: yellowgreen;
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    text-decoration: none;
-}
-#login-btn{
-    position: absolute;
-    left: 200px;
-    top: 10px;
-    border: 1px solid black;
-    border-radius: 5px;
-    padding: 5px;
-    background-color: white;
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    text-decoration: none;
-}
-#logout-btn{
-    position: absolute;
-    left: 10px;
-    top: 10px;
-    border: 1px solid black;
-    border-radius: 5px;
-    padding: 5px;
-    background-color: white;
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    text-decoration: none;
-}
-#create-message-btn {
-    position: absolute;
-    left: 90px;
-    top: 10px;
-    border: 1px solid black;
-    border-radius: 5px;
-    padding: 5px;
-    background-color: yellowgreen;
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    text-decoration: none;
-}
+
 
 .message {
     font-size: 18px;
@@ -140,4 +89,28 @@ body {
     margin: 0 auto;
     display: block;
     text-align: center;
+}
+.header-buttons {
+    background: linear-gradient(to right, yellow, lightskyblue, yellow);
+    display: flex;
+    margin: 20px;
+    flex-direction: row;
+    top: 10px;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+}
+.header-button  {
+    margin: 10px;
+    border-radius: 5px;
+    border: 1px solid black;
+    padding: 5px;
+    background-color: white;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
 }

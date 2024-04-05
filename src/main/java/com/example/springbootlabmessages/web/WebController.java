@@ -23,6 +23,7 @@ public class WebController {
 
     private int messagesPerLoad = 1;
 
+    private Long currentMessageToTranslateId;
     private String currentTranslation;
 
     private final MessageService messageService;
@@ -49,8 +50,7 @@ public class WebController {
     public String createMessage(CreateMessageFormData message, OAuth2AuthenticationToken authentication) throws JsonProcessingException {
         OAuth2User principal = authentication.getPrincipal();
         var auth = SecurityContextHolder.getContext().getAuthentication();
-        if (userService.findById(principal.getAttribute("id")) != null
-            && auth != null && auth.isAuthenticated()) {
+        if (auth.getAuthorities().stream().findFirst().get().getAuthority().equals("OAUTH2_USER")) {
             message.setUser(userService.findById(principal.getAttribute("id")));
             message.setLangCode(translationService.getLanguage(message.getText()));
             var messageToSave = message.toEntity();
@@ -59,7 +59,7 @@ public class WebController {
         } else {
             System.out.println("User not found");
         }
-        return "redirect:/";
+        return "createmessage";
     }
 
 
@@ -67,13 +67,13 @@ public class WebController {
     @GetMapping("/")
     String getMessages(Model model, Language language, LanguageDTO selectedLang) {
         var auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(auth.getAuthorities().stream().findFirst().get().getAuthority());
         model.addAttribute("lang", language);
         model.addAttribute("principal", auth);
         List<Language> languagesList = List.of(Language.values());
         model.addAttribute("languagesList", languagesList);
         model.addAttribute("selectedLang", selectedLang);
         model.addAttribute("translatedMessage", currentTranslation);
+        model.addAttribute("currentMessageToTranslateId", currentMessageToTranslateId);
         if (auth.getAuthorities().stream().findFirst().get().getAuthority().equals("OAUTH2_USER")) {
             var listOfMessages = messageService.get10Messages(messagesPerLoad);
             model.addAttribute("listOfMessages", listOfMessages);
@@ -168,6 +168,7 @@ public class WebController {
     public String translateMessage(@PathVariable Long messageId, @ModelAttribute LanguageDTO selectedLang, @ModelAttribute Message message, Model model) throws JsonProcessingException {
         String messageToTranslate = messageService.getMessageById(messageId).getText();
         currentTranslation = translationService.translate(messageToTranslate, selectedLang.getLangCode());
+        currentMessageToTranslateId = messageId;
         return "redirect:/";
     }
 
