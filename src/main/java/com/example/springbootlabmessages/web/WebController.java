@@ -9,6 +9,7 @@ import com.example.springbootlabmessages.User.User;
 import com.example.springbootlabmessages.User.UserFormData;
 import com.example.springbootlabmessages.User.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -46,67 +47,59 @@ public class WebController {
     @PostMapping("/createmessage")
     public String createMessage(CreateMessageFormData message, OAuth2AuthenticationToken authentication) {
         OAuth2User principal = authentication.getPrincipal();
-        if (userService.findById(principal.getAttribute("id")) != null) {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if (userService.findById(principal.getAttribute("id")) != null
+            && auth != null && auth.isAuthenticated()) {
             message.setUser(userService.findById(principal.getAttribute("id")));
             var messageToSave = message.toEntity();
             System.out.println(messageToSave.toString());
             messageService.save(messageToSave);
+            
         } else {
             System.out.println("User not found");
         }
-        return "redirect:/allMessages";
+        return "redirect:/";
     }
+
 
 
     @GetMapping("/")
-    String getMessages(Model model) {
-        messagesPerLoad = 1;
-        List<Language> languagesList = List.of(Language.values());
-        model.addAttribute("languagesList", languagesList);
-        model.addAttribute("selectedLang", new LanguageDTO());
-        var listOfMessages = messageService.get10PublicMessages(messagesPerLoad);
-        model.addAttribute("listOfMessages", listOfMessages);
-        return "messages";
-    }
-
-
-
-
-
-    @GetMapping("/allMessages")
     String getLoggedInMessages(Model model, Language language, LanguageDTO selectedLang) {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("lang", language);
-        model.addAttribute("selectedLang", selectedLang);
-        if (auth != null && auth.isAuthenticated()) {
-            messagesPerLoad = 1;
-            var listOfMessages = messageService.get10Messages(messagesPerLoad);
-            model.addAttribute("listOfMessages", listOfMessages);
-            return "allMessages";
-        } else {
-            System.out.println("User not authenticated");
-            // Handle tsout he case when the user is not authenticated
-            return "redirect:/login";
-        }
-    }
-
-    @GetMapping("/loadMorePublicMessages")
-    public String loadMorePublicMessages(Model model) {
+        model.addAttribute("principal", auth);
         List<Language> languagesList = List.of(Language.values());
         model.addAttribute("languagesList", languagesList);
-        messagesPerLoad += 1;
-        model.addAttribute("selectedLang", new LanguageDTO());
-        var listOfMessages = messageService.get10PublicMessages(messagesPerLoad);
-        model.addAttribute("listOfMessages", listOfMessages);
-        return "messages";
+        messagesPerLoad = 1;
+        if (auth != null && auth.isAuthenticated()) {
+            var listOfMessages = messageService.get10Messages(messagesPerLoad);
+            model.addAttribute("listOfMessages", listOfMessages);
+            model.addAttribute("selectedLang", selectedLang);
+            return "allMessages";
+        } else {
+            var listOfMessages = messageService.get10PublicMessages(messagesPerLoad);
+            model.addAttribute("listOfMessages", listOfMessages);
+            // Handle the case when the user is not authenticated
+            return "messages";
+        }
     }
 
     @GetMapping("/loadMoreMessages")
     public String loadMoreMessages(Model model) {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        List<Language> languagesList = List.of(Language.values());
+        model.addAttribute("languagesList", languagesList);
         messagesPerLoad += 1;
-        var listOfMessages = messageService.get10Messages(messagesPerLoad);
-        model.addAttribute("listOfMessages", listOfMessages);
-        return "allMessages";
+        if (auth != null && auth.isAuthenticated()) {
+            var listOfMessages = messageService.get10Messages(messagesPerLoad);
+            model.addAttribute("listOfMessages", listOfMessages);
+            model.addAttribute("selectedLang", new LanguageDTO());
+            return "allMessages";
+        } else {
+            var listOfMessages = messageService.get10PublicMessages(messagesPerLoad);
+            model.addAttribute("listOfMessages", listOfMessages);
+            return "messages";
+        }
     }
 
 

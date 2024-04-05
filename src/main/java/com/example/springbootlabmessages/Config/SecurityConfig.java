@@ -17,7 +17,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
         return security
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/login", "/", "/resources/**", "/type/css/**", "createMessage.css","mymessages.css", "home.css", "/api/**", "/loadMorePublicMessages", "/translate/**", "/translate", "favicon.ico").permitAll();
+                    auth.requestMatchers("/login", "/", "/resources/**", "/type/css/**", "createMessage.css","mymessages.css", "home.css", "/api/**", "/loadMoreMessages", "/translate/**", "/translate", "favicon.ico").permitAll();
                     auth.requestMatchers("/updateuser","/createmessage", "/allMessages","/mymessages", "/mypage", "/loadMoreMessages", "/editmessage/**").authenticated();
                     auth.anyRequest().denyAll();
                 })

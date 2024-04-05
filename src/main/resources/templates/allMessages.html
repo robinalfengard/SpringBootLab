@@ -26,8 +26,36 @@
             <p class="message" th:text="|#{Author}: ${message?.user.username}|"></p>
             <p class="message" th:text="|#{PublishedTime}: ${message?.createdAt}|"></p>
         </div>
+        <div class="translate-section">
+            <p class="message">Translate to</p>
+            <form th:action="@{'/translate/' + ${message.id}}" th:object="${selectedLang}" method="post">
+
+                <select id="languageSelect">
+                    <option th:each="lang : ${languagesList}"
+                            th:value="${lang.getLangCode()}"
+                            th:text="${lang}">
+                    </option>
+                </select>
+                <textarea   id="languageSelected"  th:field="*{langCode}"></textarea>
+
+                <button type="submit">Translate</button>
+
+            </form>
+        </div>
     </div>
 </div>
 <a href="http://localhost:8080/loadMoreMessages" >Load More Messages</a>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Add event listener for dropdown change
+        document.getElementById("languageSelect").addEventListener("change", function(event) {
+            // Get the selected value
+            var selectedValue = event.target.value;
+            console.log(selectedValue);
+            // Update the hidden input field value
+            document.getElementById("languageSelected").textContent = selectedValue;
+        });
+    });
+</script>
 </body>
 </html>
