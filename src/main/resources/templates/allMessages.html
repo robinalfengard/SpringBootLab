@@ -20,7 +20,7 @@
 
 <div th:each="message : ${listOfMessages}" class="card mb-3">
     <div class="card-body">
-        <h5 class="center title" th:text="${message?.title}"></h5>
+        <h5 class="center-message" th:text="${message?.title}"></h5>
         <p class="center-message" th:text="${message?.text}"></p>
         <div class="user-info">
             <p class="message" th:text="|#{Author}: ${message?.user.username}|"></p>
@@ -44,18 +44,31 @@
         </div>
     </div>
 </div>
-<a href="http://localhost:8080/loadMoreMessages" >Load More Messages</a>
+
 <script>
+    function setupLanguageSelectionListenerForMessage(messageCard) {
+        messageCard.addEventListener("change", function(event) {
+            if (event.target && event.target.id === "languageSelect") {
+                var selectedValue = event.target.value;
+                event.target.nextElementSibling.value = selectedValue;
+            }
+        });
+    }
+
     document.addEventListener("DOMContentLoaded", function() {
-        // Add event listener for dropdown change
-        document.getElementById("languageSelect").addEventListener("change", function(event) {
-            // Get the selected value
-            var selectedValue = event.target.value;
-            console.log(selectedValue);
-            // Update the hidden input field value
-            document.getElementById("languageSelected").textContent = selectedValue;
+        setupLanguageSelectionListenerForMessage(document);
+
+        document.getElementById("loadMoreMessagesBtn").addEventListener("click", function(event) {
+            // Get the new message cards that are loaded
+            var newMessageCards = document.querySelectorAll(".card-body");
+
+            // Attach individual language selection listeners for each new message card
+            newMessageCards.forEach(function(card) {
+                setupLanguageSelectionListenerForMessage(card);
+            });
         });
     });
 </script>
+<a class="center-message" href="/loadMoreMessages" id="loadMoreMessagesBtn">Load More Messages</a>
 </body>
 </html>

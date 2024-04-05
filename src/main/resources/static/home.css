@@ -134,3 +134,10 @@ body {
 #languageSelected {
     display: none;
 }
+.center-message {
+    width: 60%;
+    font-size: 20px;
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+}

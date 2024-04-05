@@ -17,9 +17,10 @@
 </div>
 
 <div th:each="message : ${listOfMessages}" class="card mb-3">
+
     <div class="card-body">
-        <h5 class="center title" th:text="${message?.title}"></h5>
-        <p id="center message" th:text="${message?.text}"></p>
+        <h5 class="center-message" th:text="${message?.title}"></h5>
+        <p class="center-message" th:text="${message?.text}"></p>
 
         <div class="user-info">
             <p class="message" th:text="#{Author} + ': ' + ${message?.user.username}"></p>
@@ -46,30 +47,26 @@
     </div>
 </div>
 <script>
-    function setupLanguageSelectionListener() {
-        document.body.addEventListener("change", function(event) {
+    function setupLanguageSelectionListenerForMessage(messageCard) {
+        messageCard.addEventListener("change", function(event) {
             if (event.target && event.target.id === "languageSelect") {
-                // Get the selected value
                 var selectedValue = event.target.value;
-                console.log("Selected language:", selectedValue);
-                // Update the sibling hidden input field value
                 event.target.nextElementSibling.value = selectedValue;
             }
         });
-
-        document.getElementById("loadMoreMessagesBtn").addEventListener("click", function(event) {
-            // Perform logic to load more messages here
-
-            // Call the setupLanguageSelectionListener function after new messages are loaded
-            setupLanguageSelectionListener();
-        });
     }
 
-    // Call the function when the page is initially loaded
     document.addEventListener("DOMContentLoaded", function() {
-        setupLanguageSelectionListener();
+        setupLanguageSelectionListenerForMessage(document);
+
+        document.getElementById("loadMoreMessagesBtn").addEventListener("click", function(event) {
+            var newMessageCards = document.querySelectorAll(".card-body");
+            newMessageCards.forEach(function(card) {
+                setupLanguageSelectionListenerForMessage(card);
+            });
+        });
     });
 </script>
-<a href="#" id="loadMoreMessagesBtn">Load More Messages</a>
+<a class="center-message" href="/loadMoreMessages" id="loadMoreMessagesBtn">Load More Messages</a>
 </body>
 </html>

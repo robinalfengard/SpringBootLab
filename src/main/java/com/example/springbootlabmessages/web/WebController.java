@@ -44,16 +44,16 @@ public class WebController {
     }
 
     @PostMapping("/createmessage")
-    public String createMessage(CreateMessageFormData message, OAuth2AuthenticationToken authentication) {
+    public String createMessage(CreateMessageFormData message, OAuth2AuthenticationToken authentication) throws JsonProcessingException {
         OAuth2User principal = authentication.getPrincipal();
         var auth = SecurityContextHolder.getContext().getAuthentication();
         if (userService.findById(principal.getAttribute("id")) != null
             && auth != null && auth.isAuthenticated()) {
             message.setUser(userService.findById(principal.getAttribute("id")));
+            message.setLangCode(translationService.getLanguage(message.getText()));
             var messageToSave = message.toEntity();
             System.out.println(messageToSave.toString());
             messageService.save(messageToSave);
-
         } else {
             System.out.println("User not found");
         }
@@ -65,19 +65,20 @@ public class WebController {
     @GetMapping("/")
     String getMessages(Model model, Language language, LanguageDTO selectedLang) {
         var auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(auth.getAuthorities().stream().findFirst().get().getAuthority());
         model.addAttribute("lang", language);
         model.addAttribute("principal", auth);
         List<Language> languagesList = List.of(Language.values());
         model.addAttribute("languagesList", languagesList);
-        if (auth != null && auth.isAuthenticated()) {
+        model.addAttribute("selectedLang", selectedLang);
+        if (auth.getAuthorities().stream().findFirst().get().getAuthority().equals("OAUTH2_USER")) {
             var listOfMessages = messageService.get10Messages(messagesPerLoad);
             model.addAttribute("listOfMessages", listOfMessages);
-            model.addAttribute("selectedLang", selectedLang);
-            return "allMessages";
+            return "messages";
         } else {
             var listOfMessages = messageService.get10PublicMessages(messagesPerLoad);
             model.addAttribute("listOfMessages", listOfMessages);
-            return "messages";
+            return "allMessages";
         }
     }
 
@@ -98,7 +99,6 @@ public class WebController {
             var listOfMessages = messageService.get10PublicMessages(messagesPerLoad);
             model.addAttribute("listOfMessages", listOfMessages);
         }
-        // fånga translate knapptrycket i html
         return "redirect:/";
     }
 
@@ -120,8 +120,6 @@ public class WebController {
         else {
             return "redirect:/login";
         }
-
-
     }
 
     @PutMapping("/mypage")
@@ -166,7 +164,7 @@ public class WebController {
     @PostMapping("/translate/{messageId}")
     public String translateMessage(@PathVariable Long messageId, @ModelAttribute LanguageDTO selectedLang, @ModelAttribute Message message) throws JsonProcessingException {
         String messageToTranslate = messageService.getMessageById(messageId).getText();
-        System.out.println(translationService.translate(messageToTranslate, selectedLang.getLangCode()));
+        String translation = translationService.translate(messageToTranslate, selectedLang.getLangCode());
         var oldMessage = messageService.findById(messageId);
         oldMessage.setText(translationService.translate(messageToTranslate, selectedLang.getLangCode()));
         messageService.save(oldMessage);
