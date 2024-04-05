@@ -75,8 +75,9 @@ public class WebController {
     public String translateMessage(@PathVariable Long messageId, @ModelAttribute LanguageDTO selectedLang) throws JsonProcessingException {
         System.out.println("Selected lang: " + selectedLang.getLangCode());
         String messageToTranslate = messageService.getMessageById(messageId).getText();
-        System.out.println(translationService.translate(messageToTranslate, "sv"));
-
+        System.out.println(translationService.translate(messageToTranslate, selectedLang.getLangCode()));
+        var message = messageService.findById(messageId);
+        message.setText(translationService.translate(messageToTranslate, selectedLang.getLangCode()));
         return  "redirect:/";
     }
 
