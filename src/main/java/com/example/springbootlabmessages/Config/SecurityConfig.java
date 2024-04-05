@@ -18,7 +18,7 @@ public class SecurityConfig {
         return security
                 .authorizeHttpRequests(auth -> {
 
-                    auth.requestMatchers("/login", "/", "/resources/**", "/type/css/**", "createMessage.css","mymessages.css", "home.css", "/api/**", "/loadMorePublicMessages").permitAll();
+                    auth.requestMatchers("/login", "/", "/resources/**", "/type/css/**", "createMessage.css","mymessages.css", "home.css", "/api/**", "/loadMorePublicMessages", "/swagger-ui/**","/swagger-ui.html", "/v3/api-docs/**", "/swagger").permitAll();
                     auth.requestMatchers("/updateuser","/createmessage", "/allMessages","/mymessages", "/mypage" , "/editmessage/**" , "/loadMoreMessages").authenticated();
                     auth.anyRequest().denyAll();
                 })
