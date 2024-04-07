@@ -204,7 +204,7 @@
 </div>
 <div class="editable-rectangle" contenteditable="false">
     <h4 id="my-page-title">My Page</h4>
-    <a href="http://localhost:8080/uploadimage" id ="edit-image">Change Profile Picture</a></a>
+    <a href="http://localhost:8080/uploadimage" id ="edit-image">Change Profile Picture</a>
     <form th:action="@{/mypage}" th:object="${user}" method="post">
         <img id="profile-picture" th:src="${user.profilePicture}" alt="Profile Picture">
         <label for="name" id="name-label" th:text="#{Name}+': '"></label>
