@@ -20,7 +20,6 @@ public class CreateMessageFormData {
         this.title = title;
         this.text = text;
         this.user = user;
-        this.localDateTime = LocalDateTime.now();
     }
 
     public CreateMessageFormData() {
@@ -32,7 +31,7 @@ public class CreateMessageFormData {
         message.setText(text);
         message.setUser(user);
         message.setIsPublic(isPublic);
-        message.setTimestamp(LocalDateTime.now());
+        message.setLastEditedBy(user);
         return message;
     }
 
