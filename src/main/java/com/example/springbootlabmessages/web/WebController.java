@@ -111,6 +111,7 @@ public class WebController {
 
     @GetMapping("/mypage")
     String mypage(@AuthenticationPrincipal OAuth2User principal, Model model) {
+
         var auth = SecurityContextHolder.getContext().getAuthentication();
         System.out.println(SecurityContextHolder.getContext().getAuthentication().toString());
         if(auth != null || auth.isAuthenticated()){
@@ -123,16 +124,18 @@ public class WebController {
         else {
             return "redirect:/login";
         }
+
     }
 
-    @PutMapping("/mypage")
-    String updateUser(@AuthenticationPrincipal OAuth2User principal, @ModelAttribute User userdata) {
-        var user = userService.findById(principal.getAttribute("id"));
-        user.setName(userdata.getName());
-        user.setEmail(userdata.getEmail());
-        user.setProfilePicture(userdata.getProfilePicture());
-        user.setUsername(userdata.getUsername());
-        userService.save(user);
+    @PostMapping("/mypage")
+    String updateUser(@AuthenticationPrincipal OAuth2User principal, @ModelAttribute User user) {
+        var nyUser = userService.findById(principal.getAttribute("id"));
+        nyUser.setName(user.getName());
+        nyUser.setEmail(user.getEmail());
+        nyUser.setProfilePicture(user.getProfilePicture());
+        nyUser.setProfilePictureBytes(user.getProfilePictureBytes());
+        nyUser.setUsername(user.getUsername());
+        userService.save(nyUser);
         return "redirect:/mypage";
     }
 
@@ -176,4 +179,7 @@ public class WebController {
 
 }
 
+
+
+}
 
