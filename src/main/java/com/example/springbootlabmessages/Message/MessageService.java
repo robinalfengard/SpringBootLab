@@ -70,4 +70,8 @@ public class MessageService {
             return null;
         }
     }
+
+    public List<Message> findAllByUserName(String query) {
+        return messageRepository.findAllByUserName(query);
+    }
 }

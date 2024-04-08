@@ -138,4 +138,11 @@ public class WebController {
             messageService.save(oldMessage);
         return "redirect:/mymessages";
     }
+
+    @PostMapping("/search/{query}")
+    public String searchMessages(@PathVariable String query, Model model) {
+        List<Message> messageList = messageService.findAllByUserName(query);
+        model.addAttribute("messageList", messageList);
+        return "searchresults";
+    }
 }
