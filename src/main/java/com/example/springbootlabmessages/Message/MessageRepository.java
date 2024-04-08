@@ -1,5 +1,6 @@
 package com.example.springbootlabmessages.Message;
 
+import com.example.springbootlabmessages.User.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -26,5 +27,8 @@ public interface MessageRepository extends ListCrudRepository<Message, Long> {
 
     @Query(value = "SELECT * FROM message ORDER BY created_at DESC LIMIT :messageLimitPerLoad", nativeQuery = true)
     List<Message> find10NextMessages(int messageLimitPerLoad);
+
+    @Query(value = "SELECT * FROM message WHERE user_id LIKE :username%", nativeQuery = true)
+    List<Message> findAllByUserNameWildcard(String username);
 
 }

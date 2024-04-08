@@ -61,16 +61,17 @@ public class WebController {
         } else {
             System.out.println("User not found");
         }
-        return "allMessages";
+        return "redirect:/createmessage";
     }
 
 
 
     @GetMapping("/")
-    String getMessages(Model model, Language language, LanguageDTO selectedLang) {
+    String getMessages(Model model, Language language, LanguageDTO selectedLang, String userName) {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("lang", language);
         model.addAttribute("principal", auth);
+        model.addAttribute("username", userName);
         List<Language> languagesList = List.of(Language.values());
         model.addAttribute("languagesList", languagesList);
         model.addAttribute("selectedLang", selectedLang);
@@ -180,11 +181,17 @@ public class WebController {
 
 
 
-    @PostMapping("/search/{query}")
-    public String searchMessages(@PathVariable String query, Model model) {
-        List<Message> messageList = messageService.findAllByUserName(query);
+    @PostMapping("/search/{username}")
+    public String searchMessages(@PathVariable String username, Model model) {
+        System.out.println("Username in webcontroller: " + username);
+        List<Message> messageList = messageService.findAllByUserName(username);
+
+        if(!messageList.isEmpty())
+            messageList.forEach(message -> System.out.println(message.getText()));
+        else
+            System.out.println("Empty list");
         model.addAttribute("messageList", messageList);
-        return "searchresults";
+        return "redirect:/";
     }
 }
 

@@ -20,11 +20,13 @@
 <div>
     <h1 class="site-title">Beautiful World</h1>
 </div>
-<form action="post" th:action="@{/search/{username}(username=${username})}"></form>
+
 <div class="search-textbox">
+    <form th:action="@{/search/{username}(username=${username})}" method="post">
     <h3>Seach Message By Username</h3>
-    <input type="text" id="search-textbox" placeholder="Search">
-    <button id="search-btn">Search</button>
+    <textarea type="text" id="search-textbox" th:object="${username}" placeholder="Search"></textarea>
+    <button type="submit" id="search-btn">Search</button>
+</form>
 </div>
 
 <div th:each="message : ${listOfMessages}" class="card mb-3">

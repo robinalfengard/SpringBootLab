@@ -28,7 +28,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> {
 
 
-                    auth.requestMatchers("/login", "/", "/resources/**", "/type/css/**","/resources/uploads/*.*", "createMessage.css","mymessages.css", "home.css", "/api/**", "/loadMoreMessages", "/swagger-ui/**","/swagger-ui.html", "/v3/api-docs/**", "/swagger", "/translate/**", "/translate", "favicon.ico" ).permitAll();
+                    auth.requestMatchers("/login", "/", "/resources/**", "/type/css/**","/resources/uploads/*.*", "createMessage.css","mymessages.css", "home.css", "/api/**", "/loadMoreMessages", "/swagger-ui/**","/swagger-ui.html", "/v3/api-docs/**", "/swagger", "/translate/**", "/translate", "/favicon.ico", "/search/**" ).permitAll();
                     auth.requestMatchers("/updateuser","/createmessage", "/allMessages","/mymessages", "/mypage","/upload" , "/uploadimage","/editmessage/**" , "/loadMoreMessages").authenticated();
 
 
