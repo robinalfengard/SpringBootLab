@@ -40,16 +40,18 @@ public class WebController {
 
 
     @GetMapping("/createmessage")
-    String home(@AuthenticationPrincipal OAuth2User principal, Model model) {
+    String home(OAuth2AuthenticationToken authentication, Model model) {
+        OAuth2User principal = authentication.getPrincipal();
         model.addAttribute("formdata", new CreateMessageFormData());
         model.addAttribute("principal", principal);
         return "createmessage";
     }
 
     @PostMapping("/createmessage")
-    public String createMessage(CreateMessageFormData message, OAuth2AuthenticationToken authentication) throws JsonProcessingException {
+    public String createMessage(Model model, CreateMessageFormData message, OAuth2AuthenticationToken authentication) throws JsonProcessingException {
         OAuth2User principal = authentication.getPrincipal();
         var auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("principal", principal);
         if (auth.getAuthorities().stream().findFirst().get().getAuthority().equals("OAUTH2_USER")) {
             message.setUser(userService.findById(principal.getAttribute("id")));
             message.setLangCode(translationService.getLanguage(message.getText()));
@@ -59,7 +61,7 @@ public class WebController {
         } else {
             System.out.println("User not found");
         }
-        return "createmessage";
+        return "allMessages";
     }
 
 
@@ -181,5 +183,5 @@ public class WebController {
 
 
 
-}
+
 
