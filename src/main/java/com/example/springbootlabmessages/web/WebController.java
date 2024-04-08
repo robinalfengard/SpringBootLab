@@ -61,7 +61,7 @@ public class WebController {
         } else {
             System.out.println("User not found");
         }
-        return "allMessages";
+        return "redirect:/";
     }
 
 
