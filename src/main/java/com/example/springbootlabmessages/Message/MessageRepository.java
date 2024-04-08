@@ -28,7 +28,5 @@ public interface MessageRepository extends ListCrudRepository<Message, Long> {
     @Query(value = "SELECT * FROM message ORDER BY created_at DESC LIMIT :messageLimitPerLoad", nativeQuery = true)
     List<Message> find10NextMessages(int messageLimitPerLoad);
 
-    @Query(value = "SELECT * FROM message WHERE user_id LIKE :username%", nativeQuery = true)
-    List<Message> findAllByUserNameWildcard(String username);
 
 }

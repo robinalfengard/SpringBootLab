@@ -92,7 +92,6 @@ public class WebController {
             if(session.getAttribute("messageList") != null){
                 model.addAttribute("listOfMessages", session.getAttribute("messageList"));
                 session.removeAttribute("messageList");
-
             }
             return "messages";
         // IF NOT AUTHENTICATED
@@ -206,7 +205,7 @@ public class WebController {
 
     // SEARCH
 @GetMapping("/result")
-public String result(OAuth2AuthenticationToken authentication, Model model, @ModelAttribute LanguageDTO selectedLang, Language language, HttpSession session) {
+public String result(Model model, @ModelAttribute LanguageDTO selectedLang, Language language, HttpSession session) {
     //SECURITY
     var auth = SecurityContextHolder.getContext().getAuthentication();
     //TRANSLATION

@@ -78,11 +78,6 @@ public class MessageService {
         return messageRepository.findById(messageId).get();
     }
 
-    public void updateMessageText(Long messageId, String translatedMessage) {
-        Message message = messageRepository.findById(messageId).get();
-        message.setText(translatedMessage);
-        messageRepository.save(message);
-    }
 
     public List<Message> findAllByUserName(String username) {
         System.out.println("Username in service: " + username);
