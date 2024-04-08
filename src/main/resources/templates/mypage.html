@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="stylesheet" th:href="@{/home.css}">
     <meta charset="UTF-8">
     <title>Home</title>
     <style>
@@ -68,7 +69,7 @@
             left: 50%;
             transform: translate(-50%, -50%);
             width: 50%;
-            height: 100%;
+            height: 90%;
             border: 2px solid #ccc;
             overflow: auto;
         }
@@ -109,6 +110,19 @@
             border-radius: 5px;
             padding: 5px;
             background-color: yellowgreen;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        #edit-image{
+            position: absolute;
+            left: 40%;
+            top: 10px;
+            border: 1px solid black;
+            border-radius: 5px;
+            padding: 5px;
+            background-color: darkkhaki;
             font-size: 20px;
             font-weight: bold;
             cursor: pointer;
@@ -185,24 +199,25 @@
 <div class="language-options">
     <a href="http://localhost:8080/mypage?lang=en" id="english-btn">English</a>
     <a href="http://localhost:8080/mypage?lang=sv" id="swedish-btn">Swedish</a>
-    <a href="http://localhost:8080/allMessages" id="home-btn">Home</a>
-    <a href="http://localhost:8080/createmessage" id="create-message-btn">Create Message</a>
-    <a href="http://localhost:8080/mymessages" id="my-messages-btn">My Messages</a>
+</div>
+<div class="header-buttons">
+    <a th:if="${!principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/login" >Log in</a>
+    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/createmessage" >Create Message</a>
+    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/logout" >Log out</a>
 </div>
 <div class="editable-rectangle" contenteditable="false">
-    <form action="#" th:action="@{/updateuser}" th:object="${userdata}" method="put">
-        <h4 id="my-page-title">My Page</h4>
-        <img id="profile-picture" th:src="${user?.profilePicture}" alt="Profile Picture">
-        <input type="file" th:field="*{profilePicture}" id="file-input" accept=" image/*">
-        </img>
+    <h4 id="my-page-title">My Page</h4>
+    <a href="http://localhost:8080/uploadimage" id ="edit-image">Change Profile Picture</a>
+    <form th:action="@{/mypage}" th:object="${user}" method="post">
+        <img id="profile-picture" th:src="${user.profilePicture}" alt="Profile Picture">
         <label for="name" id="name-label" th:text="#{Name}+': '"></label>
-        <input type="text" id="name" th:field="*{name}" th:placeholder="${user?.name}">
+        <input type="text" id="name" th:field="*{name}">
         <br>
         <label for="username" id="username-label" th:text="#{UserName}+': '"></label>
-        <input type="text" id="username" th:field="*{username}" th:placeholder="${user?.username}">
+        <input type="text" id="username" th:field="*{username}" >
         <br>
         <label for="email" id="email-label" th:text="#{Email}+': '"></label>
-        <input type="email" id="email" th:field="*{email}" th:placeholder="${user?.email}">
+        <input type="email" id="email" th:field="*{email}">
         <br> <br>
         <button type="submit" id="edit-btn" th:text="#{SaveChanges}"></button>
     </form>

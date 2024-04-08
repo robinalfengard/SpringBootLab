@@ -2,6 +2,7 @@ package com.example.springbootlabmessages.Message;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import ch.qos.logback.core.joran.event.BodyEvent;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
@@ -61,14 +62,20 @@ public class MessageService {
         return messageRepository.findAllByUserName(username);
     }
 
-    public Message findById(Long id) {
-        Optional<Message> optionalMessage = messageRepository.findById(id);
-        if (optionalMessage.isPresent()) {
-            System.out.println("Return message: " + optionalMessage.get().getTitle());
-            return optionalMessage.get();
-        } else {
-            return null;
-        }
+
+
+    public Message findById(Long messageId) {
+        return messageRepository.findById(messageId).get();
+    }
+
+    public Message getMessageById(Long messageId) {
+        return messageRepository.findById(messageId).get();
+    }
+
+    public void updateMessageText(Long messageId, String translatedMessage) {
+        Message message = messageRepository.findById(messageId).get();
+        message.setText(translatedMessage);
+        messageRepository.save(message);
     }
 
     public List<Message> findAllByUserName(String query) {

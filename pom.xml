@@ -16,10 +16,21 @@
     <properties>
         <java.version>21</java.version>
     </properties>
+    <repositories>
+    <repository>
+        <id>clojars.org</id>
+        <url>https://repo.clojars.org</url>
+    </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.16.0</version> <!-- or the version compatible with your Spring Boot version -->
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -36,6 +47,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.clojars.suuft</groupId>
+            <artifactId>libretranslate-java</artifactId>
+            <version>1.0.5</version>
         </dependency>
 
         <dependency>

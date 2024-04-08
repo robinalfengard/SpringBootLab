@@ -116,8 +116,12 @@
 <div class="language-options">
     <a href="http://localhost:8080/?lang=en" id="english-btn">English</a>
     <a href="http://localhost:8080/?lang=sv" id="swedish-btn">Swedish</a>
-    <a href="http://localhost:8080/allMessages" id="home-btn">Home</a>
-    <a href="http://localhost:8080/mypage" id="my-page-btn">My Page</a>
+</div>
+<div class="header-buttons">
+    <a th:if="${!principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/login" id="login-btn">Log in</a>
+    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/mypage" id="my-page-btn">My Page</a>
+    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/createmessage" id="create-message-btn">Create Message</a>
+    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/logout" id="logout-btn">Log out</a>
 </div>
 <div class="content">
     <h1 class="site-title">Edit Message</h1>

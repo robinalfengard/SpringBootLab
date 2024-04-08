@@ -9,9 +9,12 @@
 <div class="language-options">
     <a href="http://localhost:8080/?lang=en" id="english-btn">English</a>
     <a href="http://localhost:8080/?lang=sv" id="swedish-btn">Swedish</a>
-    <a href="http://localhost:8080/mypage" id="my-page-btn">My Page</a>
-    <a href="http://localhost:8080/createmessage" id="create-message-btn">Create Message</a>
-    <a href="http://localhost:8080/logout" id="logout-btn">Log out</a>
+</div>
+<div class="header-buttons">
+    <a th:if="${!principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/login" id="login-btn">Log in</a>
+    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/mypage" id="my-page-btn">My Page</a>
+    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/createmessage" id="create-message-btn">Create Message</a>
+    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/logout" id="logout-btn">Log out</a>
 </div>
 
 <div>
@@ -26,14 +29,56 @@
 
 <div th:each="message : ${listOfMessages}" class="card mb-3">
     <div class="card-body">
-        <h5 class="center title" th:text="${message?.title}"></h5>
+        <h5 class="center-message" th:text="${message?.title}"></h5>
         <p class="center-message" th:text="${message?.text}"></p>
+        <p class="center-message" th:if="${translatedMessage != null && currentMessageToTranslateId == message.id}" th:text="'Translation: ' + ${translatedMessage}"></p>
         <div class="user-info">
             <p class="message" th:text="|#{Author}: ${message?.user.username}|"></p>
             <p class="message" th:text="|#{PublishedTime}: ${message?.createdAt}|"></p>
         </div>
+        <div class="translate-section">
+            <p class="message">Translate to</p>
+            <form th:action="@{'/translate/' + ${message.id}}" th:object="${selectedLang}" method="post">
+
+                <select id="languageSelect">
+                    <option th:each="lang : ${languagesList}"
+                            th:value="${lang.getLangCode()}"
+                            th:text="${lang}">
+                    </option>
+                </select>
+                <textarea   id="languageSelected"  th:field="*{langCode}"></textarea>
+
+                <button type="submit">Translate</button>
+
+            </form>
+        </div>
     </div>
 </div>
-<a href="http://localhost:8080/loadMoreMessages" >Load More Messages</a>
+
+<script>
+    function setupLanguageSelectionListenerForMessage(messageCard) {
+        messageCard.addEventListener("change", function(event) {
+            if (event.target && event.target.id === "languageSelect") {
+                var selectedValue = event.target.value;
+                event.target.nextElementSibling.value = selectedValue;
+            }
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        setupLanguageSelectionListenerForMessage(document);
+
+        document.getElementById("loadMoreMessagesBtn").addEventListener("click", function(event) {
+            // Get the new message cards that are loaded
+            var newMessageCards = document.querySelectorAll(".card-body");
+
+            // Attach individual language selection listeners for each new message card
+            newMessageCards.forEach(function(card) {
+                setupLanguageSelectionListenerForMessage(card);
+            });
+        });
+    });
+</script>
+<a class="center-message" href="/loadMoreMessages" id="loadMoreMessagesBtn">Load More Messages</a>
 </body>
 </html>

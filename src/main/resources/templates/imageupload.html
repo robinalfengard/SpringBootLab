@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            background: cyan;
+            font-family: "Calibri", sans-serif;
+            font-size: 40px;
+        }
+        #messageUpload {
+            color: red;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            margin: 0 auto;
+            display: block;
+        }
+        #inputPicture {
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            margin: 0 auto;
+            display: block;
+            border: 1px solid black;
+            border-radius: 5px;
+        }
+        #UploadButton {
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            margin: 0 auto;
+            display: block;
+            border: 1px solid black;
+            border-radius: 5px;
+            background-color: darkkhaki;
+        }
+        #uploadtitle {
+            text-align: center;
+            font-style: italic;
+            font-weight: bold;
+            font-size: 45px;
+        }
+        #msgUpload {
+            text-align: center;
+            font-style: italic;
+            font-weight: bold;
+            font-size: 25px;
+            color: red;
+            margin: 0 auto;
+            display: block;
+            border: 1px solid black;
+            border-radius: 5px;
+            background-color: darkkhaki;
+            padding: 10px;
+            width: 400px;
+            height: 50px;
+
+        }
+    </style>
+</head>
+<body>
+<body>
+<section class="my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <h6 id="uploadtitle">Upload Profile Picture</h6>
+                <p id="messageUpload" th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>
+                <form method="post" th:action="@{/upload}" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <input id="inputPicture" type="file" name="image" accept="image/*" class="form-control-file">
+                        <br>
+                    </div>
+                    <button id="UploadButton" type="submit" class="btn btn-primary">Upload image</button>
+                    <br>
+                </form>
+                <span id="msgUpload" th:if="${msg != null}" th:text="${msg}"></span>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</body>
+</html>
