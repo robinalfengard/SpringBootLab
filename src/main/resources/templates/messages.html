@@ -21,45 +21,40 @@
     <h1 class="site-title">Beautiful World</h1>
 </div>
 <div class="search-textbox">
-    <form th:action="@{/search/{username}(username=${username})}" method="post">
-        <h3>Seach Message By Username</h3>
-        <textarea type="text" id="search-textbox" th:object="${username}" placeholder="Search"></textarea>
+    <form th:action="@{/search}" th:object="${userSearchData}"  method="post">
+        <input name="username" type="text" id="search-textbox" th:field="*{searchText}" placeholder="Search by Username">
         <button type="submit" id="search-btn">Search</button>
+        <button onclick="window.location.href='http://localhost:8080'">Reset Search</button>
     </form>
 </div>
 
 <div th:each="message : ${listOfMessages}" class="card mb-3">
-
     <div class="card-body">
         <h5 class="center-message" th:text="${message?.title}"></h5>
         <p class="center-message" th:text="${message?.text}"></p>
         <p class="center-message" th:if="${translatedMessage != null && currentMessageToTranslateId == message.id}" th:text="'Translation: ' + ${translatedMessage}"></p>
-
-
         <div class="user-info">
-            <p class="message" th:text="#{Author} + ': ' + ${message?.user.username}"></p>
-            <p class="message" th:text="#{PublishedTime}+ ': ' + ${message?.createdAt}"></p>
-
-            <div class="translate-section">
-                <p class="message">Translate to</p>
-                <form th:action="@{'/translate/' + ${message.id}}" th:object="${selectedLang}" method="post">
-
-                    <select id="languageSelect">
-                        <option th:each="lang : ${languagesList}"
-                                th:value="${lang.getLangCode()}"
-                                th:text="${lang}">
-                        </option>
-
-                    </select>
-                    <textarea   id="languageSelected"  th:field="*{langCode}"></textarea>
-                    <button type="submit">Translate</button>
-
-                </form>
-            </div>
+            <p class="message" th:text="|#{Author}: ${message?.user.username}|"></p>
+            <p class="message" th:text="|#{PublishedTime}: ${message?.createdAt}|"></p>
         </div>
+        <div class="translate-section">
+            <p class="message">Translate to</p>
+            <form th:action="@{'/translate/' + ${message.id}}" th:object="${selectedLang}" method="post">
 
+                <select id="languageSelect">
+                    <option th:each="lang : ${languagesList}"
+                            th:value="${lang.getLangCode()}"
+                            th:text="${lang}">
+                    </option>
+                </select>
+                <textarea   id="languageSelected"  th:field="*{langCode}"></textarea>
 
+                <button type="submit">Translate</button>
+
+            </form>
+        </div>
     </div>
+
 </div>
 <script>
     function setupLanguageSelectionListenerForMessage(messageCard) {
@@ -82,6 +77,7 @@
         });
     });
 </script>
-<a class="center-message" href="/loadMoreMessages" id="loadMoreMessagesBtn">Load More Messages</a>
+<button class="load-more" onclick="window.location.href='http://localhost:8080/loadMoreMessages'">Load More Messages</button>
+
 </body>
 </html>

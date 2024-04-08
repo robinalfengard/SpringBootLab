@@ -114,3 +114,23 @@ body {
     cursor: pointer;
     text-decoration: none;
 }
+.search-textbox{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+.card-body{
+margin-left: auto;
+margin-right: auto;
+    width: 70%;
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}
+.load-more{
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}

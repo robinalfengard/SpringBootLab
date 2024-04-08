@@ -94,4 +94,8 @@ public class MessageService {
         }
         return messageList;
     }
+
+    public List<Message> filterPublicMessages(List<Message> messageList) {
+        return messageList.stream().filter(Message::isPublic).toList();
+    }
 }
