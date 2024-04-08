@@ -1,9 +1,11 @@
 package com.example.springbootlabmessages.Message;
 
+import com.example.springbootlabmessages.Translation.TranslationService;
 import com.example.springbootlabmessages.User.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -16,6 +18,7 @@ import java.time.LocalDateTime;
 @Table(name = "message")
 @EntityListeners(AuditingEntityListener.class)
 public class Message {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -36,6 +39,8 @@ public class Message {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    private String langCode;
 
     @Column(length = 10000)
     private String text;
