@@ -33,4 +33,8 @@ public class UserService {
     public List<String> getAllUsers() {
         return userRepository.findAll().stream().map(User::getUsername).toList();
     }
+
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
 }
