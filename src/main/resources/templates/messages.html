@@ -30,8 +30,8 @@
 
 
         <div class="user-info">
-            <p class="message" th:text="#{Author} + ': ' + ${message?.user.username}"></p>
-            <p class="message" th:text="#{PublishedTime}+ ': ' + ${message?.createdAt}"></p>
+            <p class="message" th:text="#{Author} + ': ' + ${message?.user.username} + ' ' +#{PublishedTime}+ ': ' + ${message?.createdAt}"></p>
+            <p class="message" th:if="${message?.lastEditedBy != null}" th:text="#{EditedBy} + ': ' + ${message?.lastEditedBy.username} + ' ' +#{LastEditedTime}+ ': ' + ${message?.updatedAt}"></p>
 
             <div class="translate-section">
                 <p class="message">Translate to</p>
