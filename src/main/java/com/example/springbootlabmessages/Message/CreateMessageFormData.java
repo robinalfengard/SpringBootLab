@@ -15,7 +15,6 @@ public class CreateMessageFormData {
     private User user;
     private boolean isPublic;
     private LocalDateTime localDateTime;
-    private String langCode;
 
     public CreateMessageFormData(String title, String text, User user) {
         this.title = title;
@@ -33,7 +32,6 @@ public class CreateMessageFormData {
         message.setUser(user);
         message.setIsPublic(isPublic);
         message.setLastEditedBy(user);
-        message.setLangCode(langCode);
         return message;
     }
 

@@ -40,7 +40,6 @@ public class Message {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    private String langCode;
 
     @Column(length = 10000)
     private String text;

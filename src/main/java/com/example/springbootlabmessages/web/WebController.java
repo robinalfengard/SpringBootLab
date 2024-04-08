@@ -48,13 +48,11 @@ public class WebController {
     }
 
     @PostMapping("/createmessage")
-    public String createMessage(Model model, CreateMessageFormData message, OAuth2AuthenticationToken authentication) throws JsonProcessingException {
+    public String createMessage(CreateMessageFormData message, OAuth2AuthenticationToken authentication) throws JsonProcessingException {
         OAuth2User principal = authentication.getPrincipal();
         var auth = SecurityContextHolder.getContext().getAuthentication();
-        model.addAttribute("principal", principal);
         if (auth.getAuthorities().stream().findFirst().get().getAuthority().equals("OAUTH2_USER")) {
             message.setUser(userService.findById(principal.getAttribute("id")));
-            message.setLangCode(translationService.getLanguage(message.getText()));
             var messageToSave = message.toEntity();
             System.out.println(messageToSave.toString());
             messageService.save(messageToSave);
