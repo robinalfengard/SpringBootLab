@@ -132,8 +132,7 @@ public class WebController {
         var nyUser = userService.findById(principal.getAttribute("id"));
         nyUser.setName(user.getName());
         nyUser.setEmail(user.getEmail());
-        nyUser.setProfilePicture(user.getProfilePicture());
-        nyUser.setProfilePictureBytes(user.getProfilePictureBytes());
+        if(user.getProfilePicture()!=null)nyUser.setProfilePicture(user.getProfilePicture());
         nyUser.setUsername(user.getUsername());
         userService.save(nyUser);
         return "redirect:/mypage";
