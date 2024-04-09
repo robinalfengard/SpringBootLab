@@ -37,4 +37,14 @@ public class UserService {
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+
+    public void updateUser(User nyUser, User user) {
+        nyUser.setName(user.getName());
+        nyUser.setEmail(user.getEmail());
+        nyUser.setProfilePicture(user.getProfilePicture());
+        nyUser.setProfilePictureBytes(user.getProfilePictureBytes());
+        nyUser.setUsername(user.getUsername());
+        userRepository.save(nyUser);
+    }
+
 }

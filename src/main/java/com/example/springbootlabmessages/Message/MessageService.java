@@ -6,7 +6,12 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import ch.qos.logback.core.joran.event.BodyEvent;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,9 +21,12 @@ import java.util.Optional;
 @Service
 public class MessageService {
 
-    @Autowired
-    MessageRepository messageRepository;
+
+    private final MessageRepository messageRepository;
     private final UserRepository userRepository;
+
+
+
 
     public MessageService(MessageRepository messageRepository,
                           UserRepository userRepository) {
@@ -37,15 +45,15 @@ public class MessageService {
     }
 
     @Transactional
-    public Message updateMessage(Long id, String title, String text) {
-        Message message = findById(id);
-        if (message != null) {
-            message.setTitle(title);
-            message.setText(text);
-            save(message);
+    public void updateMessage(Message oldMessage, Message newMessage, User user) {
+        if (user != null) {
+            oldMessage.setTitle(newMessage.getTitle());
+            oldMessage.setText(newMessage.getText());
+            oldMessage.setLastEditedBy(user);
+            messageRepository.save(oldMessage);
         }
-        return message;
     }
+
 
     public List<Message> getAllMessages() {
         return messageRepository.findAll();
