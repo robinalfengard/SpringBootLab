@@ -18,8 +18,6 @@ import java.util.List;
 @Controller
 public class MessageFeedController {
 
-    private int messagesPerLoad = 1;
-
     private final MessageService messageService;
     private final TranslationService translationService;
 
@@ -32,20 +30,25 @@ public class MessageFeedController {
     // MESSAGE FEED
     @GetMapping("/")
     String getMessages(Model model, Language language, LanguageDTO selectedLang, HttpSession session) {
+        if (session.getAttribute("messagePerLoad") == null) {
+            int initialMessagePerLoad = 1;
+            session.setAttribute("messagePerLoad", initialMessagePerLoad);
+        }
+        int currentMessagePerLoad = (Integer) session.getAttribute("messagePerLoad");
         var auth = SecurityContextHolder.getContext().getAuthentication();
         setUpLanguageModel(model, language, selectedLang);
         setUpModel(model, session);
         model.addAttribute("principal", auth);
         model.addAttribute("userSearchData", new UserSearchDataDTO());
         if (isAuthenticated(auth)) {
-            var listOfMessages = messageService.get1Message(messagesPerLoad);
+            var listOfMessages = messageService.get1Message(currentMessagePerLoad);
             model.addAttribute("listOfMessages", listOfMessages);
             if(session.getAttribute("messageList") != null){
                 model.addAttribute("listOfMessages", session.getAttribute("messageList"));
                 session.removeAttribute("messageList");
             }
         } else {
-            var listOfMessages = messageService.get1PublicMessage(messagesPerLoad);
+            var listOfMessages = messageService.get1PublicMessage(currentMessagePerLoad);
             model.addAttribute("listOfMessages", listOfMessages);
             if(session.getAttribute("messageList") != null){
                 model.addAttribute("listOfMessages", messageService.filterPublicMessages((List<Message>) session.getAttribute("messageList")));
@@ -63,15 +66,16 @@ public class MessageFeedController {
         setUpLanguageModel(model, language, selectedLang);
         session.removeAttribute("currentTranslation");
         session.removeAttribute("currentMessageToTranslateId");
+        int currentMessagePerLoad = (Integer) session.getAttribute("messagePerLoad");
+        session.setAttribute("messagePerLoad", currentMessagePerLoad + 1);
+        System.out.println(session.getAttribute("messagePerLoad"));
         if (isAuthenticated(auth)) {
             List<Language> languagesList = List.of(Language.values());
             model.addAttribute("languagesList", languagesList);
-            messagesPerLoad += 1;
-            var listOfMessages = messageService.get1Message(messagesPerLoad);
+            var listOfMessages = messageService.get1Message((Integer) session.getAttribute("messagePerLoad"));
             model.addAttribute("listOfMessages", listOfMessages);
         } else {
-            messagesPerLoad += 1;
-            var listOfMessages = messageService.get1PublicMessage(messagesPerLoad);
+            var listOfMessages = messageService.get1PublicMessage((Integer) session.getAttribute("messagePerLoad"));
             model.addAttribute("listOfMessages", listOfMessages);
         }
         return "redirect:/";
@@ -109,14 +113,14 @@ public class MessageFeedController {
             setUpLanguageModel(model, language, selectedLang);
             setUpModel(model, session);
             if (isAuthenticated(auth)) {
-                var listOfMessages = messageService.get1Message(messagesPerLoad);
+                var listOfMessages = messageService.get1Message((Integer) session.getAttribute("messagePerLoad"));
                 model.addAttribute("listOfMessages", listOfMessages);
                 if(session.getAttribute("messageList") != null){
                     model.addAttribute("listOfMessages", session.getAttribute("messageList"));
                 }
             }
             else {
-                var listOfMessages = messageService.get1PublicMessage(messagesPerLoad);
+                var listOfMessages = messageService.get1PublicMessage((Integer) session.getAttribute("messagePerLoad"));
                 model.addAttribute("listOfMessages", listOfMessages);
                 if(session.getAttribute("messageList") != null){
                     model.addAttribute("listOfMessages", messageService.filterPublicMessages((List<Message>) session.getAttribute("messageList")));
