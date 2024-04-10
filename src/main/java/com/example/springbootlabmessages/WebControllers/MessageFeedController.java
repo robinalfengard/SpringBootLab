@@ -20,11 +20,7 @@ public class MessageFeedController {
 
     private int messagesPerLoad = 1;
 
-    private Long currentMessageToTranslateId;
-    private String currentTranslation;
-
     private final MessageService messageService;
-
     private final TranslationService translationService;
 
 
@@ -38,7 +34,7 @@ public class MessageFeedController {
     String getMessages(Model model, Language language, LanguageDTO selectedLang, HttpSession session) {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         setUpLanguageModel(model, language, selectedLang);
-        setUpModel(model);
+        setUpModel(model, session);
         model.addAttribute("principal", auth);
         model.addAttribute("userSearchData", new UserSearchDataDTO());
         if (isAuthenticated(auth)) {
@@ -55,7 +51,6 @@ public class MessageFeedController {
                 model.addAttribute("listOfMessages", messageService.filterPublicMessages((List<Message>) session.getAttribute("messageList")));
                 session.removeAttribute("messageList");
             }
-
         }
         return "messages";
     }
@@ -84,17 +79,17 @@ public class MessageFeedController {
 
     // TRANSLATION
     @PostMapping("/translate/{messageId}")
-    public String translateMessage(@PathVariable Long messageId, @ModelAttribute LanguageDTO selectedLang, @ModelAttribute Message message) throws JsonProcessingException {
+    public String translateMessage(@PathVariable Long messageId, @ModelAttribute LanguageDTO selectedLang, @ModelAttribute Message message, HttpSession session) throws JsonProcessingException {
         String messageToTranslate = messageService.getMessageById(messageId).getText();
-        currentTranslation = translationService.translate(messageToTranslate, selectedLang.getLangCode());
-        currentMessageToTranslateId = messageId;
+        session.setAttribute("currentTranslation", translationService.translate(messageToTranslate, selectedLang.getLangCode()));
+        session.setAttribute("currentMessageToTranslateId", messageId);
         return "redirect:/";
     }
     @PostMapping("/translateSearch/{messageId}")
-    public String translateSearch(@PathVariable Long messageId, @ModelAttribute LanguageDTO selectedLang, @ModelAttribute Message message) throws JsonProcessingException {
+    public String translateSearch(@PathVariable Long messageId, @ModelAttribute LanguageDTO selectedLang, @ModelAttribute Message message, HttpSession session) throws JsonProcessingException {
         String messageToTranslate = messageService.getMessageById(messageId).getText();
-        currentTranslation = translationService.translate(messageToTranslate, selectedLang.getLangCode());
-        currentMessageToTranslateId = messageId;
+        session.setAttribute("currentTranslation", translationService.translate(messageToTranslate, selectedLang.getLangCode()));
+        session.setAttribute("currentMessageToTranslateId", messageId);
         return "redirect:/result";
     }
 
@@ -111,7 +106,7 @@ public class MessageFeedController {
         public String result(Model model, @ModelAttribute LanguageDTO selectedLang, Language language, HttpSession session) {
             var auth = SecurityContextHolder.getContext().getAuthentication();
             setUpLanguageModel(model, language, selectedLang);
-            setUpModel(model);
+            setUpModel(model, session);
             if (isAuthenticated(auth)) {
                 var listOfMessages = messageService.get1Message(messagesPerLoad);
                 model.addAttribute("listOfMessages", listOfMessages);
@@ -129,11 +124,13 @@ public class MessageFeedController {
             return "results";
         }
 
-        private void setUpModel(Model model) {
+
+        // HELPER METHODS
+        private void setUpModel(Model model, HttpSession session) {
             List<Language> languagesList = List.of(Language.values());
             model.addAttribute("languagesList", languagesList);
-            model.addAttribute("translatedMessage", currentTranslation);
-            model.addAttribute("currentMessageToTranslateId", currentMessageToTranslateId);
+            model.addAttribute("translatedMessage", session.getAttribute("currentTranslation"));
+            model.addAttribute("currentMessageToTranslateId", session.getAttribute("currentMessageToTranslateId"));
         }
 
         private boolean isAuthenticated(Authentication auth) {
