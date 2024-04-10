@@ -3,20 +3,11 @@ package com.example.springbootlabmessages.Message;
 import com.example.springbootlabmessages.User.User;
 import com.example.springbootlabmessages.User.UserRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import ch.qos.logback.core.joran.event.BodyEvent;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MessageService {
@@ -64,11 +55,11 @@ public class MessageService {
     }
 
 
-    public List<Message> get10PublicMessages(int messageLimitPerLoad) {
+    public List<Message> get1PublicMessage(int messageLimitPerLoad) {
         return messageRepository.find10NextPublicMessages(messageLimitPerLoad);
     }
 
-    public List<Message> get10Messages(int messagesPerLoad) {
+    public List<Message> get1Message(int messagesPerLoad) {
         return messageRepository.find10NextMessages(messagesPerLoad);
     }
 
