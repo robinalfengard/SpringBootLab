@@ -36,7 +36,7 @@ public class MyPageController {
             model.addAttribute("user", user);
             model.addAttribute("userdata", new UserFormData());
             model.addAttribute("principal", principal);
-            return "mypage";
+            return "MyPage/mypage";
         }
         else {
             return "redirect:/login";
