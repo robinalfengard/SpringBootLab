@@ -7,8 +7,11 @@ import com.example.springbootlabmessages.Translation.LanguageDTO;
 import com.example.springbootlabmessages.Translation.TranslationService;
 import com.example.springbootlabmessages.User.User;
 import com.example.springbootlabmessages.User.UserFormData;
+import com.example.springbootlabmessages.User.UserSearchDataDTO;
 import com.example.springbootlabmessages.User.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.boot.Banner;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -16,12 +19,16 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.expression.Messages;
+
 import java.util.List;
 
 @Controller
 public class WebController {
 
     private int messagesPerLoad = 1;
+
+
 
     private Long currentMessageToTranslateId;
     private String currentTranslation;
@@ -38,6 +45,7 @@ public class WebController {
         this.translationService = translationService;
     }
 
+    // CREATE MESSAGE
 
     @GetMapping("/createmessage")
     String home(OAuth2AuthenticationToken authentication, Model model) {
@@ -48,39 +56,52 @@ public class WebController {
     }
 
     @PostMapping("/createmessage")
-    public String createMessage(CreateMessageFormData message, OAuth2AuthenticationToken authentication) throws JsonProcessingException {
+    public String createMessage(CreateMessageFormData message, OAuth2AuthenticationToken authentication) {
         OAuth2User principal = authentication.getPrincipal();
         var auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth.getAuthorities().stream().findFirst().get().getAuthority().equals("OAUTH2_USER")) {
             message.setUser(userService.findById(principal.getAttribute("id")));
             var messageToSave = message.toEntity();
-            System.out.println(messageToSave.toString());
             messageService.save(messageToSave);
-        } else {
-            System.out.println("User not found");
         }
         return "redirect:/";
     }
 
 
 
+    // MESSAGE FEED
     @GetMapping("/")
-    String getMessages(Model model, Language language, LanguageDTO selectedLang) {
+    String getMessages(Model model, Language language, LanguageDTO selectedLang, HttpSession session) {
+        //SECURITY
         var auth = SecurityContextHolder.getContext().getAuthentication();
-        model.addAttribute("lang", language);
         model.addAttribute("principal", auth);
+        //TRANSLATION
+        model.addAttribute("lang", language);
         List<Language> languagesList = List.of(Language.values());
         model.addAttribute("languagesList", languagesList);
         model.addAttribute("selectedLang", selectedLang);
         model.addAttribute("translatedMessage", currentTranslation);
         model.addAttribute("currentMessageToTranslateId", currentMessageToTranslateId);
+        //SEARCH
+        model.addAttribute("userSearchData", new UserSearchDataDTO());
+
+        // IF AUTHENTICATED
         if (auth.getAuthorities().stream().findFirst().get().getAuthority().equals("OAUTH2_USER")) {
             var listOfMessages = messageService.get10Messages(messagesPerLoad);
             model.addAttribute("listOfMessages", listOfMessages);
+            if(session.getAttribute("messageList") != null){
+                model.addAttribute("listOfMessages", session.getAttribute("messageList"));
+                session.removeAttribute("messageList");
+            }
             return "messages";
+        // IF NOT AUTHENTICATED
         } else {
             var listOfMessages = messageService.get10PublicMessages(messagesPerLoad);
             model.addAttribute("listOfMessages", listOfMessages);
+            if(session.getAttribute("messageList") != null){
+                model.addAttribute("listOfMessages", messageService.filterPublicMessages((List<Message>) session.getAttribute("messageList")));
+                session.removeAttribute("messageList");
+            }
             return "allMessages";
         }
     }
@@ -108,12 +129,10 @@ public class WebController {
 
 
 
-
+// MYPAGE
     @GetMapping("/mypage")
     String mypage(@AuthenticationPrincipal OAuth2User principal, Model model) {
-
         var auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().toString());
         if(auth != null || auth.isAuthenticated()){
             var user = userService.findById(principal.getAttribute("id"));
             model.addAttribute("user", user);
@@ -134,6 +153,7 @@ public class WebController {
         nyUser.setEmail(user.getEmail());
         if(user.getProfilePicture()!=null)nyUser.setProfilePicture(user.getProfilePicture());
         nyUser.setUsername(user.getUsername());
+        userService.delete(user);
         userService.save(nyUser);
         return "redirect:/mypage";
     }
@@ -142,7 +162,9 @@ public class WebController {
     @GetMapping("/mymessages")
     String myMessages(OAuth2AuthenticationToken authentication, Model model) {
         OAuth2User principal = authentication.getPrincipal();
-        Long userId = userService.findById(principal.getAttribute("id")).getId();
+        model.addAttribute("principal", principal);
+        OAuth2User oAuth2User = authentication.getPrincipal();
+        Long userId = userService.findById(oAuth2User.getAttribute("id")).getId();
         List<Message> messageList = messageService.getAllMessagesByUser(userId);
         model.addAttribute("messageList", messageList);
         return "mymessages";
@@ -150,7 +172,9 @@ public class WebController {
 
 
     @GetMapping("/editmessage/{id}")
-    public String editMessage(Model model, @PathVariable Long id) {
+    public String editMessage(Model model, @PathVariable Long id, OAuth2AuthenticationToken authentication) {
+        OAuth2User principal = authentication.getPrincipal();
+        model.addAttribute("principal", principal);
         model.addAttribute("message", messageService.findById(id));
         return "editmessage";
     }
@@ -166,14 +190,65 @@ public class WebController {
         return "redirect:/mymessages";
     }
 
+
+    // TRANSLATION
     @PostMapping("/translate/{messageId}")
-    public String translateMessage(@PathVariable Long messageId, @ModelAttribute LanguageDTO selectedLang, @ModelAttribute Message message, Model model) throws JsonProcessingException {
+    public String translateMessage(@PathVariable Long messageId, @ModelAttribute LanguageDTO selectedLang, @ModelAttribute Message message) throws JsonProcessingException {
         String messageToTranslate = messageService.getMessageById(messageId).getText();
         currentTranslation = translationService.translate(messageToTranslate, selectedLang.getLangCode());
         currentMessageToTranslateId = messageId;
         return "redirect:/";
     }
 
+
+
+
+    // SEARCH
+@GetMapping("/result")
+public String result(Model model, @ModelAttribute LanguageDTO selectedLang, Language language, HttpSession session) {
+    //SECURITY
+    var auth = SecurityContextHolder.getContext().getAuthentication();
+    //TRANSLATION
+    model.addAttribute("lang", language);
+    List<Language> languagesList = List.of(Language.values());
+    model.addAttribute("languagesList", languagesList);
+    model.addAttribute("selectedLang", selectedLang);
+    model.addAttribute("translatedMessage", currentTranslation);
+    model.addAttribute("currentMessageToTranslateId", currentMessageToTranslateId);
+
+    if (auth.getAuthorities().stream().findFirst().get().getAuthority().equals("OAUTH2_USER")) {
+        var listOfMessages = messageService.get10Messages(messagesPerLoad);
+        model.addAttribute("listOfMessages", listOfMessages);
+        if(session.getAttribute("messageList") != null){
+            model.addAttribute("listOfMessages", session.getAttribute("messageList"));
+        }
+    }
+    else {
+        var listOfMessages = messageService.get10PublicMessages(messagesPerLoad);
+        model.addAttribute("listOfMessages", listOfMessages);
+        if(session.getAttribute("messageList") != null){
+            model.addAttribute("listOfMessages", messageService.filterPublicMessages((List<Message>) session.getAttribute("messageList")));
+        }
+    }
+    return "results";
+    }
+
+    @PostMapping("/translateSearch/{messageId}")
+    public String translateSearch(@PathVariable Long messageId, @ModelAttribute LanguageDTO selectedLang, @ModelAttribute Message message) throws JsonProcessingException {
+        String messageToTranslate = messageService.getMessageById(messageId).getText();
+        currentTranslation = translationService.translate(messageToTranslate, selectedLang.getLangCode());
+        currentMessageToTranslateId = messageId;
+        return "redirect:/result";
+    }
+
+
+
+    @PostMapping("/search")
+    public String searchMessages(@ModelAttribute UserSearchDataDTO searchText, HttpSession session) {
+        List<Message> listOfMessagesBasedOnSearch = messageService.findAllByUserName(searchText.getSearchText());
+        session.setAttribute("messageList", listOfMessagesBasedOnSearch);
+        return "redirect:/result";
+    }
 
 
 }

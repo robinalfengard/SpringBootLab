@@ -64,61 +64,19 @@
         }
 
         .editable-rectangle {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 50%;
-            height: 90%;
+            display: flex;
+            flex-direction: column;
             border: 2px solid #ccc;
-            overflow: auto;
+            margin-left: auto;
+            margin-right: auto;
+            width: 70%;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
         }
 
-        #create-message-btn {
-            position: absolute;
-            left: 80px;
-            top: 10px;
-            border: 1px solid black;
-            border-radius: 5px;
-            padding: 5px;
-            background-color: yellowgreen;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        #my-messages-btn {
-            position: absolute;
-            left: 230px;
-            top: 10px;
-            border: 1px solid black;
-            border-radius: 5px;
-            padding: 5px;
-            background-color: yellowgreen;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        #home-btn {
-            position: absolute;
-            left: 10px;
-            top: 10px;
-            border: 1px solid black;
-            border-radius: 5px;
-            padding: 5px;
-            background-color: yellowgreen;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-        }
         #edit-image{
-            position: absolute;
-            left: 40%;
-            top: 10px;
+
             border: 1px solid black;
             border-radius: 5px;
             padding: 5px;
@@ -127,6 +85,8 @@
             font-weight: bold;
             cursor: pointer;
             text-decoration: none;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         #my-page-title {
@@ -189,7 +149,6 @@
             font-size: 16px;
             font-weight: bold;
             margin: 0 auto;
-            display: block;
             text-decoration: none;
         }
 
@@ -202,14 +161,18 @@
 </div>
 <div class="header-buttons">
     <a th:if="${!principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/login" >Log in</a>
+    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/">Message Feed</a>
     <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/createmessage" >Create Message</a>
+    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/mymessages" >My Messages</a>
     <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/logout" >Log out</a>
 </div>
 <div class="editable-rectangle" contenteditable="false">
     <h4 id="my-page-title">My Page</h4>
-    <a href="http://localhost:8080/uploadimage" id ="edit-image">Change Profile Picture</a>
+
     <form th:action="@{/mypage}" th:object="${user}" method="post">
         <img id="profile-picture" th:src="${user.profilePicture}" alt="Profile Picture">
+        <a href="http://localhost:8080/uploadimage" id ="edit-image">Change Profile Picture</a>
+        <br>
         <label for="name" id="name-label" th:text="#{Name}+': '"></label>
         <input type="text" id="name" th:field="*{name}">
         <br>

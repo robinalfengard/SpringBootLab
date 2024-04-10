@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" th:href="@{/home.css}">
+</head>
+<body>
+<div class="language-options">
+    <a href="http://localhost:8080/?lang=en" id="english-btn">English</a>
+    <a href="http://localhost:8080/?lang=sv" id="swedish-btn">Swedish</a>
+</div>
+<div class="header-buttons">
+    <a class="header-button" href="http://localhost:8080/login" >Log in</a>
+</div>
+
+<div>
+    <h1 class="site-title">Beautiful World</h1>
+</div>
+<button class="load-more" onclick="window.location.href='http://localhost:8080'">Back to Message Feed</button>
+<div>
+    <h2 style="margin-right: auto; margin-left: auto; text-align: center">Results</h2>
+
+</div>
+
+
+<div th:each="message : ${listOfMessages}" class="card mb-3">
+    <div class="card-body">
+        <h5 class="center-message" th:text="${message?.title}"></h5>
+        <p class="center-message" th:text="${message?.text}"></p>
+        <p class="center-message" th:if="${translatedMessage != null && currentMessageToTranslateId == message.id}" th:text="'Translation: ' + ${translatedMessage}"></p>
+        <div class="user-info">
+            <p class="message" th:text="|#{Author}: ${message?.user.username}|"></p>
+            <p class="message" th:text="|#{PublishedTime}: ${message?.createdAt}|"></p>
+        </div>
+        <div class="translate-section">
+            <p class="message">Translate to</p>
+            <form th:action="@{'/translateSearch/' + ${message.id}}" th:object="${selectedLang}" method="post">
+
+                <select id="languageSelect">
+                    <option th:each="lang : ${languagesList}"
+                            th:value="${lang.getLangCode()}"
+                            th:text="${lang}">
+                    </option>
+                </select>
+                <textarea   id="languageSelected"  th:field="*{langCode}"></textarea>
+
+                <button type="submit">Translate</button>
+
+            </form>
+        </div>
+    </div>
+
+</div>
+<script>
+    function setupLanguageSelectionListenerForMessage(messageCard) {
+        messageCard.addEventListener("change", function(event) {
+            if (event.target && event.target.id === "languageSelect") {
+                var selectedValue = event.target.value;
+                event.target.nextElementSibling.value = selectedValue;
+            }
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        setupLanguageSelectionListenerForMessage(document);
+
+    });
+</script>
+</body>
+</html>
