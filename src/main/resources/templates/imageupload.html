@@ -56,7 +56,19 @@
             padding: 10px;
             width: 400px;
             height: 50px;
-
+        }
+        #my-page-btn{
+            position: absolute;
+            right: 50%;
+            top: 10px;
+            border: 1px solid black;
+            border-radius: 5px;
+            padding: 5px;
+            background-color: white;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
         }
     </style>
 </head>
@@ -66,6 +78,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 mx-auto">
+                <a href="http://localhost:8080/mypage" id="my-page-btn" th:text="#{MyPage}"></a>
                 <h6 id="uploadtitle">Upload Profile Picture</h6>
                 <p id="messageUpload" th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>
                 <form method="post" th:action="@{/upload}" enctype="multipart/form-data">
