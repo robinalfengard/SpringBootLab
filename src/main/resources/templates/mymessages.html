@@ -40,22 +40,16 @@
       text-align: center;
     }
 
-    .center {
-      text-align: center;
-    }
 
     .title {
+      display: flex;
       font-size: 22px;
       font-weight: bold;
       text-align: center;
+      margin-bottom: 1px;
     }
 
-    #center\ message {
-      width: 60%;
-      font-size: 20px;
-      margin: 0 auto;
-      display: block;
-    }
+
 
     .message {
       font-size: 14px;
@@ -100,47 +94,6 @@
       text-decoration: none;
     }
 
-    #my-page-btn{
-      position: absolute;
-      left: 240px;
-      top: 10px;
-      border: 1px solid black;
-      border-radius: 5px;
-      padding: 5px;
-      background-color: yellowgreen;
-      font-size: 20px;
-      font-weight: bold;
-      cursor: pointer;
-      text-decoration: none;
-    }
-
-    #create-message-btn {
-      position: absolute;
-      left: 80px;
-      top: 10px;
-      border: 1px solid black;
-      border-radius: 5px;
-      padding: 5px;
-      background-color: yellowgreen;
-      font-size: 20px;
-      font-weight: bold;
-      cursor: pointer;
-      text-decoration: none;
-    }
-
-    #home-btn {
-      position: absolute;
-      left: 10px;
-      top: 10px;
-      border: 1px solid black;
-      border-radius: 5px;
-      padding: 5px;
-      background-color: yellowgreen;
-      font-size: 20px;
-      font-weight: bold;
-      cursor: pointer;
-      text-decoration: none;
-    }
 
     #edit-btn {
       border: 1px solid black;
@@ -183,8 +136,8 @@
 
   <div th:each="message : ${messageList}" class="card-body">
 
-      <h5 class="center title" th:text="'Title: ' +  ${ message?.title }" style="text-decoration: underline; font-size: 16px" ></h5>
-      <p id="message" th:text= "${ message?.text}"></p>
+      <h5 class="title" th:text="${ message?.title }" style="text-decoration: underline;" ></h5>
+      <p class="message" th:text= "${ message?.text}"></p>
       <div class="user-info">
         <p class="message" th:text="#{Author} + ': ' + ${message?.user.username}"></p>
         <p class="message" th:text="#{PublishedTime}+ ': ' + ${message?.createdAt}"></p>

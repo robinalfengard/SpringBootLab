@@ -67,7 +67,6 @@ public class MessageFeedController {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         setUpLanguageModel(model, language, selectedLang);
 
-
         if (isAuthenticated(auth)) {
             List<Language> languagesList = List.of(Language.values());
             model.addAttribute("languagesList", languagesList);
