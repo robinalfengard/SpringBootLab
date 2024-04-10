@@ -60,7 +60,7 @@ public class MyPageController {
         Long userId = userService.findById(oAuth2User.getAttribute("id")).getId();
         List<Message> messageList = messageService.getAllMessagesByUser(userId);
         model.addAttribute("messageList", messageList);
-        return "mymessages";
+        return "MyPage/mymessages";
     }
 
 

@@ -52,16 +52,17 @@ public class MessageFeedController {
                 session.removeAttribute("messageList");
             }
         }
-        return "messages";
+        return "MessageFeed/messages";
     }
 
 
 
     @GetMapping("/loadMoreMessages")
-    public String loadMoreMessages(Model model, Language language, LanguageDTO selectedLang) {
+    public String loadMoreMessages(Model model, Language language, LanguageDTO selectedLang, HttpSession session) {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         setUpLanguageModel(model, language, selectedLang);
-
+        session.removeAttribute("currentTranslation");
+        session.removeAttribute("currentMessageToTranslateId");
         if (isAuthenticated(auth)) {
             List<Language> languagesList = List.of(Language.values());
             model.addAttribute("languagesList", languagesList);
@@ -121,7 +122,7 @@ public class MessageFeedController {
                     model.addAttribute("listOfMessages", messageService.filterPublicMessages((List<Message>) session.getAttribute("messageList")));
                 }
             }
-            return "results";
+            return "MessageFeed/results";
         }
 
 

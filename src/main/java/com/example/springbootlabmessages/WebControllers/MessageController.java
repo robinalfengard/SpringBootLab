@@ -29,7 +29,7 @@ public class MessageController {
         OAuth2User principal = authentication.getPrincipal();
         model.addAttribute("formdata", new CreateMessageFormData());
         model.addAttribute("principal", principal);
-        return "createmessage";
+        return "CreateMessage/createmessage";
     }
 
     @PostMapping("/createmessage")
@@ -51,7 +51,7 @@ public class MessageController {
         OAuth2User principal = authentication.getPrincipal();
         model.addAttribute("principal", principal);
         model.addAttribute("message", messageService.findById(id));
-        return "editmessage";
+        return "MyPage/editmessage";
     }
 
     @PostMapping("/editmessage/{id}")

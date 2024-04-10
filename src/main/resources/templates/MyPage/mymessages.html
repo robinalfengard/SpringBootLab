@@ -42,7 +42,6 @@
 
 
     .title {
-      display: flex;
       font-size: 22px;
       font-weight: bold;
       text-align: center;
@@ -58,6 +57,7 @@
       flex-direction: row;
       justify-content: space-between;
       margin-bottom: 14px;
+      margin-top: 1px;
     }
 
     .user-info {
@@ -116,6 +116,14 @@
       margin-right: auto;
     }
 
+    .user-info {
+      display: block;
+      width: 100%;
+    }
+    .user-info p{
+      font-size: 12px;
+    }
+
 
   </style>
 </head>
@@ -137,11 +145,15 @@
   <div th:each="message : ${messageList}" class="card-body">
 
       <h5 class="title" th:text="${ message?.title }" style="text-decoration: underline;" ></h5>
-      <p class="message" th:text= "${ message?.text}"></p>
+      <p class="message" th:text= "${ message?.text}" style="font-size: 20px;"></p>
       <div class="user-info">
         <p class="message" th:text="#{Author} + ': ' + ${message?.user.username}"></p>
         <p class="message" th:text="#{PublishedTime}+ ': ' + ${message?.createdAt}"></p>
       </div >
+    <div class="user-info">
+      <p class="message" th:if="${message?.lastEditedBy != null}" th:text="#{EditedBy} + ': ' + ${message?.lastEditedBy.username}"></p>
+      <p class="message"  th:if="${message?.lastEditedBy != null}" th:text="#{LastEditedTime}+ ': ' + ${message?.updatedAt}"></p>
+    </div>
         <a th:href="@{'/editmessage/' + ${message.id}}" class="edit-btn" id="edit-btn">Edit</a>
 
 

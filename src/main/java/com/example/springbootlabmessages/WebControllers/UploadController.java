@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.swing.text.html.parser.Entity;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -41,6 +40,6 @@ public class UploadController {
         nyUser.setProfilePicture("/profilepics/" + file.getOriginalFilename());
         userService.save(nyUser);
         model.addAttribute("msg", "Uploaded images: " + fileNames.toString());
-        return "imageupload";
+        return "MyPage/imageupload";
     }
 }
