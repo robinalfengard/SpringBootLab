@@ -10,6 +10,30 @@
       font-family: "Calibri", sans-serif;
       font-size: 40px;
     }
+    .header-buttons {
+      background: linear-gradient(to right, yellow, lightskyblue, yellow);
+      display: flex;
+      margin: 20px;
+      flex-direction: row;
+      top: 10px;
+      border-radius: 5px;
+      padding: 5px;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .header-button  {
+      margin: 10px;
+      border-radius: 5px;
+      border: 1px solid black;
+      padding: 5px;
+      background-color: white;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+    }
 
     .site-title {
       color: darkblue;
@@ -131,10 +155,10 @@
     <a href="http://localhost:8080/?lang=sv" id="swedish-btn">Swedish</a>
   </div>
   <div class="header-buttons">
-    <a th:if="${!principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/login" id="login-btn">Log in</a>
-    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/mypage" id="my-page-btn">My Page</a>
-    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/createmessage" id="create-message-btn">Create Message</a>
-    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/logout" id="logout-btn">Log out</a>
+    <a th:if="${!principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/login">Log in</a>
+    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/mypage">My Page</a>
+    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/createmessage">Create Message</a>
+    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/logout">Log out</a>
   </div>
   <div>
     <h1 class="site-title">My messages</h1>

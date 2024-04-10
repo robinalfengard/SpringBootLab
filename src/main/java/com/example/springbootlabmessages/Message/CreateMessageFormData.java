@@ -16,12 +16,6 @@ public class CreateMessageFormData {
     private boolean isPublic;
     private LocalDateTime localDateTime;
 
-    public CreateMessageFormData(String title, String text, User user) {
-        this.title = title;
-        this.text = text;
-        this.user = user;
-    }
-
     public CreateMessageFormData() {
     }
 
