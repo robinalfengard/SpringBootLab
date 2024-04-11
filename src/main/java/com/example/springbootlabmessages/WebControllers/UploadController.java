@@ -1,4 +1,4 @@
-package com.example.springbootlabmessages.web;
+package com.example.springbootlabmessages.WebControllers;
 
 import com.example.springbootlabmessages.User.UserService;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,7 +27,7 @@ public class UploadController {
 
     @GetMapping("/uploadimage")
     public String displayUploadForm() {
-        return "imageupload";
+        return "MyPage/imageupload";
     }
 
     @PostMapping("/upload") public String uploadImage(Model model, @RequestParam("image") MultipartFile file, OAuth2AuthenticationToken authentication) throws IOException {
