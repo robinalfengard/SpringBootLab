@@ -11,7 +11,8 @@
     <a href="http://localhost:8080/?lang=sv" id="swedish-btn">Swedish</a>
 </div>
 <div class="header-buttons">
-    <a class="header-button" href="http://localhost:8080/login" >Log in</a>
+
+    <a class="header-button" href="http://localhost:8080/">Message Feed</a>
 </div>
 
 <div>
@@ -27,11 +28,18 @@
 <div th:each="message : ${listOfMessages}" class="card mb-3">
     <div class="card-body">
         <h5 class="center-message" th:text="${message?.title}"></h5>
-        <p class="center-message" th:text="${message?.text}"></p>
-        <p class="center-message" th:if="${translatedMessage != null && currentMessageToTranslateId == message.id}" th:text="'Translation: ' + ${translatedMessage}"></p>
-        <div class="user-info">
+        <p class="center-message" th:text="${message?.text}" style="width: 100%"></p>
+<div style="margin-top: 10px">
+    <p class="center-message" th:if="${translatedMessage != null && currentMessageToTranslateId == message.id}" th:text="'Translation: ' + ${translatedMessage}" style="width: 100%;"></p>
+
+</div>
+              <div class="user-info">
             <p class="message" th:text="|#{Author}: ${message?.user.username}|"></p>
             <p class="message" th:text="|#{PublishedTime}: ${message?.createdAt}|"></p>
+        </div>
+        <div class="user-info">
+            <p class="message" th:if="${message?.lastEditedBy != null}" th:text="#{EditedBy} + ': ' + ${message?.lastEditedBy.username}"></p>
+            <p class="message"  th:if="${message?.lastEditedBy != null}" th:text="#{LastEditedTime}+ ': ' + ${message?.updatedAt}"></p>
         </div>
         <div class="translate-section">
             <p class="message">Translate to</p>

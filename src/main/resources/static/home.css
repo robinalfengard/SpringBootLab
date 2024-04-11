@@ -35,6 +35,9 @@ body {
     margin: 0 auto;
     display: block;
 }
+
+
+
 #english-btn{
     position: absolute;
     right: 10px;
@@ -64,12 +67,21 @@ body {
 
 
 .message {
-    font-size: 18px;
+    font-size: 14px;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    margin-top: 1px;
 }
 
 .user-info {
-    display: flex;
-    justify-content: space-evenly;
+    display: block;
+    width: 100%;
+}
+.user-info p{
+    font-size: 12px;
 }
 
 .translate-section {
@@ -78,7 +90,8 @@ body {
     flex-direction: row;
     gap: 10px;
     justify-content: center;
-    margin-top: 10px; /* Add margin-top to create space below the element */
+    margin-top: 10px;
+    width: 100%;
 }
 #languageSelected {
     display: none;
@@ -120,11 +133,15 @@ body {
     margin-bottom: 20px;
 }
 .card-body{
-margin-left: auto;
-margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    border-top: solid black 1px;
+    border-bottom: solid black 1px;
     width: 70%;
-    border-top: 2px solid black;
-    border-bottom: 2px solid black;
+    margin-left: auto;
+    margin-right: auto;
 }
 .load-more{
     margin-left: auto;
@@ -133,4 +150,97 @@ margin-right: auto;
     justify-content: center;
     margin-bottom: 20px;
     margin-top: 20px;
+}
+.userEdit-info{
+    display: flex;
+    justify-content: left;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.center-message h5{
+    margin-top: 10px;
+    text-decoration: underline;
+}
+
+
+
+#name-label {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+#username-label {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+#email-label {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.editable-rectangle {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #ccc;
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+
+
+#my-page-title {
+    text-align: center;
+    font-style: italic;
+    font-family: "Californian FB", sans-serif;
+}
+
+#profile-picture {
+    width: 30%;
+    height: 30%;
+    border-radius: 50%;
+    margin: 0 auto;
+    display: block;
+}
+
+#name {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: left;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#username {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: left;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#email {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: left;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }

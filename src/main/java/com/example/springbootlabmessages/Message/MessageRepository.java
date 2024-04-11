@@ -18,9 +18,6 @@ public interface MessageRepository extends ListCrudRepository<Message, Long> {
     @Query("SELECT m FROM Message m WHERE m.isPublic = true")
     List<Message> findAllWhereIsPublicIsTrue();
 
-    @Query("SELECT m FROM Message m WHERE m.user.id = ?1")
-    List<Message> findAllByUser(Long userId);
-
 
     @Query(value = "SELECT * FROM message WHERE is_public = true ORDER BY created_at DESC LIMIT :messageLimitPerLoad", nativeQuery = true)
     List<Message> find10NextPublicMessages(int messageLimitPerLoad);

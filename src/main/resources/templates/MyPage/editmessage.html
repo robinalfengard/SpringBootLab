@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/createMessage.css}">
+    <meta charset="UTF-8">
+    <title>Edit Message</title>
+
+
+</head>
+<body>
+<div class="language-options">
+    <a href="http://localhost:8080/?lang=en" id="english-btn">English</a>
+    <a href="http://localhost:8080/?lang=sv" id="swedish-btn">Swedish</a>
+</div>
+<div class="header-buttons">
+    <a  th:if="${!principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/login">Log in</a>
+    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/mypage" >My Page</a>
+    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/createmessage" >Create Message</a>
+    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/logout" >Log out</a>
+</div>
+<div class="content">
+    <h1 class="site-title">Edit Message</h1>
+    <div class="post-section">
+        <form th:action="@{/editmessage/{messageId}(messageId=${message.id})}" th:object="${message}" method="post">
+            <textarea id="post-title" th:placeholder="#{Title}" th:field="*{title}"></textarea>
+            <textarea id="post-text" th:placeholder="#{Sharethought}" th:field="*{text}"></textarea>
+            <label id="public-label">Public</label>
+            <input type="checkbox" id="publicCheckbox" name="public" value="public" th:field="*{public}">
+            <button id="submit-btn" type="submit" th:text="#{Share}">Update</button>
+        </form>
+    </div>
+    <br>
+</div>
+</body>
+</html>

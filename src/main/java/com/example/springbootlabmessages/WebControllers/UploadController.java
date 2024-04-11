@@ -40,6 +40,6 @@ public class UploadController {
         nyUser.setProfilePicture("/profilepics/" + file.getOriginalFilename());
         userService.save(nyUser);
         model.addAttribute("msg", "Uploaded images: " + fileNames.toString());
-        return "imageupload";
+        return "MyPage/imageupload";
     }
 }

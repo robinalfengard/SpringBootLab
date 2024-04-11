@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html  lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" th:href="@{/home.css}">
+  <title>My messages</title>
+
+</head>
+<body>
+  <div class="language-options">
+    <a href="http://localhost:8080/?lang=en" id="english-btn">English</a>
+    <a href="http://localhost:8080/?lang=sv" id="swedish-btn">Swedish</a>
+  </div>
+  <div class="header-buttons">
+    <a th:if="${!principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/login">Log in</a>
+    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/mypage">My Page</a>
+    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/createmessage">Create Message</a>
+    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/logout">Log out</a>
+  </div>
+  <div>
+    <h1 class="site-title">My messages</h1>
+  </div>
+
+  <div th:each="message : ${messageList}" class="card-body">
+
+      <h5 class="title" th:text="${ message?.title }" style="text-decoration: underline; margin-bottom: 5px " ></h5>
+      <p class="message" th:text= "${ message?.text}" style="font-size: 20px;"></p>
+      <div class="user-info">
+        <p class="message" th:text="#{Author} + ': ' + ${message?.user.username}"></p>
+        <p class="message" th:text="#{PublishedTime}+ ': ' + ${message?.createdAt}"></p>
+      </div >
+    <div class="user-info">
+      <p class="message" th:if="${message?.lastEditedBy != null}" th:text="#{EditedBy} + ': ' + ${message?.lastEditedBy.username}"></p>
+      <p class="message"  th:if="${message?.lastEditedBy != null}" th:text="#{LastEditedTime}+ ': ' + ${message?.updatedAt}"></p>
+    </div>
+        <a th:href="@{'/editmessage/' + ${message.id}}" class="header-button" >Edit</a>
+
+
+
+    </div>
+</body>
+</html>

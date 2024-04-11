@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/home.css}">
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<div class="language-options">
+    <a href="http://localhost:8080/mypage?lang=en" id="english-btn">English</a>
+    <a href="http://localhost:8080/mypage?lang=sv" id="swedish-btn">Swedish</a>
+</div>
+<div class="header-buttons">
+    <a th:if="${!principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/login" >Log in</a>
+    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/">Message Feed</a>
+    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/createmessage" >Create Message</a>
+    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/mymessages" >My Messages</a>
+    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/logout" >Log out</a>
+</div>
+<div class="editable-rectangle" contenteditable="false">
+    <h4 id="my-page-title">My Page</h4>
+
+    <form th:action="@{/mypage}" th:object="${user}" method="post">
+        <img id="profile-picture" th:src="${user.profilePicture}" alt="Profile Picture" style="margin-bottom: 10px">
+        <a href="http://localhost:8080/uploadimage" class="header-button" >Change Profile Picture</a>
+        <br >
+        <label for="name" id="name-label" th:text="#{Name}+': '" style="margin-top: 20px"></label>
+        <input type="text" id="name" th:field="*{name}">
+        <br>
+        <label for="username" id="username-label" th:text="#{UserName}+': '"></label>
+        <input type="text" id="username" th:field="*{username}" >
+        <br>
+        <label for="email" id="email-label" th:text="#{Email}+': '"></label>
+        <input type="email" id="email" th:field="*{email}">
+        <br> <br>
+        <button type="submit" class="header-button" th:text="#{SaveChanges}"></button>
+    </form>
+</div>
+</body>
+</html>

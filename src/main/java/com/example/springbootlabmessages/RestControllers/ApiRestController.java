@@ -1,11 +1,9 @@
-package com.example.springbootlabmessages.rest;
+package com.example.springbootlabmessages.RestControllers;
 
 import com.example.springbootlabmessages.Message.Message;
 import com.example.springbootlabmessages.Message.MessageService;
-import com.example.springbootlabmessages.User.User;
 import com.example.springbootlabmessages.User.UserService;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.HtmlUtils;
 
 import java.util.List;
 

@@ -3,22 +3,21 @@ package com.example.springbootlabmessages.Message;
 import com.example.springbootlabmessages.User.User;
 import com.example.springbootlabmessages.User.UserRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import ch.qos.logback.core.joran.event.BodyEvent;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MessageService {
 
-    @Autowired
-    MessageRepository messageRepository;
+
+    private final MessageRepository messageRepository;
     private final UserRepository userRepository;
+
+
+
 
     public MessageService(MessageRepository messageRepository,
                           UserRepository userRepository) {
@@ -37,30 +36,28 @@ public class MessageService {
     }
 
     @Transactional
-    public Message updateMessage(Long id, String title, String text) {
-        Message message = findById(id);
-        if (message != null) {
-            message.setTitle(title);
-            message.setText(text);
-            save(message);
+    public void updateMessage(Message oldMessage, Message newMessage, User user) {
+        if (user != null) {
+            oldMessage.setTitle(newMessage.getTitle());
+            oldMessage.setText(newMessage.getText());
+            oldMessage.setLastEditedBy(user);
+            messageRepository.save(oldMessage);
         }
-        return message;
     }
 
-    public List<Message> getAllMessages() {
-        return messageRepository.findAll();
-    }
+
+
 
     public List<Message> getAllMessagesByUser(Long id) {
         return messageRepository.findAllByUserId(id);
     }
 
 
-    public List<Message> get10PublicMessages(int messageLimitPerLoad) {
+    public List<Message> get1PublicMessage(int messageLimitPerLoad) {
         return messageRepository.find10NextPublicMessages(messageLimitPerLoad);
     }
 
-    public List<Message> get10Messages(int messagesPerLoad) {
+    public List<Message> get1Message(int messagesPerLoad) {
         return messageRepository.find10NextMessages(messagesPerLoad);
     }
 
