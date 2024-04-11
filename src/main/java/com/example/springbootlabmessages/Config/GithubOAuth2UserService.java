@@ -12,8 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 
-@Service
-public class GitHubOatuhService {
+
     @Service
     public class GithubOAuth2UserService extends DefaultOAuth2UserService {
 
@@ -48,8 +47,7 @@ public class GitHubOatuhService {
 
 
         private void updateUser(GithubUser gitUser) {
-
-        Long userId = gitUser.getUserId();
+        Long userId = Long.valueOf(gitUser.getUserId());
             System.out.println(userId);
         var user = userRepository.findById(userId).orElse(null);
         if (user == null) {
@@ -67,4 +65,4 @@ public class GitHubOatuhService {
 
 
     }
-}
+
