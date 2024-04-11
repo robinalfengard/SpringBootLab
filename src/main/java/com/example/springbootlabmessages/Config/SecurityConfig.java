@@ -27,7 +27,7 @@ public class SecurityConfig {
         return security
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/login", "/", "/resources/**", "/type/css/**","/resources/uploads/*.*", "/resources/static/uploads/**", "createMessage.css","mymessages.css", "home.css", "/api/**", "/loadMoreMessages", "/swagger-ui/**","/swagger-ui.html", "/v3/api-docs/**", "/swagger", "/translate/**", "/translate", "/favicon.ico", "/search", "/result", "/translateSearch/**", "profilepics/**" ).permitAll();
-                    auth.requestMatchers("/updateuser","/createmessage", "/allMessages","/mymessages", "/mypage","/upload" , "/uploadimage","/editmessage/**").authenticated();
+                    auth.requestMatchers("/updateuser","/createmessage", "/allMessages","/mymessages", "/mypage","/upload" , "/uploadimage","/editmessage/**", "/newRandomPhrase").authenticated();
                     auth.anyRequest().denyAll();
                 })
                 .oauth2Login(oauth2Login ->

@@ -1,9 +1,12 @@
 package com.example.springbootlabmessages.WebControllers;
 
+import com.example.springbootlabmessages.GetRandomInfoApi.GetRandomInfoService;
 import com.example.springbootlabmessages.Message.CreateMessageFormData;
 import com.example.springbootlabmessages.Message.Message;
 import com.example.springbootlabmessages.Message.MessageService;
 import com.example.springbootlabmessages.User.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -18,19 +21,36 @@ public class MessageController {
     private final UserService userService;
     private final MessageService messageService;
 
-    public MessageController(UserService userService, MessageService messageService) {
+    private final GetRandomInfoService getRandomInfoService;
+
+    public MessageController(UserService userService, MessageService messageService, GetRandomInfoService getRandomInfoService) {
         this.userService = userService;
         this.messageService = messageService;
+        this.getRandomInfoService = getRandomInfoService;
     }
 
     // CREATE MESSAGES
     @GetMapping("/createmessage")
-    String home(OAuth2AuthenticationToken authentication, Model model) {
+    public String home(OAuth2AuthenticationToken authentication, Model model, HttpSession session) throws JsonProcessingException {
+        System.out.println(session.getAttribute("randomPhrase"));
         OAuth2User principal = authentication.getPrincipal();
         model.addAttribute("formdata", new CreateMessageFormData());
         model.addAttribute("principal", principal);
         return "CreateMessage/createmessage";
     }
+
+    @GetMapping("/newRandomPhrase")
+    public String newRandomPhrase(OAuth2AuthenticationToken authentication, HttpSession session, Model model) throws JsonProcessingException {
+        OAuth2User principal = authentication.getPrincipal();
+        model.addAttribute("principal", principal);
+        String randomPhrase = getRandomInfoService.getRandomInfo();
+        session.setAttribute("randomPhrase", randomPhrase);
+        model.addAttribute("formdata", new CreateMessageFormData());
+        model.addAttribute("randomPhrase", session.getAttribute("randomPhrase"));
+        return "CreateMessage/createmessage";
+    }
+
+
 
     @PostMapping("/createmessage")
     public String createMessage(CreateMessageFormData message, OAuth2AuthenticationToken authentication) {

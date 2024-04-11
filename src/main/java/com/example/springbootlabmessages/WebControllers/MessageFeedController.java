@@ -1,4 +1,5 @@
 package com.example.springbootlabmessages.WebControllers;
+import com.example.springbootlabmessages.GetRandomInfoApi.GetRandomInfoService;
 import com.example.springbootlabmessages.Message.Message;
 import com.example.springbootlabmessages.Message.MessageService;
 import com.example.springbootlabmessages.Translation.Language;
@@ -21,6 +22,7 @@ public class MessageFeedController {
     private final TranslationService translationService;
 
 
+
     public MessageFeedController(MessageService messageService, TranslationService translationService) {
         this.messageService = messageService;
         this.translationService = translationService;
@@ -28,7 +30,7 @@ public class MessageFeedController {
 
     // MESSAGE FEED
     @GetMapping("/")
-    String getMessages(Model model, Language language, LanguageDTO selectedLang, HttpSession session) {
+    String getMessages(Model model, Language language, LanguageDTO selectedLang, HttpSession session)  {
         if (session.getAttribute("messagePerLoad") == null) {
             int initialMessagePerLoad = 1;
             session.setAttribute("messagePerLoad", initialMessagePerLoad);
