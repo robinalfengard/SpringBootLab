@@ -36,7 +36,7 @@
     <div class="card-body">
         <h5 class="center-message" th:text="${message?.title}" style="text-decoration: underline; margin-bottom: 10px;" ></h5>
         <p class="center-message" th:text="${message?.text}" style="width: 100%"></p>
-        <p th:if="${translatedMessage != null && currentMessageToTranslateId == message.id}" th:text  ="Translation" style="margin-top: 10px; text-decoration: underline"></p>
+        <p   th:if="${translatedMessage != null && currentMessageToTranslateId == message.id}" th:text  ="Translation" style="margin-top: 10px; text-decoration: underline"></p>
         <p class="center-message" th:if="${translatedMessage != null && currentMessageToTranslateId == message.id}" th:text=" ${translatedMessage}" style="width: 100%"></p>
 
         <div class="user-info">
