@@ -71,13 +71,15 @@ body{
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
 }
-
+.flex-column {
+    flex-direction: column;
+}
 .profile-pic-container {
     text-align: center;
     margin-bottom: 20px;
 }
 
-.profile-pic {
+.profile-pic-my-page {
     width: 150px;
     height: 150px;
     border-radius: 50%;
