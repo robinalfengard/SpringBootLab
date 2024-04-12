@@ -1,40 +1,87 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
-    <link rel="stylesheet" th:href="@{/home.css}">
     <meta charset="UTF-8">
     <title>Home</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/styles.css}">
 </head>
 <body>
-<div class="language-options">
-    <a href="http://localhost:8080/mypage?lang=en" id="english-btn">English</a>
-    <a href="http://localhost:8080/mypage?lang=sv" id="swedish-btn">Swedish</a>
-</div>
-<div class="header-buttons">
-    <a th:if="${!principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/login" >Log in</a>
-    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/">Message Feed</a>
-    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/createmessage" >Create Message</a>
-    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/mymessages" >My Messages</a>
-    <a th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}" class="header-button" href="http://localhost:8080/logout" >Log out</a>
-</div>
-<div class="editable-rectangle" contenteditable="false">
-    <h4 id="my-page-title">My Page</h4>
+<nav class="navbar navbar-expand-lg navbar-light  custom-header-color">
+    <div class="container ">
+        <a class="navbar-brand" href="http://localhost:8080">Beautiful World</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="http://localhost:8080/mypage?lang=en">English</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="http://localhost:8080/mypage?lang=sv">Swedish</a>
+                </li>
+                <li th:if="${!principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}"
+                    class="nav-item">
+                    <a class="nav-link" href="http://localhost:8080/login">Log in</a>
+                </li>
+                <li th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}"
+                    class="nav-item">
+                    <a class="nav-link" href="http://localhost:8080/mypage">My Page</a>
+                </li>
+                <li th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}"
+                    class="nav-item">
+                    <a class="nav-link" href="http://localhost:8080/mymessages">My Messages</a>
+                </li>
+                <li th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}"
+                    class="nav-item">
+                    <a class="nav-link" href="http://localhost:8080/createmessage">Create
+                        Message</a>
+                </li>
+                <li th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}"
+                    class="nav-item">
+                    <a class="nav-link" href="http://localhost:8080/logout">Log out</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container mt-4">
+    <div class="card  mb-3 custom-card" contenteditable="false">
+        <div class="color-bar"></div>
+        <div class="card-body message-card">
+            <h4 class="card-title">My Page</h4>
 
-    <form th:action="@{/mypage}" th:object="${user}" method="post">
-        <img id="profile-picture" th:src="${user.profilePicture}" alt="Profile Picture" style="margin-bottom: 10px">
-        <a href="http://localhost:8080/uploadimage" class="header-button" >Change Profile Picture</a>
-        <br >
-        <label for="name" id="name-label" th:text="#{Name}+': '" style="margin-top: 20px"></label>
-        <input type="text" id="name" th:field="*{name}">
-        <br>
-        <label for="username" id="username-label" th:text="#{UserName}+': '"></label>
-        <input type="text" id="username" th:field="*{username}" >
-        <br>
-        <label for="email" id="email-label" th:text="#{Email}+': '"></label>
-        <input type="email" id="email" th:field="*{email}">
-        <br> <br>
-        <button type="submit" class="header-button" th:text="#{SaveChanges}"></button>
-    </form>
+            <form th:action="@{/mypage}" th:object="${user}" method="post" class="user-form">
+                <div class="profile-pic-container">
+                    <img th:src="${user.profilePicture}" alt="Profile Picture" class="profile-pic-my-page">
+                    <a href="http://localhost:8080/uploadimage" class="btn btn-secondary change-pic-button">Change
+                        Profile
+                        Picture</a>
+                </div>
+                <div class="form-group">
+                    <label for="name" id="name-label" th:text="#{Name}+': '" class="form-label"></label>
+                    <input type="text" id="name" th:field="*{name}" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="username" id="username-label" th:text="#{UserName}+': '" class="form-label"></label>
+                    <input type="text" id="username" th:field="*{username}" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="email" id="email-label" th:text="#{Email}+': '" class="form-label"></label>
+                    <input type="email" id="email" th:field="*{email}" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
 </div>
+<!-- Bootstrap JS, Popper.js, and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>

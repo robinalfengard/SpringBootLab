@@ -1,0 +1,111 @@
+.custom-header-color {
+    background: linear-gradient(to right, yellow, lightskyblue, yellow);
+
+    /*background: rgb(47, 79, 79);*/
+}
+
+.navbar-bg {
+    background-color: rgb(47, 79, 79);
+}
+.navbar{
+    /*height: 100px;*/
+}
+.navbar-brand{
+    font-weight: normal;
+    font-size: 40px;
+}
+body{
+    background-color: white;
+    /*background-image: url("background.webp");*/
+    /*background-position: center;*/
+    /*background-size: cover;*/
+    /*background-repeat: no-repeat;*/
+    /*background-attachment: fixed;*/
+}
+
+.message-card{
+    background-color: lightskyblue;
+}
+.custom-card {
+    display: flex;
+    flex-direction: row;
+    border: royalblue 1px solid;
+    border-left-width: 0;
+}
+
+.color-bar {
+    width: 8px; /* Width of the color bar */
+    background-color: yellow; /* Color of the bar */
+    border-radius: 0.25rem 0 0 0.25rem; /* Adjust based on your design */
+}
+
+.card-body {
+    flex: 1; /* Ensures card body takes up the rest of the card space */
+}
+
+.btn-primary{
+    background-color: royalblue;
+}
+.btn-primary:hover {
+    background-color: #0056b3; /* Darker shade of blue */
+    border-color: #004085; /* Optional: also change the border color on hover */
+}
+
+.custom-card .user-profile {
+    display: flex;
+    align-items: center; /* Align items vertically */
+    gap: 20px; /* Space between profile picture and user info */
+}
+
+.profile-pic {
+    width: 60px; /* Smaller width for profile picture */
+    height: 60px; /* Maintain aspect ratio */
+    border-radius: 50%; /* Make the picture circular */
+    object-fit: cover; /* Ensure the image covers the space */
+}
+
+.user-info {
+    flex-grow: 1; /* Allow user info to take up remaining space */
+}
+.custom-card-mypage {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+.flex-column {
+    flex-direction: column;
+}
+.profile-pic-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-pic-my-page {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ddd;
+}
+
+.change-pic-button {
+    display: block;
+    margin: 10px auto; /* Center button */
+    text-align: center;
+}
+
+.user-form .form-group {
+    margin-bottom: 15px;
+}
+
+.user-form label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.user-form input {
+    margin-top: 5px;
+}
+
+.user-form button {
+    /*width: 100%; */
+}

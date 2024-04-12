@@ -3,58 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
-    <link rel="stylesheet" th:href="@{/home.css}">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/styles.css}">
 </head>
 <body>
-<div class="language-options">
-    <a href="http://localhost:8080/?lang=en" id="english-btn">English</a>
-    <a href="http://localhost:8080/?lang=sv" id="swedish-btn">Swedish</a>
-</div>
-<div class="header-buttons">
-
-    <a class="header-button" href="http://localhost:8080/">Message Feed</a>
-</div>
-
-<div>
-    <h1 class="site-title">Beautiful World</h1>
-</div>
-<button class="load-more" onclick="window.location.href='http://localhost:8080'">Back to Message Feed</button>
-<div>
-    <h2 style="margin-right: auto; margin-left: auto; text-align: center">Results</h2>
-
-</div>
-
-
-<div th:each="message : ${listOfMessages}" class="card mb-3">
-    <div class="card-body">
-        <h5 class="center-message" th:text="${message?.title}"></h5>
-        <p class="center-message" th:text="${message?.text}" style="width: 100%"></p>
-<div style="margin-top: 10px">
-    <p class="center-message" th:if="${translatedMessage != null && currentMessageToTranslateId == message.id}" th:text="'Translation: ' + ${translatedMessage}" style="width: 100%;"></p>
-
-</div>
-              <div class="user-info">
-            <p class="message" th:text="|#{Author}: ${message?.user.username}|"></p>
-            <p class="message" th:text="|#{PublishedTime}: ${message?.createdAt}|"></p>
+<nav class="navbar navbar-expand-lg navbar-light  custom-header-color">
+    <div class="container ">
+        <a class="navbar-brand" href="http://localhost:8080">Beautiful World</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="http://localhost:8080/?lang=en" id="english-btn">English</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="http://localhost:8080/?lang=sv" id="swedish-btn">Swedish</a>
+                </li>
+            </ul>
         </div>
-        <div class="user-info">
-            <p class="message" th:if="${message?.lastEditedBy != null}" th:text="#{EditedBy} + ': ' + ${message?.lastEditedBy.username}"></p>
-            <p class="message"  th:if="${message?.lastEditedBy != null}" th:text="#{LastEditedTime}+ ': ' + ${message?.updatedAt}"></p>
+    </div>
+</nav>
+<div th:each="message : ${listOfMessages}" class="card mb-3 custom-card">
+    <div class="color-bar"></div>
+    <div class="card-body message-card">
+
+        <h5 class="card-title" th:text="${message?.title}"></h5>
+        <p class="card-text" th:text="${message?.text}"></p>
+        <p class="card-text" th:if="${translatedMessage != null && currentMessageToTranslateId == message.id}"
+           th:text="'Translation: ' + ${translatedMessage}"></p>
+        <div class="user-profile">
+            <img id="profile-picture" th:src="${message?.user.profilePicture}" alt="Profile Picture"
+                 class="profile-pic">
+            <p class="card-text"
+               th:text="|#{Author}: ${message?.user.username}|"></p>
         </div>
+        <p class="card-text"
+           th:text="|#{PublishedTime}: ${message?.createdAt}|"></p>
+        <p class="card-text" th:if="${message?.lastEditedBy != null}"
+           th:text="#{EditedBy} + ': ' + ${message?.lastEditedBy.username} + ' ' +#{LastEditedTime}+ ': ' + ${message?.updatedAt}"></p>
         <div class="translate-section">
-            <p class="message">Translate to</p>
-            <form th:action="@{'/translateSearch/' + ${message.id}}" th:object="${selectedLang}" method="post">
-
-                <select id="languageSelect">
-                    <option th:each="lang : ${languagesList}"
-                            th:value="${lang.getLangCode()}"
-                            th:text="${lang}">
-                    </option>
-                </select>
-                <textarea   id="languageSelected"  th:field="*{langCode}"></textarea>
-
-                <button type="submit">Translate</button>
-
+            <form th:action="@{'/translate/' + ${message.id}}" th:object="${selectedLang}" method="post">
+                <div class="form-group">
+                    <label for="languageSelect">Translate to</label>
+                    <select id="languageSelect" class="form-control">
+                        <option th:each="lang : ${languagesList}" th:value="${lang.getLangCode()}"
+                                th:text="${lang}"></option>
+                    </select>
+                    <textarea id="languageSelected" class="form-control" th:field="*{langCode}"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Translate</button>
             </form>
         </div>
     </div>
@@ -62,7 +62,7 @@
 </div>
 <script>
     function setupLanguageSelectionListenerForMessage(messageCard) {
-        messageCard.addEventListener("change", function(event) {
+        messageCard.addEventListener("change", function (event) {
             if (event.target && event.target.id === "languageSelect") {
                 var selectedValue = event.target.value;
                 event.target.nextElementSibling.value = selectedValue;
@@ -70,7 +70,7 @@
         });
     }
 
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         setupLanguageSelectionListenerForMessage(document);
 
     });
