@@ -1,0 +1,42 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://unpkg.com/htmx.org/dist/htmx.min.js"></script>
+    <style>
+        div.thymeleaf {
+            margin-bottom: 10px;
+            border: 1px solid black;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body hx-headers='{"_csrf.headerName": "${_csrf.token}"}'>
+<div th:each="message : ${listOfMessages}">
+
+    <div class="thymeleaf"><span th:text="${message.user.username} + ': ' + ${message.text}"></span>
+        <button
+                th:attr="hx-delete=@{/htmx/{id}(id=${message.id})}"
+                hx-swap="outerHtml"
+                hx-target="div.thymeleaf"
+                hx-headers='{"_csrf.headerName": "${_csrf.token}"}'
+                hx-confirm="Are you sure?">
+                Delete</button></div>
+</div>
+
+<div th:fragment="message">
+    <label><textarea id="post-title" th:value="${title}" name="title"></textarea></label>
+    <label><textarea id="post-text" th:value="${message}" name="text"></textarea></label>
+    <button
+            th:attr="hx-post=@{/htmx/${title}/${message}}"  }
+            hx-swap="outerHtml"
+            hx-target="div.thymeleaf"
+            hx-headers='{"_csrf.headerName": "${_csrf.token}"}'>
+        Post</button>
+</div>
+</body>
+</html>

@@ -6,6 +6,7 @@ import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
@@ -26,10 +27,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
         return security
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/login", "/", "/resources/**", "/type/css/**","/resources/uploads/*.*", "/resources/static/uploads/**", "createMessage.css","mymessages.css", "home.css", "/api/**", "/loadMoreMessages", "/swagger-ui/**","/swagger-ui.html", "/v3/api-docs/**", "/swagger", "/translate/**", "/translate", "/favicon.ico", "/search", "/result", "/translateSearch/**", "profilepics/**" ).permitAll();
+                    auth.requestMatchers("/login", "/", "/resources/**", "/type/css/**","/resources/uploads/*.*", "/resources/static/uploads/**", "createMessage.css","mymessages.css", "home.css", "/api/**", "/loadMoreMessages", "/swagger-ui/**","/swagger-ui.html", "/v3/api-docs/**", "/swagger", "/translate/**", "/translate", "/favicon.ico", "/search", "/result", "/translateSearch/**", "profilepics/**", "/htmx", "/htmx/**" ).permitAll();
                     auth.requestMatchers("/updateuser","/createmessage", "/allMessages","/mymessages", "/mypage","/upload" , "/uploadimage","/editmessage/**", "/newRandomPhrase").authenticated();
                     auth.anyRequest().denyAll();
                 })
+                .csrf(AbstractHttpConfigurer::disable)
                 .oauth2Login(oauth2Login ->
                         oauth2Login
                                 .successHandler(successHandler()))
