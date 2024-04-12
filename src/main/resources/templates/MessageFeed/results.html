@@ -22,27 +22,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="http://localhost:8080/?lang=sv" id="swedish-btn">Swedish</a>
                 </li>
-                <li th:if="${!principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}"
-                    class="nav-item">
-                    <a class="nav-link" href="http://localhost:8080/login" id="login-btn">Log in</a>
-                </li>
-                <li th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}"
-                    class="nav-item">
-                    <a class="nav-link" href="http://localhost:8080/mypage" id="my-page-btn">My Page</a>
-                </li>
-                <li th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}"
-                    class="nav-item">
-                    <a class="nav-link" href="http://localhost:8080/createmessage" id="create-message-btn">Create
-                        Message</a>
-                </li>
-                <li th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}"
-                    class="nav-item">
-                    <a class="nav-link" href="http://localhost:8080/">Message Feed</a>
-                </li>
-                <li th:if="${principal.getAuthorities().stream().findFirst().get().getAuthority().equals('OAUTH2_USER')}"
-                    class="nav-item">
-                    <a class="nav-link" href="http://localhost:8080/logout">Log out</a>
-                </li>
             </ul>
         </div>
     </div>

@@ -45,27 +45,23 @@
 </nav>
 
 <div class="container mt-4">
-  <div th:each="message : ${listOfMessages}" class="card mb-3 custom-card">
+  <div th:each="message : ${messageList}" class="card mb-3 custom-card">
     <div class="color-bar"></div>
     <div class="card-body message-card">
       <h5 class="card-title" th:text="${message?.title}"></h5>
       <p class="card-text" th:text="${message?.text}"></p>
-      <p class="card-text" th:if="${translatedMessage != null && currentMessageToTranslateId == message.id}"
-         th:text="'Translation: ' + ${translatedMessage}"></p>
       <img id="profile-picture" th:src="${message?.user.profilePicture != null ? message?.user.profilePicture :  '/profileimg.png'}" alt="Profile Picture">
 
       <p class="card-text"
          th:text="|#{Author}: ${message?.user.username} #{PublishedTime}: ${message?.createdAt}|"></p>
       <p class="card-text" th:if="${message?.lastEditedBy != null}"
          th:text="#{EditedBy} + ': ' + ${message?.lastEditedBy.username} + ' ' +#{LastEditedTime}+ ': ' + ${message?.updatedAt}"></p>
+
+      <a th:href="@{'/editmessage/' + ${message.id}}" class="btn-primary btn" >Edit</a>
+
     </div>
   </div>
 
-  <div class="load-more text-center mt-4">
-    <button class="btn btn-primary" onclick="window.location.href='http://localhost:8080/loadMoreMessages'">Load
-      More Messages
-    </button>
-  </div>
 </div>
 
 <!-- Bootstrap JS, Popper.js, and jQuery -->
