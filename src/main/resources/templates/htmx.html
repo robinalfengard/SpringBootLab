@@ -7,7 +7,7 @@
     <title>Document</title>
     <script src="https://unpkg.com/htmx.org/dist/htmx.min.js"></script>
     <style>
-        div.thymeleaf {
+        td {
             margin-bottom: 10px;
             border: 1px solid black;
             padding: 10px;
@@ -16,27 +16,72 @@
 </head>
 
 <body hx-headers='{"_csrf.headerName": "${_csrf.token}"}'>
-<div th:each="message : ${listOfMessages}">
+
+
+<a href="/">Back to main program</a>
+
+<table>
+    <thead>
+    <tr>
+    <th>Username</th>
+    <th>Text</th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody hx-target="closest tr" hx-swap="outerHTML">
+    <tr th:each="message : ${listOfMessages}">
+        <td th:text="${message.user.username}"></td>
+        <td th:text="${message.text}"></td>
+        <td> <button class="btn btn-danger"
+        th:attr="hx-path=@{/htmx/{id}(id=${message.id})}"
+        hx-trigger="edit"
+        onclick="let editing = document.getElementById('.editing')"
+        >Edit</button></td>
+
+        <td>
+            <button
+            hx-confirm="Are you sure?"
+            hx-swap="outerHTML"
+            hx-trigger="click"
+            th:attr="hx-delete=@{/htmx/{id}(id=${message.id})}"
+            >Deöete</button>
+        </td>
+    </tr>
+
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+<!--<div th:each="message : ${listOfMessages}">
 
     <div class="thymeleaf"><span th:text="${message.user.username} + ': ' + ${message.text}"></span>
         <button
-                th:attr="hx-delete=@{/htmx/{id}(id=${message.id})}"
+                th:if="${message.user.id == userId}"
+                th:attr="hx-patch=@{/htmx/{id}(id=${message.id})}"
                 hx-swap="outerHtml"
                 hx-target="div.thymeleaf"
                 hx-headers='{"_csrf.headerName": "${_csrf.token}"}'
                 hx-confirm="Are you sure?">
-                Delete</button></div>
+            Edit</button>
+        <button
+                th:if="${message.user.id == userId}"
+                th:attr="hx-delete=@{/htmx/{id}(id=${message.id})}"
+                hx-swap="outerHtml"
+                hx-headers='{"_csrf.headerName": "${_csrf.token}"}'
+                hx-confirm="Are you sure?">
+            Delete</button>
 </div>
+</div>-->
 
-<div th:fragment="message">
-    <label><textarea id="post-title" th:value="${title}" name="title"></textarea></label>
-    <label><textarea id="post-text" th:value="${message}" name="text"></textarea></label>
-    <button
-            th:attr="hx-post=@{/htmx/${title}/${message}}"  }
-            hx-swap="outerHtml"
-            hx-target="div.thymeleaf"
-            hx-headers='{"_csrf.headerName": "${_csrf.token}"}'>
-        Post</button>
-</div>
+
+
+
 </body>
 </html>

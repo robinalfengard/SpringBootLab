@@ -34,14 +34,20 @@ public class HtmxController {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("formData", new CreateMessageFormData());
         model.addAttribute("principal", auth);
-        model.addAttribute("listOfMessages", messageRepository.findAll());
-        System.out.println("Get method called");
+        model.addAttribute("userId", Long .valueOf(auth.getName()));
+        if(auth.getAuthorities().stream().findFirst().get().getAuthority().equals("OAUTH2_USER"))
+            model.addAttribute("listOfMessages", messageRepository.findAll());
+        else
+            model.addAttribute("listOfMessages", messageRepository.findAllWhereIsPublicIsTrue());
         return "htmx";
     }
 
-    @PostMapping("/htmx")
+
+
+
+/*    @PostMapping("/htmx")
     public String createMessage(Model model, OAuth2AuthenticationToken authentication, @RequestParam("post-title") String title, @RequestParam("post-text") String message) {
-        System.out.println("Post method called");
+        System.out.println("Private Post method called");
         model.addAttribute("title", title);
         model.addAttribute("message", message);
         OAuth2User principal = authentication.getPrincipal();
@@ -56,8 +62,8 @@ public class HtmxController {
             var messageToSave = newMessage.toEntity();
             messageService.save(messageToSave);
         }
-        return "htmx";
-    }
+        return "redirect:/htmx/private";
+    }*/
 
     @ResponseBody
     @DeleteMapping(value = "/htmx/{id}", produces = MediaType.TEXT_HTML_VALUE)

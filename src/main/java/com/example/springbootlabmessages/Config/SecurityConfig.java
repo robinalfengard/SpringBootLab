@@ -27,8 +27,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
         return security
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/login", "/", "/resources/**", "/type/css/**","/resources/uploads/*.*", "/resources/static/uploads/**", "createMessage.css","mymessages.css", "home.css", "/api/**", "/loadMoreMessages", "/swagger-ui/**","/swagger-ui.html", "/v3/api-docs/**", "/swagger", "/translate/**", "/translate", "/favicon.ico", "/search", "/result", "/translateSearch/**", "profilepics/**", "/htmx", "/htmx/**" ).permitAll();
-                    auth.requestMatchers("/updateuser","/createmessage", "/allMessages","/mymessages", "/mypage","/upload" , "/uploadimage","/editmessage/**", "/newRandomPhrase").authenticated();
+                    auth.requestMatchers("/login", "/", "/resources/**", "/type/css/**","/resources/uploads/*.*", "/resources/static/uploads/**", "createMessage.css","mymessages.css", "home.css", "/api/**", "/loadMoreMessages", "/swagger-ui/**","/swagger-ui.html", "/v3/api-docs/**", "/swagger", "/translate/**", "/translate", "/favicon.ico", "/search", "/result", "/translateSearch/**", "profilepics/**", "/htmx").permitAll();
+                    auth.requestMatchers("/updateuser","/createmessage", "/allMessages","/mymessages", "/mypage","/upload" , "/uploadimage","/editmessage/**", "/newRandomPhrase", "htmx/**").authenticated();
                     auth.anyRequest().denyAll();
                 })
                 .csrf(AbstractHttpConfigurer::disable)
