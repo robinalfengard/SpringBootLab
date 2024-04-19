@@ -21,14 +21,18 @@ public class HtmxController {
     private final UserService userService;
 
     private final MessageService messageService;
+    private final UserRepository userRepository;
 
 
-    public HtmxController(MessageRepository messageRepository, UserService userService, MessageService messageService) {
+    public HtmxController(MessageRepository messageRepository, UserService userService, MessageService messageService,
+                          UserRepository userRepository) {
         this.messageRepository = messageRepository;
         this.userService = userService;
         this.messageService = messageService;
+        this.userRepository = userRepository;
     }
 
+    // main page
     @GetMapping("/htmx")
     public String htmx(Model model) {
         var auth = SecurityContextHolder.getContext().getAuthentication();
@@ -42,29 +46,41 @@ public class HtmxController {
         return "htmx";
     }
 
-
-
-
-/*    @PostMapping("/htmx")
-    public String createMessage(Model model, OAuth2AuthenticationToken authentication, @RequestParam("post-title") String title, @RequestParam("post-text") String message) {
-        System.out.println("Private Post method called");
-        model.addAttribute("title", title);
+    // selected message
+    @GetMapping("/htmx/{id}")
+    public String getMessageById(@PathVariable Long id, Model model) {
+        var message = messageRepository.findById(id).get();
         model.addAttribute("message", message);
-        OAuth2User principal = authentication.getPrincipal();
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-        model.addAttribute("principal", auth);
-        System.out.println(title + " " + message);
-        if (auth.getAuthorities().stream().findFirst().get().getAuthority().equals("OAUTH2_USER")) {
-            CreateMessageFormData newMessage = new CreateMessageFormData();
-            newMessage.setTitle(title);
-            newMessage.setText(message);
-            newMessage.setUser(userService.findById(principal.getAttribute("id")));
-            var messageToSave = newMessage.toEntity();
-            messageService.save(messageToSave);
-        }
-        return "redirect:/htmx/private";
-    }*/
+        model.addAttribute("updatedMessage", new CreateMessageFormData());
+        model.addAttribute("id", id);
+        System.out.println("Get specific message with id: " + id);
+        return "htmx-edit";
+    }
 
+
+    // edit message
+    @PostMapping("/htmx/{id}")
+    public String editMessage(@PathVariable Long id, CreateMessageFormData updatedMessage, Model model) {
+        model.addAttribute("updatedMessage", updatedMessage);
+        Message update = updatedMessage.toEntity();
+        System.out.println(update.getText());
+        System.out.println(id);
+    //    messageService.updateMessage(oldMessage, update, userRepository.findById(id).get());
+        return "htmx";
+    }
+
+    // create new message form
+    @GetMapping("/htmx/postform")
+    public String getPostForm(Model model) {
+        model.addAttribute("newMessage", new CreateMessageFormData());
+        model.addAttribute("userId", SecurityContextHolder.getContext().getAuthentication().getName());
+        return "htmx-post";
+    }
+
+
+
+
+    // delete method
     @ResponseBody
     @DeleteMapping(value = "/htmx/{id}", produces = MediaType.TEXT_HTML_VALUE)
     public String deleteMessage(@PathVariable Long id) {

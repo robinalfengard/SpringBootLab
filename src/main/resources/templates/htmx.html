@@ -12,6 +12,10 @@
             border: 1px solid black;
             padding: 10px;
         }
+
+        .hidden {
+            display: none !important;
+        }
     </style>
 </head>
 
@@ -33,55 +37,35 @@
     <tr th:each="message : ${listOfMessages}">
         <td th:text="${message.user.username}"></td>
         <td th:text="${message.text}"></td>
-        <td> <button class="btn btn-danger"
-        th:attr="hx-path=@{/htmx/{id}(id=${message.id})}"
-        hx-trigger="edit"
-        onclick="let editing = document.getElementById('.editing')"
-        >Edit</button></td>
+        <td> <button
+        th:if="${message.user.id == userId}"
+        class="btn btn-danger"
+        th:attr="hx-get=@{/htmx/{id}(id=${message.id})}"
+        hx-trigger="click"
+        >Edit</button>
+        </td>
+
+
 
         <td>
             <button
+            th:if="${message.user.id == userId}"
             hx-confirm="Are you sure?"
             hx-swap="outerHTML"
             hx-trigger="click"
             th:attr="hx-delete=@{/htmx/{id}(id=${message.id})}"
-            >Deöete</button>
+            >Delete</button>
         </td>
     </tr>
 
     </tbody>
 </table>
+<div>
+<button
+    th:attr="hx-get=@{/htmx/postform}">
+    Post
+</button>
 
-
-
-
-
-
-
-
-<!--<div th:each="message : ${listOfMessages}">
-
-    <div class="thymeleaf"><span th:text="${message.user.username} + ': ' + ${message.text}"></span>
-        <button
-                th:if="${message.user.id == userId}"
-                th:attr="hx-patch=@{/htmx/{id}(id=${message.id})}"
-                hx-swap="outerHtml"
-                hx-target="div.thymeleaf"
-                hx-headers='{"_csrf.headerName": "${_csrf.token}"}'
-                hx-confirm="Are you sure?">
-            Edit</button>
-        <button
-                th:if="${message.user.id == userId}"
-                th:attr="hx-delete=@{/htmx/{id}(id=${message.id})}"
-                hx-swap="outerHtml"
-                hx-headers='{"_csrf.headerName": "${_csrf.token}"}'
-                hx-confirm="Are you sure?">
-            Delete</button>
 </div>
-</div>-->
-
-
-
-
 </body>
 </html>

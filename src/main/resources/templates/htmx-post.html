@@ -1,0 +1,38 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://unpkg.com/htmx.org/dist/htmx.min.js"></script>
+    <style>
+        td {
+            margin-bottom: 10px;
+            border: 1px solid black;
+            padding: 10px;
+        }
+
+
+    </style>
+</head>
+
+<body hx-headers='{"_csrf.headerName": "${_csrf.token}"}'>
+<div class="card-body">
+    <label>
+        Title
+        <textarea type="text"  th:field="${newMessage.title}"></textarea>
+    </label>
+    <label>
+        Text
+        <textarea type="text"  th:field="${newMessage.text}"></textarea>
+    </label>
+    <button
+            class="btn btn-danger"
+            th:attr="hx-post=@{/htmx/{userId}(userId=${userId})}"
+            >
+        Save
+    </button>
+</div>
+</body>
+</html>
