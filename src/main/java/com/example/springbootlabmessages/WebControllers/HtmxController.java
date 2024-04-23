@@ -51,22 +51,29 @@ public class HtmxController {
     public String getMessageById(@PathVariable Long id, Model model) {
         var message = messageRepository.findById(id).get();
         model.addAttribute("message", message);
-        model.addAttribute("updatedMessage", new CreateMessageFormData());
         model.addAttribute("id", id);
         System.out.println("Get specific message with id: " + id);
+        System.out.println("Message in model: " + message.getText());
         return "htmx-edit";
+    }
+
+    @PatchMapping("/htmx/{id}")
+    public String editPost(@ModelAttribute Message message, @PathVariable Long id) {
+        var oldMessage = messageRepository.findById(id).get();
+        oldMessage.setText(message.getText());
+        oldMessage.setTitle(message.getTitle());
+        messageRepository.save(oldMessage);
+        return "htmx";
     }
 
 
     // edit message
-    @PostMapping("/htmx/{id}")
-    public String editMessage(@PathVariable Long id, CreateMessageFormData updatedMessage, Model model) {
-        model.addAttribute("updatedMessage", updatedMessage);
-        Message update = updatedMessage.toEntity();
-        System.out.println(update.getText());
-        System.out.println(id);
-    //    messageService.updateMessage(oldMessage, update, userRepository.findById(id).get());
-        return "htmx";
+    @PostMapping("/htmx/{id}/edit")
+    public String editForm(Model model, @PathVariable Long id) {
+        var message = messageRepository.findById(id).get();
+        model.addAttribute("message", message);
+        model.addAttribute("id", id);
+        return "htmx-edit";
     }
 
     // create new message form

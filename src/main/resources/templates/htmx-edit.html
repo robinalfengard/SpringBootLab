@@ -24,17 +24,18 @@
             <td th:text="${message.user.username}"></td>
             <td>
                 <label>
-                    <textarea type="text" th:text="${message.title}"  th:value="${updatedMessage.title}"></textarea>
+                    <textarea type="text" th:text="${message.title}"  th:field="*{message.title}"></textarea>
                 </label>
             </td>
             <td>
                 <label>
-                    <textarea type="text" th:text="${message.text}"  th:value="${updatedMessage.text}"></textarea>
+                    <textarea type="text" th:text="${message.text}"  th:field="*{message.text}"></textarea>
                 </label>
             </td>
             <td>
                 <button class="btn btn-danger"
-                        th:attr="hx-post=@{/htmx/{id}(id=${message.id})}"
+                        th:attr="hx-patch=@{/htmx/{id}(id=${message.id})}" hx-include="closest tr"
+                        hx-swap="outerHTML"
                         hx-trigger="click">
                     Save
                 </button>
